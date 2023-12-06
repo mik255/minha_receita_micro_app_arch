@@ -10,6 +10,10 @@ import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu
 import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
+import '../model/comment_entity.dart';
+import '../componentes/feed_card.dart';
+import '../model/feed_entity.dart';
+import '../model/like_entity.dart';
 import '../states/navigator_state.dart';
 import '../states/recipe_state.dart';
 import '../states/theme_state.dart';
@@ -49,7 +53,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>
             if (recipeStateModel.errorMsg != null) {
               return DSErrorHandle(
                 errorMsg: recipeStateModel.errorMsg!,
-                tryAgain:recipeStateModel.getData,
+                tryAgain: recipeStateModel.getData,
               );
             }
             if (recipeStateModel.isLoading) {
@@ -60,10 +64,11 @@ class _RecipeMainPageState extends State<RecipeMainPage>
               pageController: pageController,
               children: [
                 SingleChildScrollView(
-                  child: Stack(
+                  child: Column(
                     children: [
                       _listOfRecipe(),
-                      _carousel(),
+                      ...feeds(),
+                      // _carousel(),
                     ],
                   ),
                 ),
@@ -126,9 +131,6 @@ class _RecipeMainPageState extends State<RecipeMainPage>
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 320,
-        ),
         Padding(
           padding: const EdgeInsets.all(16),
           child: DSNavigationMenuBar(
@@ -139,9 +141,10 @@ class _RecipeMainPageState extends State<RecipeMainPage>
                   subtitle: e['title'],
                   width: 70,
                   customContainer: DSCustomContainer(
-                    width: 45,
+                    width: 40,
+                    height: 40,
                     iconPadding: const EdgeInsets.all(8),
-                    iconData: e['icon'],
+                    imgURL: 'https://source.unsplash.com/random/80${pageNavigatorStateModel.navigationMenuBarList.indexOf(e)}x600/?person',
                     iconColor: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
@@ -150,69 +153,69 @@ class _RecipeMainPageState extends State<RecipeMainPage>
             onTap: (int index) {},
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: DSNavigationMenuBar(
-            title: DSDefaultTitle(
-              title: 'Populares',
-              leading: Icons.favorite_border,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
-              iconColor: Theme.of(context).colorScheme.primary,
-            ),
-            items: [
-              ...recipeStateModel.recipeList['pop']!
-                  .map((e) => DSNavigationMenuBarItem(
-                        subtitle: e.title,
-                        customContainer: DSCustomContainer(
-                          imgURL: e.imgUrl,
-                          description: '${e.timeInMinutes} minutos',
-                          height: 90,
-                          width: 100,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                          ),
-                        ),
-                      )),
-            ],
-            onTap: (int index) {
-              navigateKey.currentState!.pushNamed('/recipe/ingredients',
-                  arguments: recipeStateModel.recipeList['pop']![index]);
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: DSNavigationMenuBar(
-            title: DSDefaultTitle(
-              title: 'Últimas receitas',
-              leading: Icons.access_time,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
-              iconColor: Theme.of(context).colorScheme.primary,
-            ),
-            items: [
-              ...recipeStateModel.recipeList['news']!
-                  .map((e) => DSNavigationMenuBarItem(
-                        subtitle: e.title,
-                        customContainer: DSCustomContainer(
-                          imgURL: e.imgUrl,
-                          height: 150,
-                          width: 135,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                          ),
-                        ),
-                      )),
-            ],
-            onTap: (int index) {
-              navigateKey.currentState!.pushNamed('/recipe/ingredients',
-                  arguments: recipeStateModel.recipeList['news']![index]);
-            },
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.all(16),
+        //   child: DSNavigationMenuBar(
+        //     title: DSDefaultTitle(
+        //       title: 'Populares',
+        //       leading: Icons.favorite_border,
+        //       backgroundColor: Theme.of(context).colorScheme.tertiary,
+        //       iconColor: Theme.of(context).colorScheme.primary,
+        //     ),
+        //     items: [
+        //       ...recipeStateModel.recipeList['pop']!
+        //           .map((e) => DSNavigationMenuBarItem(
+        //                 subtitle: e.title,
+        //                 customContainer: DSCustomContainer(
+        //                   imgURL: e.imgUrl,
+        //                   description: '${e.timeInMinutes} minutos',
+        //                   height: 90,
+        //                   width: 100,
+        //                   shape: const RoundedRectangleBorder(
+        //                     borderRadius: BorderRadius.all(
+        //                       Radius.circular(8),
+        //                     ),
+        //                   ),
+        //                 ),
+        //               )),
+        //     ],
+        //     onTap: (int index) {
+        //       navigateKey.currentState!.pushNamed('/recipe/ingredients',
+        //           arguments: recipeStateModel.recipeList['pop']![index]);
+        //     },
+        //   ),
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.all(16),
+        //   child: DSNavigationMenuBar(
+        //     title: DSDefaultTitle(
+        //       title: 'Últimas receitas',
+        //       leading: Icons.access_time,
+        //       backgroundColor: Theme.of(context).colorScheme.tertiary,
+        //       iconColor: Theme.of(context).colorScheme.primary,
+        //     ),
+        //     items: [
+        //       ...recipeStateModel.recipeList['news']!
+        //           .map((e) => DSNavigationMenuBarItem(
+        //                 subtitle: e.title,
+        //                 customContainer: DSCustomContainer(
+        //                   imgURL: e.imgUrl,
+        //                   height: 150,
+        //                   width: 135,
+        //                   shape: const RoundedRectangleBorder(
+        //                     borderRadius: BorderRadius.all(
+        //                       Radius.circular(8),
+        //                     ),
+        //                   ),
+        //                 ),
+        //               )),
+        //     ],
+        //     onTap: (int index) {
+        //       navigateKey.currentState!.pushNamed('/recipe/ingredients',
+        //           arguments: recipeStateModel.recipeList['news']![index]);
+        //     },
+        //   ),
+        // ),
       ],
     );
   }
@@ -292,6 +295,97 @@ class _RecipeMainPageState extends State<RecipeMainPage>
                   );
                 }),
           ),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> feeds(){
+    return [
+      FeedCard(
+        feedEntity: FeedEntity(
+          name: 'Nome',
+          description:
+          'Aqui vai mais um das minhas receitas, espero que gostem',
+          createdAt: '2023-12-01T01:23:45.678+09:00',
+          likes: 26,
+          userLiked: false,
+          comments: [
+            CommentEntity(
+              comment: 'Comentário',
+              id: 1,
+              createdAt: '',
+              updatedAt: '',
+              userId: 1,
+              postId: 1,
+            ),
+          ],
+          likesList: [
+            LikeEntity(
+              description: 'Descrição',
+              isFallowing: false,
+              name: 'Nome',
+              urlImg:
+              'https://source.unsplash.com/random/800x600/?person',
+            ),
+            LikeEntity(
+              description: 'Descrição',
+              isFallowing: false,
+              name: 'Nome',
+              urlImg:
+              'https://source.unsplash.com/random/700x600/?person',
+            ),
+          ],
+          imgUrl:
+          'https://source.unsplash.com/random/750x600/?person',
+          recipeImgUrlList: [
+            'https://source.unsplash.com/random/780x600/?food',
+            'https://source.unsplash.com/random/785x600/?food',
+            'https://source.unsplash.com/random/788x600/?food'
+          ],
+        ),
+      ),
+      FeedCard(
+        feedEntity: FeedEntity(
+          name: 'Nome',
+          description:
+          'Aqui vai mais um das minhas receitas, espero que gostem',
+          createdAt: '2023-12-01T01:23:45.678+09:00',
+          likes: 26,
+          userLiked: false,
+          comments: [
+            CommentEntity(
+              comment: 'Comentário',
+              id: 1,
+              createdAt: '',
+              updatedAt: '',
+              userId: 1,
+              postId: 1,
+            ),
+          ],
+          likesList: [
+            LikeEntity(
+              description: 'Descrição',
+              isFallowing: false,
+              name: 'Nome',
+              urlImg:
+              'https://source.unsplash.com/random/800x600/?person',
+            ),
+            LikeEntity(
+              description: 'Descrição',
+              isFallowing: false,
+              name: 'Nome',
+              urlImg:
+              'https://source.unsplash.com/random/700x600/?person',
+            ),
+          ],
+          imgUrl:
+          'https://source.unsplash.com/random/750x600/?person',
+          recipeImgUrlList: [
+            'https://source.unsplash.com/random/780x600/?food',
+            'https://source.unsplash.com/random/785x600/?food',
+            'https://source.unsplash.com/random/788x600/?food'
+          ],
         ),
       ),
     ];

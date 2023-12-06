@@ -18,6 +18,7 @@ class DSMaterialThemeSingleton {
           tertiary: Colors.white,
           primary: const Color(0xFFFF9811),
           secondary: const Color(0xFF3D3D4D),
+          onSecondary: const Color(0x94000000),
           tertiaryContainer: const Color(0x8EB9C2D5),
           secondaryContainer: const Color(0xFF151528),
           background: const Color(0xFFFFFFFF),

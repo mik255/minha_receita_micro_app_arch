@@ -36,8 +36,8 @@ class DSNavigationMenuBarItem extends StatelessWidget {
               children: [
                 Text(
                   subtitle!,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      //overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      overflow: TextOverflow.ellipsis,
                       ),
                 ),
               ],

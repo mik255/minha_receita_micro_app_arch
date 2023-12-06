@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'core/config/config.dart';
 import 'core/di/injections.dart';
 import 'core/route/route_contract.dart';
 import 'design_system/themes.dart';
-import 'modules/recipe/main/pages/recipe_main_page.dart';
-import 'modules/recipe/routes/recipe_main_routes.dart';
+import 'modules/home/main/pages/recipe_main_page.dart';
+import 'modules/home/routes/recipe_main_routes.dart';
 
 void main() {
   runApp(const MyApp());
