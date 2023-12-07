@@ -1,5 +1,6 @@
 import '../../../../../core/common_http/common_http.dart';
-import '../../main/model/recipe_model.dart';
+import '../../home/main/model/recipe_model.dart';
+
 
 class RegisterRecipeService {
   Future<void> registerRecipe(RecipeModel recipe) async {

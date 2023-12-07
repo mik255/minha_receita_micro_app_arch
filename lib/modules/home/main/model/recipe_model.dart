@@ -1,7 +1,6 @@
 import '../../../../../core/models/user.dart';
-import '../../ingredients/model/ingredient.dart';
-import '../../ingredients/model/step.dart';
-
+import '../../../ingredients/model/ingredient.dart';
+import '../../../ingredients/model/step.dart';
 
 class RecipeModel {
   RecipeModel({
@@ -28,9 +27,7 @@ class RecipeModel {
         timeInMinutes: json['timeInMinutes'],
         description: json['description'],
         imgUrl: json['imgURL'],
-        steps: List<Step>.from(
-            json['steps']
-                .map((x) => Step.fromJson(x))),
+        steps: List<Step>.from(json['steps'].map((x) => Step.fromJson(x))),
         ingredients: List<Ingredient>.from(
             json['ingredients'].map((x) => Ingredient.fromJson(x))),
       );
@@ -53,7 +50,7 @@ class RecipeModel {
     String? description,
     num? timeInMinutes,
     String? imgUrl,
-    List<Step>? methodOfPreparationField,
+    List<Step>? steps,
     List<Ingredient>? ingredients,
   }) {
     return RecipeModel(
@@ -62,8 +59,7 @@ class RecipeModel {
       description: description ?? this.description,
       timeInMinutes: timeInMinutes ?? this.timeInMinutes,
       imgUrl: imgUrl ?? this.imgUrl,
-      steps:
-          methodOfPreparationField ?? this.steps,
+      steps: steps ?? this.steps,
       ingredients: ingredients ?? this.ingredients,
     );
   }

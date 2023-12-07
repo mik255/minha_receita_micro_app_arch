@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../../../design_system/appBars/app_bar.dart';
-import '../../../../../../../design_system/cards/card_with_image.dart';
 import '../../../../../../../design_system/templates/base_page.dart';
 import '../../../../../../design_system/containers/custom_container.dart';
 import '../../../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
 import '../../../../../../design_system/title/default_title.dart';
-import '../../../main/model/recipe_model.dart';
+import '../../../home/main/model/recipe_model.dart';
+
 
 class IgredientsPage extends StatefulWidget {
   const IgredientsPage({

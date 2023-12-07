@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_file.dart';
+import 'package:minha_receita/modules/ingredients/routes/ingredients_routes.dart';
 import 'core/config/config.dart';
 import 'core/di/injections.dart';
 import 'core/route/route_contract.dart';
@@ -23,7 +24,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     AppInjections().init();
-    RoutesCore.routes.addAll(recipeMainRoutes);
+    RoutesCore.routes.addAll([
+      ...recipeMainRoutes,
+      ...ingredientsRoutes
+    ]);
     DSMaterialThemeSingleton.instance.setTheme(isDark: false);
   }
 
