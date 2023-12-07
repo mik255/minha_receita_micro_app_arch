@@ -7,18 +7,21 @@ class CommonHttp {
 
   late Dio dio;
 
-  CommonHttp._internal() {
+  CommonHttp._internal({required String baseUrl}) {
     dio = Dio();
+    dio.options.baseUrl = baseUrl;
     dio.interceptors.add(LoggingInterceptor());
   }
 
-  factory CommonHttp() {
-    instance ??= CommonHttp._internal();
+  factory CommonHttp({required String baseUrl}) {
+    instance ??= CommonHttp._internal(baseUrl: baseUrl);
     return instance!;
   }
 
-  Future<Response> get({required String url}) async {
-    var response =  dio.get(url);
+  Future<Response> get({required String route}) async {
+    var response =  dio.get(
+      route,
+    );
     return response;
   }
 

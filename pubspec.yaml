@@ -43,9 +43,8 @@ dependencies:
   lottie: ^1.1.0
   carousel_slider: ^4.2.1
   logger:
-  intl: ^0.17.0
+  intl: ^0.18.1
 dev_dependencies:
-  logger:
   flutter_test:
     sdk: flutter
 

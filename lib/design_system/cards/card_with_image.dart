@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 class AppDSCardWithImage extends StatelessWidget {
@@ -15,6 +13,7 @@ class AppDSCardWithImage extends StatelessWidget {
   final String? imageUrl;
   final double elevation;
   final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
-import 'package:minha_receita/modules/ingredients/routes/ingredients_routes.dart';
 import 'core/config/config.dart';
 import 'core/di/injections.dart';
 import 'core/route/route_contract.dart';
 import 'design_system/themes.dart';
-import 'modules/home/main/pages/recipe_main_page.dart';
-import 'modules/home/routes/recipe_main_routes.dart';
+import 'modules/home/presenter/pages/home_page.dart';
+import 'modules/home/presenter/routes/recipe_main_routes.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -24,10 +23,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     AppInjections().init();
-    RoutesCore.routes.addAll([
-      ...recipeMainRoutes,
-      ...ingredientsRoutes
-    ]);
+    RoutesCore.routes.addAll([...recipeMainRoutes, ...recipeMainRoutes]);
     DSMaterialThemeSingleton.instance.setTheme(isDark: false);
   }
 
@@ -40,11 +36,9 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             navigatorKey: navigateKey,
             onGenerateRoute: RoutesCore.generateRoute,
-            title: 'Flutter Demo',
             theme: DSMaterialThemeSingleton.instance.currentTheme.value,
             home: const RecipeMainPage(),
           );
         });
   }
 }
-
