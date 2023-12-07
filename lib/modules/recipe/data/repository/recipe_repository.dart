@@ -1,16 +1,15 @@
-import '../../../../../core/common_http/common_http.dart';
+import 'package:minha_receita/modules/recipe/data/datasource/recipe_datasource.dart';
 import '../../../recipe/domain/model/recipe_model.dart';
-
-abstract class RecipeRepository {
-  Future<RecipeModel> getById(String recipeId);
-}
+import '../../domain/repository/recipe_repository.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
+  final RecipeDataSource _recipeDataSource;
+
+  RecipeRepositoryImpl({RecipeDataSource? recipeDataSource})
+      : _recipeDataSource = recipeDataSource ?? RecipeDataSourceImpl();
+
   @override
   Future<RecipeModel> getById(String recipeId) async {
-    var response = await CommonHttp.instance!.get(
-      route: '/recipe?$recipeId',
-    );
-    return RecipeModel.fromJson(response.data);
+    return await _recipeDataSource.getById(recipeId);
   }
 }

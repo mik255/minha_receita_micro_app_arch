@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:minha_receita/core/extensions/date_extensions.dart';
-
+import 'package:minha_receita/core/extensions/string.dart';
+import '../../../../design_system/avatar/avatar.dart';
 import '../../../../design_system/bottons/text_button.dart';
 import '../../../../design_system/containers/custom_container.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
+import '../../domain/model/comment_entity.dart';
 import '../../domain/model/feed_entity.dart';
+import '../../domain/model/like_entity.dart';
 
 class FeedCard extends StatefulWidget {
   const FeedCard({
     super.key,
     required this.feedEntity,
     required this.onTap,
+    required this.onTapSeeAllComments,
+    required this.onTapLikes,
   });
 
   final FeedEntity feedEntity;
   final Function(FeedEntity) onTap;
+  final Function(List<LikeEntity> likesList) onTapLikes;
+  final Function(List<CommentEntity> listComments) onTapSeeAllComments;
 
   @override
   State<FeedCard> createState() => _FeedCardState();
@@ -36,10 +42,7 @@ class _FeedCardState extends State<FeedCard> {
               _avatar(),
               _carousel(),
               space,
-              Icon(
-                Icons.favorite,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              _iconFavorite(),
               space,
               _avatarsLikes(),
               space,
@@ -50,6 +53,31 @@ class _FeedCardState extends State<FeedCard> {
               _textInputComment()
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _iconFavorite() {
+    return Icon(
+      Icons.favorite,
+      color: Theme.of(context).colorScheme.primary,
+    );
+  }
+
+  Widget _avatar() {
+    var spacer = const SizedBox(width: 8);
+    return Row(
+      children: [
+        DSAvatar(
+          imgUrl: widget.feedEntity.avatarImgUrl,
+          name: widget.feedEntity.name,
+          date: widget.feedEntity.createdAt?.coreExtensionsConvertToDate(),
+        ),
+        spacer,
+        DSTextButton(
+          text: 'Seguir',
+          onPressed: () {},
         ),
       ],
     );
@@ -84,72 +112,37 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  Widget _avatar() {
-    var spacer = const SizedBox(width: 8);
-    var theme = Theme.of(context);
-    return Row(
-      children: [
-        DSCustomContainer(
-          height: 30,
-          width: 30,
-          backgroundColor: Colors.grey,
-          imgURL: widget.feedEntity.imgUrl,
-        ),
-        spacer,
-        Wrap(
-          children: [
-            Text(
-              widget.feedEntity.name,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(overflow: TextOverflow.ellipsis,
-              color: theme.colorScheme.onSurface
-              ),
-            ),
-          ],
-        ),
-        spacer,
-        Text(
-          '• ${widget.feedEntity.createdAt?.convertToDate().lastTime}',
-          style: theme.textTheme.bodySmall
-              ?.copyWith(color: theme.colorScheme.onSecondary),
-        ),
-        spacer,
-        DSTextButton(
-          text: 'Seguir',
-          onPressed: () {},
-        ),
-      ],
-    );
-  }
-
   Widget _avatarsLikes() {
-    return Row(
-      children: [
-        SizedBox(
-          width: 48,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 16,
-                child: DSCustomContainer(
+    return InkWell(
+      onTap: () => widget.onTapLikes(widget.feedEntity.likesList),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 48,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 16,
+                  child: DSCustomContainer(
+                    height: 24,
+                    width: 24,
+                    imgURL: widget.feedEntity.likesList[0].urlImg,
+                  ),
+                ),
+                DSCustomContainer(
                   height: 24,
                   width: 24,
-                  imgURL: widget.feedEntity.likesList[0].urlImg,
-                ),
-              ),
-              DSCustomContainer(
-                height: 24,
-                width: 24,
-                imgURL: widget.feedEntity.likesList[1].urlImg,
-              )
-            ],
+                  imgURL: widget.feedEntity.likesList[1].urlImg,
+                )
+              ],
+            ),
           ),
-        ),
-        Text(
-          '${widget.feedEntity.likes} curtidas',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      ],
+          Text(
+            '${widget.feedEntity.likes} curtidas',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
     );
   }
 
@@ -185,11 +178,14 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget seeCommentsTextButton() {
-    return Text(
-      'Ver todos os ${widget.feedEntity.comments.length} comentários',
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Theme.of(context).colorScheme.onSecondary,
-          ),
+    return InkWell(
+      onTap: ()=>widget.onTapSeeAllComments(widget.feedEntity.comments),
+      child: Text(
+        'Ver todos os ${widget.feedEntity.comments.length} comentários',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+      ),
     );
   }
 }

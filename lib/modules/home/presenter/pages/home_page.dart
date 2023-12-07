@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
+import 'package:minha_receita/core/extensions/context.dart';
 import 'package:minha_receita/modules/home/presenter/store/home_store.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
@@ -11,10 +12,13 @@ import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu
 import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
+import '../../../../design_system/loadings/default_loading.dart';
+import '../../../../design_system/modals/default_modal.dart';
 import '../../domain/model/comment_entity.dart';
-import '../../domain/model/feed_entity.dart';
 import '../../domain/model/like_entity.dart';
+import '../componentes/comments_model_content.dart';
 import '../componentes/feed_card.dart';
+import '../componentes/likes_model_content.dart';
 import '../states/home_state.dart';
 import '../../../../core/config/theme.dart';
 
@@ -42,6 +46,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>
   @override
   Widget build(BuildContext context) {
     return AppDSBasePage(
+      withScroll: false,
       appDSAppBar: AppDSAppBar(
         type: AppDSBarType.variant1,
         actions: _actions(),
@@ -55,7 +60,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>
                   tryAgain: () => homeStore.getListFeed());
             }
             if (homeStore.state is HomeLoadingState) {
-              return _onLoadingWidget();
+              return const Center(child: DSDefaultLoading());
             }
             var state = homeStore.state as HomeSuccessState;
             return DSPageView(
@@ -112,15 +117,6 @@ class _RecipeMainPageState extends State<RecipeMainPage>
         ]);
   }
 
-  Widget _onLoadingWidget() {
-    return Center(
-      child: Lottie.asset(
-        'lib/design_system/animations/assets/loading.json',
-        height: 200,
-        width: 200,
-      ),
-    );
-  }
 
   Widget _listOfRecipe(HomeSuccessState state) {
     return Column(
@@ -210,12 +206,21 @@ class _RecipeMainPageState extends State<RecipeMainPage>
   List<Widget> feeds(HomeSuccessState state) {
     return state.feedEntityList
         .map((e) => FeedCard(
-              feedEntity: e,
-              onTap: (feedEntity) {
-                Navigator.of(context)
-                    .pushNamed('/recipe/ingredients', arguments: '1');
-              },
-            ))
+            feedEntity: e,
+            onTap: (feedEntity) {
+              Navigator.of(context)
+                  .pushNamed('/recipe/ingredients', arguments: '1');
+            },
+            onTapLikes: (List<LikeEntity> likesList) {
+              context.coreExtensionsShowDSModal(
+                  content: LikesModalContent(
+                likesList: likesList,
+              ));
+            },
+            onTapSeeAllComments: (List<CommentEntity> listComments) {
+              context.coreExtensionsShowDSModal(
+                  content: CommentsModalContent(listComments:listComments));
+            }))
         .toList();
   }
 }

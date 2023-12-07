@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
-extension GetHourDiferenceFromDate on DateTime {
-  String get lastTime => () {
+extension CoreDateExtensions on DateTime {
+  String get coreExtensionsLastTime => () {
         var now = DateTime.now();
         if (now.difference(this).inMinutes < 60) {
           return "${now.difference(this).inMinutes}m";
@@ -9,12 +9,12 @@ extension GetHourDiferenceFromDate on DateTime {
         if (now.difference(this).inHours < 24) {
           return "${now.difference(this).inHours}h";
         }
-        return getDayOfWeek;
+        return coreExtensionsGetDayOfWeek;
       }();
 
-  String get getDateFormatted => DateFormat("dd/MM/yyyy").format(this);
+  String get coreExtensionGetDateFormatted => DateFormat("dd/MM/yyyy").format(this);
 
-  String get getDayOfWeek => () {
+  String get coreExtensionsGetDayOfWeek => () {
         String day = DateFormat("EEEE").format(this);
 
         switch (day) {
@@ -38,9 +38,3 @@ extension GetHourDiferenceFromDate on DateTime {
       }();
 }
 
-extension ConvertToDate on String {
-  DateTime convertToDate() {
-    var date = DateTime.parse(this);
-    return date;
-  }
-}

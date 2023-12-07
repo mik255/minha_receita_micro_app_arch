@@ -3,7 +3,7 @@ import 'like_entity.dart';
 
 class FeedEntity {
   FeedEntity({
-    required this.imgUrl,
+    required this.avatarImgUrl,
     required this.recipeImgUrlList,
     required this.likes,
     required this.comments,
@@ -15,7 +15,7 @@ class FeedEntity {
     required this.id,
   });
 
-  final String imgUrl;
+  final String avatarImgUrl;
   final String name;
   final List<String> recipeImgUrlList;
   final int likes;
@@ -29,7 +29,7 @@ class FeedEntity {
   factory FeedEntity.fromJson(Map<String, dynamic> json) => FeedEntity(
         id: json["id"],
         name: json["name"],
-        imgUrl: json["imgUrl"],
+        avatarImgUrl: json["avatarImgUrl"],
         recipeImgUrlList:
             List<String>.from(json["recipeImgUrlList"].map((x) => x)),
         likes: json["likes"],
@@ -45,7 +45,7 @@ class FeedEntity {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "img_url": imgUrl,
+        "avatarImgUrl": avatarImgUrl,
         "recipeImgUrlList": List<dynamic>.from(recipeImgUrlList.map((x) => x)),
         "likes": likes,
         "likesList": List<dynamic>.from(likesList.map((x) => x.toJson())),

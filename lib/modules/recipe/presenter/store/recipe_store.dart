@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:minha_receita/modules/recipe/presenter/states/ingredients_states.dart';
-import '../../data/repository/recipe_repository.dart';
+import '../../domain/use_case/get_recipe_by_id.dart';
 
 class RecipeStore extends ChangeNotifier {
-  RecipeState state = RecipeLoadingState();
-  final RecipeRepository _repository;
+  final GetRecipeByIdUseCase _useCase;
 
-  RecipeStore({required RecipeRepository repository})
-      : _repository = repository;
+  RecipeStore({required GetRecipeByIdUseCase useCase}) : _useCase = useCase;
+  RecipeState state = RecipeLoadingState();
 
   void getRecipeById(String recipeId) async {
     state = RecipeLoadingState();
     notifyListeners();
     try {
-      var recipeModel = await _repository.getById('recipeId');
+      var recipeModel = await _useCase(recipeId);
       state = RecipeSuccessState(recipeModel: recipeModel);
       notifyListeners();
     } catch (e) {

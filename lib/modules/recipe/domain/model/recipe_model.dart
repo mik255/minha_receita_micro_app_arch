@@ -7,7 +7,7 @@ class RecipeModel {
     required this.userId,
     required this.title,
     required this.timeInMinutes,
-    required this.imgUrlList,
+    required this.recipeImgUrlList,
     this.description,
     required this.steps,
     required this.ingredients,
@@ -17,7 +17,7 @@ class RecipeModel {
   String title;
   String? description;
   num timeInMinutes;
-  List<String> imgUrlList;
+  List<String> recipeImgUrlList;
   List<Step> steps;
   List<Ingredient> ingredients;
 
@@ -26,7 +26,7 @@ class RecipeModel {
         title: json['title'],
         timeInMinutes: json['timeInMinutes'],
         description: json['description'],
-        imgUrlList: List<String>.from(json['imgUrlList'].map((x) => x)),
+        recipeImgUrlList: List<String>.from(json['recipeImgUrlList'].map((x) => x)),
         steps: List<Step>.from(json['steps'].map((x) => Step.fromJson(x))),
         ingredients: List<Ingredient>.from(
             json['ingredients'].map((x) => Ingredient.fromJson(x))),
@@ -36,7 +36,7 @@ class RecipeModel {
         'user': User.id,
         'title': title,
         'timeInMinutes': timeInMinutes,
-        'imgUrlList': imgUrlList,
+        'imgUrlList': recipeImgUrlList,
         'description': description,
         'methodOfPreparationField':
             List<dynamic>.from(steps.map((x) => x.toJson())),
@@ -59,7 +59,7 @@ class RecipeModel {
       title: title ?? this.title,
       description: description ?? this.description,
       timeInMinutes: timeInMinutes ?? this.timeInMinutes,
-      imgUrlList: imgUrlList ?? this.imgUrlList,
+      recipeImgUrlList: imgUrlList ?? this.recipeImgUrlList,
       steps: steps ?? this.steps,
       ingredients: ingredients ?? this.ingredients,
     );

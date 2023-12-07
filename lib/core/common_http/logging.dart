@@ -29,6 +29,7 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
+  // ignore: deprecated_member_use
   void onError(DioError err, ErrorInterceptorHandler handler) {
     if (kDebugMode) {
       print('Error: ${err.type} ${err.requestOptions.uri}');

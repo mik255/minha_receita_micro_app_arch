@@ -1,11 +1,14 @@
 class CommentEntity {
   final String id;
+  final String replyChildrenId;
+  final String userId;
+  final String postId;
   final String comment;
   final String createdAt;
   final String updatedAt;
   final String urlImg;
-  final int userId;
-  final int postId;
+  final String name;
+  final List<CommentEntity> replyChildren;
 
   CommentEntity({
     required this.id,
@@ -15,6 +18,9 @@ class CommentEntity {
     required this.userId,
     required this.postId,
     required this.urlImg,
+    required this.name,
+    required this.replyChildrenId,
+    this.replyChildren = const [],
   });
 
   factory CommentEntity.fromJson(Map<String, dynamic> json) => CommentEntity(
@@ -25,6 +31,8 @@ class CommentEntity {
         userId: json["userId"],
         postId: json["postId"],
         urlImg: json["urlImg"],
+        name: json["name"],
+        replyChildrenId: json["replyChildrenId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +43,7 @@ class CommentEntity {
         "updatedAt": updatedAt,
         "userId": userId,
         "postId": postId,
+        "name": name,
+        "replyChildrenId": replyChildrenId,
       };
 }
