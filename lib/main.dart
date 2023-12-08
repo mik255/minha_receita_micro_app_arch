@@ -5,7 +5,6 @@ import 'core/route/route_contract.dart';
 import 'design_system/themes.dart';
 import 'modules/home/presenter/pages/home_page.dart';
 import 'modules/home/presenter/routes/recipe_main_routes.dart';
-import 'modules/recipe/core/di/injections.dart';
 import 'modules/recipe/presenter/routes/recipe_routes.dart';
 
 

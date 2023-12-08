@@ -1,27 +1,42 @@
-import 'package:flutter/foundation.dart';
-import 'package:minha_receita/modules/home/domain/model/feed_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
 import '../../../../../core/common_http/common_http.dart';
+import '../../../../core/mappers/lists.dart';
 
-abstract class FeedDataSource {
-  Future<List<FeedEntity>> getListFeed();
+abstract class PostDataSource {
+  Future<List<PostEntity>> getListPost();
+
+  Future<List<CommentEntity>> getPostComments(String feedId, int count);
+
+  Future<List<LikeEntity>> getPostLikes(String feedId, int count);
 }
 
-class FeedDataSourceImpl implements FeedDataSource {
+class PostDataSourceImpl implements PostDataSource {
   @override
-  Future<List<FeedEntity>> getListFeed() async {
+  Future<List<PostEntity>> getListPost() async {
     var response = await CommonHttp.instance!.get(
       route: '/feeds',
     );
-    try {
-      return (response.data as List)
-          .map((e) => FeedEntity.fromJson(e))
-          .toList();
-    } catch (e,_) {
-      if(kDebugMode){
-        print(e);
-        print(_);
-      }
-      rethrow;
-    }
+    return coreMappersParseList(response.data, (e) => PostEntity.fromJson(e));
+  }
+
+  @override
+  Future<List<CommentEntity>> getPostComments(String id, int count) async {
+    var response = await CommonHttp.instance!.get(
+      route: '/comments/$id?total=$count',
+    );
+    return coreMappersParseList(
+      response.data,
+      (e) => CommentEntity.fromJson(e),
+    );
+  }
+
+  @override
+  Future<List<LikeEntity>> getPostLikes(String id, int count) async {
+    var response = await CommonHttp.instance!.get(
+      route: '/likes/$id?total=$count',
+    );
+    return coreMappersParseList(response.data, (e) => LikeEntity.fromJson(e));
   }
 }

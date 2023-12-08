@@ -1,16 +1,28 @@
-import 'package:minha_receita/modules/home/domain/model/feed_entity.dart';
-import 'package:minha_receita/modules/home/domain/repository/feed_repository.dart';
+import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
+import 'package:minha_receita/modules/home/domain/repository/post_repository.dart';
 
 import '../datasource/feed_datasource.dart';
 
-class FeedRepositoryImpl implements FeedRepository {
-  final FeedDataSource _feedDataSource;
+class FeedRepositoryImpl implements PostRepository {
+  final PostDataSource _feedDataSource;
 
-  FeedRepositoryImpl({required FeedDataSource feedDataSource})
+  FeedRepositoryImpl({required PostDataSource feedDataSource})
       : _feedDataSource = feedDataSource;
 
   @override
-  Future<List<FeedEntity>> getListFeed() async {
-    return await _feedDataSource.getListFeed();
+  Future<List<PostEntity>> getPostList() async {
+    return await _feedDataSource.getListPost();
+  }
+
+  @override
+  Future<List<CommentEntity>> getPostCommentsByPostId(String id,int count) {
+    return _feedDataSource.getPostComments(id,count);
+  }
+
+  @override
+  Future<List<LikeEntity>> getPostLikes(String id,int count) {
+    return _feedDataSource.getPostLikes(id,count);
   }
 }

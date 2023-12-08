@@ -1,6 +1,5 @@
 import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
 
-import '../../data/repository/recipe_repository.dart';
 import '../repository/recipe_repository.dart';
 
 abstract class GetRecipeByIdUseCase {

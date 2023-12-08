@@ -6,7 +6,7 @@ import '../../../../design_system/containers/custom_container.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
 import '../../domain/model/comment_entity.dart';
-import '../../domain/model/feed_entity.dart';
+import '../../domain/model/post_entity.dart';
 import '../../domain/model/like_entity.dart';
 
 class FeedCard extends StatefulWidget {
@@ -18,8 +18,8 @@ class FeedCard extends StatefulWidget {
     required this.onTapLikes,
   });
 
-  final FeedEntity feedEntity;
-  final Function(FeedEntity) onTap;
+  final PostEntity feedEntity;
+  final Function(PostEntity) onTap;
   final Function(List<LikeEntity> likesList) onTapLikes;
   final Function(List<CommentEntity> listComments) onTapSeeAllComments;
 
@@ -113,32 +113,42 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _avatarsLikes() {
+    var likeList = widget.feedEntity.likesList;
+    if (likeList.isEmpty) {
+      return Container();
+    }
     return InkWell(
-      onTap: () => widget.onTapLikes(widget.feedEntity.likesList),
+      onTap: () => widget.onTapLikes(likeList),
       child: Row(
         children: [
           SizedBox(
             width: 48,
+            height: 24,
             child: Stack(
               children: [
-                Positioned(
-                  left: 16,
-                  child: DSCustomContainer(
+                if (likeList.length > 1)
+                  ...List.generate(
+                    2,
+                    (index) => Positioned(
+                      left: 16 * index.toDouble(),
+                      child: DSCustomContainer(
+                        height: 24,
+                        width: 24,
+                        imgURL: likeList[index].urlImg,
+                      ),
+                    ),
+                  )
+                else if (likeList.length == 1)
+                  DSCustomContainer(
                     height: 24,
                     width: 24,
-                    imgURL: widget.feedEntity.likesList[0].urlImg,
-                  ),
-                ),
-                DSCustomContainer(
-                  height: 24,
-                  width: 24,
-                  imgURL: widget.feedEntity.likesList[1].urlImg,
-                )
+                    imgURL: likeList[0].urlImg,
+                  )
               ],
             ),
           ),
           Text(
-            '${widget.feedEntity.likes} curtidas',
+            '${likeList.length-1} curtidas',
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
@@ -179,7 +189,7 @@ class _FeedCardState extends State<FeedCard> {
 
   Widget seeCommentsTextButton() {
     return InkWell(
-      onTap: ()=>widget.onTapSeeAllComments(widget.feedEntity.comments),
+      onTap: () => widget.onTapSeeAllComments(widget.feedEntity.comments),
       child: Text(
         'Ver todos os ${widget.feedEntity.comments.length} comentários',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(

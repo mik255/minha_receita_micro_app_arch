@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:minha_receita/core/extensions/context.dart';
-import 'package:minha_receita/modules/home/presenter/store/home_store.dart';
+import 'package:minha_receita/modules/home/presenter/store/home_store/home_store.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../design_system/botton_navigation_bars/defalt_botton_navigation_bar.dart';
@@ -13,14 +13,13 @@ import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
 import '../../../../design_system/loadings/default_loading.dart';
-import '../../../../design_system/modals/default_modal.dart';
 import '../../domain/model/comment_entity.dart';
 import '../../domain/model/like_entity.dart';
 import '../componentes/comments_model_content.dart';
 import '../componentes/feed_card.dart';
 import '../componentes/likes_model_content.dart';
-import '../states/home_state.dart';
 import '../../../../core/config/theme.dart';
+import '../store/home_store/states/home_state.dart';
 
 class RecipeMainPage extends StatefulWidget {
   const RecipeMainPage({super.key});
@@ -214,8 +213,8 @@ class _RecipeMainPageState extends State<RecipeMainPage>
             onTapLikes: (List<LikeEntity> likesList) {
               context.coreExtensionsShowDSModal(
                   content: LikesModalContent(
-                likesList: likesList,
-              ));
+                    postEntity: e,
+                  ));
             },
             onTapSeeAllComments: (List<CommentEntity> listComments) {
               context.coreExtensionsShowDSModal(

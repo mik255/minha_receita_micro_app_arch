@@ -26,7 +26,8 @@ class RecipeModel {
         title: json['title'],
         timeInMinutes: json['timeInMinutes'],
         description: json['description'],
-        recipeImgUrlList: List<String>.from(json['recipeImgUrlList'].map((x) => x)),
+        recipeImgUrlList:
+            List<String>.from(json['recipeImgUrlList'].map((x) => x)),
         steps: List<Step>.from(json['steps'].map((x) => Step.fromJson(x))),
         ingredients: List<Ingredient>.from(
             json['ingredients'].map((x) => Ingredient.fromJson(x))),
@@ -52,14 +53,14 @@ class RecipeModel {
     String? imgUrl,
     List<Step>? steps,
     List<Ingredient>? ingredients,
-    List<String>? imgUrlList,
+    List<String>? recipeImgUrlList,
   }) {
     return RecipeModel(
       userId: userId ?? this.userId,
       title: title ?? this.title,
       description: description ?? this.description,
       timeInMinutes: timeInMinutes ?? this.timeInMinutes,
-      recipeImgUrlList: imgUrlList ?? this.recipeImgUrlList,
+      recipeImgUrlList: recipeImgUrlList ?? this.recipeImgUrlList,
       steps: steps ?? this.steps,
       ingredients: ingredients ?? this.ingredients,
     );
