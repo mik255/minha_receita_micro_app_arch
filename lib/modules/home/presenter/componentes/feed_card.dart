@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:minha_receita/core/extensions/context.dart';
 import 'package:minha_receita/core/extensions/string.dart';
 import '../../../../design_system/avatar/avatar.dart';
 import '../../../../design_system/bottons/text_button.dart';
 import '../../../../design_system/containers/custom_container.dart';
+import '../../../../design_system/icon/bottons/favorite.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
-import '../../domain/model/comment_entity.dart';
 import '../../domain/model/post_entity.dart';
-import '../../domain/model/like_entity.dart';
+import '../store/feed_store/feed_store.dart';
+import 'comments_model_content.dart';
+import 'likes_model_content.dart';
 
 class FeedCard extends StatefulWidget {
   const FeedCard({
     super.key,
     required this.feedEntity,
-    required this.onTap,
-    required this.onTapSeeAllComments,
-    required this.onTapLikes,
   });
 
   final PostEntity feedEntity;
-  final Function(PostEntity) onTap;
-  final Function(List<LikeEntity> likesList) onTapLikes;
-  final Function(List<CommentEntity> listComments) onTapSeeAllComments;
 
   @override
   State<FeedCard> createState() => _FeedCardState();
 }
 
 class _FeedCardState extends State<FeedCard> {
+  late ValueNotifier<bool> userLikedNotifier = () {
+    return ValueNotifier(widget.feedEntity.userLiked);
+  }();
+  var store = GetIt.I.get<FeedStore>();
+
   @override
   Widget build(BuildContext context) {
     var space = const SizedBox(height: 8);
@@ -42,7 +45,7 @@ class _FeedCardState extends State<FeedCard> {
               _avatar(),
               _carousel(),
               space,
-              _iconFavorite(),
+              _like(),
               space,
               _avatarsLikes(),
               space,
@@ -58,10 +61,13 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  Widget _iconFavorite() {
-    return Icon(
-      Icons.favorite,
-      color: Theme.of(context).colorScheme.primary,
+  Widget _like() {
+    return DSFavoriteButtonIcon(
+      onTap: (bool isLiked) {
+        widget.feedEntity.userLiked = isLiked;
+        store.onLikedEvent(widget.feedEntity, isLiked);
+      },
+      userLiked: widget.feedEntity.userLiked,
     );
   }
 
@@ -86,7 +92,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget _carousel() {
     return GestureDetector(
       onTap: () {
-        widget.onTap(widget.feedEntity);
+        Navigator.of(context).pushNamed('/recipe/ingredients', arguments: '1');
       },
       child: DSNavigationMenuBar(
         dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
@@ -118,7 +124,13 @@ class _FeedCardState extends State<FeedCard> {
       return Container();
     }
     return InkWell(
-      onTap: () => widget.onTapLikes(likeList),
+      onTap: () {
+        context.coreExtensionsShowDSModal(
+            withScroll: false,
+            content: LikesModalContent(
+              postEntity: widget.feedEntity,
+            ));
+      },
       child: Row(
         children: [
           SizedBox(
@@ -148,7 +160,7 @@ class _FeedCardState extends State<FeedCard> {
             ),
           ),
           Text(
-            '${likeList.length-1} curtidas',
+            '${widget.feedEntity.likesCount} curtidas',
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
@@ -189,9 +201,15 @@ class _FeedCardState extends State<FeedCard> {
 
   Widget seeCommentsTextButton() {
     return InkWell(
-      onTap: () => widget.onTapSeeAllComments(widget.feedEntity.comments),
+      onTap: () {
+        context.coreExtensionsShowDSModal(
+            withScroll: false,
+            content: CommentsModalContent(
+              postEntity: widget.feedEntity,
+            ));
+      },
       child: Text(
-        'Ver todos os ${widget.feedEntity.comments.length} comentários',
+        'Ver todos os ${widget.feedEntity.commentsCount} comentários',
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSecondary,
             ),

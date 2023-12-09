@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import '../../../design_system/themes.dart';
+import '../../../../../design_system/themes.dart';
 
-class AppTheme extends ChangeNotifier {
+class AppThemeStore extends ChangeNotifier {
   bool isDarkTheme = false;
 
   void switchTheme() {

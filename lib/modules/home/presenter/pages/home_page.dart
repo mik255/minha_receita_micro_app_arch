@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
-import 'package:minha_receita/core/extensions/context.dart';
-import 'package:minha_receita/modules/home/presenter/store/home_store/home_store.dart';
+import 'package:minha_receita/design_system/menu/drawer/drawer.dart';
+import 'package:minha_receita/design_system/menu/drawer/drawer_item.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../design_system/botton_navigation_bars/defalt_botton_navigation_bar.dart';
@@ -12,32 +12,29 @@ import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu
 import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
+import '../../../../core/theme/presenter/store/theme.dart';
 import '../../../../design_system/loadings/default_loading.dart';
-import '../../domain/model/comment_entity.dart';
-import '../../domain/model/like_entity.dart';
-import '../componentes/comments_model_content.dart';
 import '../componentes/feed_card.dart';
-import '../componentes/likes_model_content.dart';
-import '../../../../core/config/theme.dart';
-import '../store/home_store/states/home_state.dart';
+import '../store/feed_store/feed_store.dart';
+import '../store/feed_store/states/feed_state.dart';
 
-class RecipeMainPage extends StatefulWidget {
-  const RecipeMainPage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<RecipeMainPage> createState() => _RecipeMainPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _RecipeMainPageState extends State<RecipeMainPage>
+class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin {
   late final AnimationController controller;
-  final AppTheme appTheme = AppTheme();
-  final homeStore = GetIt.I.get<HomeStore>();
+  final AppThemeStore appTheme = AppThemeStore();
+  final feedStore = GetIt.I.get<FeedStore>();
   final pageController = PageController();
 
   @override
   void initState() {
-    homeStore.getListFeed();
+    feedStore.getListFeed();
     controller = AnimationController(vsync: this);
     super.initState();
   }
@@ -50,25 +47,35 @@ class _RecipeMainPageState extends State<RecipeMainPage>
         type: AppDSBarType.variant1,
         actions: _actions(),
       ),
+      drawer: const DSDrawerMenu(
+        avatarImgUrl: 'https://source.unsplash.com/random/801x600/?person',
+        avatarName: 'João',
+        items: [
+          DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
+          DSDrawerMenuItem(text: 'Minhas receitas'),
+          DSDrawerMenuItem(text: 'Alterar nome'),
+          DSDrawerMenuItem(text: 'Sair'),
+        ],
+      ),
       body: ListenableBuilder(
-          listenable: homeStore,
+          listenable: feedStore,
           builder: (context, _) {
-            if (homeStore.state is HomeFailureState) {
+            if (feedStore.state is FeedFailureState) {
               return DSErrorHandle(
                   errorMsg: 'Serviço indisponível',
-                  tryAgain: () => homeStore.getListFeed());
+                  tryAgain: () => feedStore.getListFeed());
             }
-            if (homeStore.state is HomeLoadingState) {
+            if (feedStore.state is FeedLoadingState) {
               return const Center(child: DSDefaultLoading());
             }
-            var state = homeStore.state as HomeSuccessState;
+            var state = feedStore.state as FeedSuccessState;
             return DSPageView(
               pageController: pageController,
               children: [
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      _listOfRecipe(state),
+                      _topNavigatorMenu(state),
                       ...feeds(state),
                       // _carousel(),
                     ],
@@ -116,8 +123,7 @@ class _RecipeMainPageState extends State<RecipeMainPage>
         ]);
   }
 
-
-  Widget _listOfRecipe(HomeSuccessState state) {
+  Widget _topNavigatorMenu(FeedSuccessState state) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,24 +208,11 @@ class _RecipeMainPageState extends State<RecipeMainPage>
     ];
   }
 
-  List<Widget> feeds(HomeSuccessState state) {
+  List<Widget> feeds(FeedSuccessState state) {
     return state.feedEntityList
         .map((e) => FeedCard(
-            feedEntity: e,
-            onTap: (feedEntity) {
-              Navigator.of(context)
-                  .pushNamed('/recipe/ingredients', arguments: '1');
-            },
-            onTapLikes: (List<LikeEntity> likesList) {
-              context.coreExtensionsShowDSModal(
-                  content: LikesModalContent(
-                    postEntity: e,
-                  ));
-            },
-            onTapSeeAllComments: (List<CommentEntity> listComments) {
-              context.coreExtensionsShowDSModal(
-                  content: CommentsModalContent(listComments:listComments));
-            }))
+              feedEntity: e,
+            ))
         .toList();
   }
 }

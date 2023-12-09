@@ -3,49 +3,60 @@ import 'package:minha_receita/core/extensions/date.dart';
 import '../containers/custom_container.dart';
 
 class DSAvatar extends StatelessWidget {
-  const DSAvatar({
-    super.key,
-    required this.imgUrl,
-    required this.name,
-    this.date,
-  });
+  const DSAvatar(
+      {super.key,
+      required this.imgUrl,
+      required this.name,
+      this.date,
+      this.size = 30,
+      this.nameBelowAvatar = false,
+      this.nameStyle,
+      this.namePadding});
 
   final String imgUrl;
   final String name;
   final DateTime? date;
+  final double size;
+  final bool nameBelowAvatar;
+  final TextStyle? nameStyle;
+  final EdgeInsetsGeometry? namePadding;
 
   @override
   Widget build(BuildContext context) {
     var spacer = const SizedBox(width: 8);
     var theme = Theme.of(context);
+    var nameWidget = Container(
+      padding: namePadding,
+      child: Text(
+        name,
+        style: nameStyle ??
+            theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSecondary,
+            ),
+      ),
+    );
     return Row(
       children: [
-        DSCustomContainer(
-          height: 30,
-          width: 30,
-          backgroundColor: Colors.grey,
-          imgURL: imgUrl,
-        ),
-        spacer,
-        Wrap(
+        Column(
           children: [
-            Text(
-              name,
-              style: theme.textTheme.bodySmall?.copyWith(
-                overflow: TextOverflow.ellipsis,
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
+            DSCustomContainer(
+              height: size,
+              width: size,
+              backgroundColor: Colors.grey,
+              imgURL: imgUrl,
             ),
+            if (nameBelowAvatar) nameWidget
           ],
         ),
         spacer,
-        if(date != null)
-        Text(
-          '• ${date!.coreExtensionsLastTime}',
-          style: theme.textTheme.bodySmall
-              ?.copyWith(color: theme.colorScheme.onSecondary),
-        ),
+        if (!nameBelowAvatar) nameWidget,
+        spacer,
+        if (date != null)
+          Text(
+            '• ${date!.coreExtensionsLastTime}',
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: theme.colorScheme.onSecondary),
+          ),
       ],
     );
   }

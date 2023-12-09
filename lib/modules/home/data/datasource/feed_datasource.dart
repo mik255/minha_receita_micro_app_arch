@@ -24,7 +24,7 @@ class PostDataSourceImpl implements PostDataSource {
   @override
   Future<List<CommentEntity>> getPostComments(String id, int count) async {
     var response = await CommonHttp.instance!.get(
-      route: '/comments/$id?total=$count',
+      route: '/comments/$id?total=10',
     );
     return coreMappersParseList(
       response.data,
@@ -35,7 +35,7 @@ class PostDataSourceImpl implements PostDataSource {
   @override
   Future<List<LikeEntity>> getPostLikes(String id, int count) async {
     var response = await CommonHttp.instance!.get(
-      route: '/likes/$id?total=$count',
+      route: '/likes/$id?total=10',
     );
     return coreMappersParseList(response.data, (e) => LikeEntity.fromJson(e));
   }

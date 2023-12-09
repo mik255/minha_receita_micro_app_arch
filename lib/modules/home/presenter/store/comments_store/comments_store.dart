@@ -11,11 +11,11 @@ class CommentsStore extends ChangeNotifier {
   }) : _getFeedCommentsUseCase = getFeedCommentsUseCase;
   CommentsState state = CommentLoadingState();
 
-  Future<void> getPostComments(PostEntity feed) async {
+  Future<void> getPostComments(PostEntity feed,int page) async {
     try {
       state = CommentLoadingState();
       notifyListeners();
-      var feedWithComments = await _getFeedCommentsUseCase(feed);
+      var feedWithComments = await _getFeedCommentsUseCase(feed,page);
       state = CommentSuccessState(feedWithComments);
       notifyListeners();
     } catch (e) {

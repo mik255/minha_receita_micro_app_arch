@@ -11,6 +11,7 @@ class AppDSButtom extends StatelessWidget {
     this.text,
     this.onTap,
     this.isLoading,
+    this.padding = const EdgeInsets.all(16),
   });
 
   final Widget? child;
@@ -18,17 +19,17 @@ class AppDSButtom extends StatelessWidget {
   final bool? isLoading;
   final Color? backgroundColor;
   final void Function()? onTap;
-
+  final EdgeInsetsGeometry padding;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding:padding,
       child: SizedBox(
         height: 50,
         child: ElevatedButton(
           onPressed: isLoading != null && isLoading == true ? null : onTap,
           style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor ?? AppDSColors.red,
+            backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
             // Cor de fundo do botão
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10), // Borda arredondada
@@ -41,8 +42,8 @@ class AppDSButtom extends StatelessWidget {
               builder: (context) {
                 if (isLoading != null && isLoading == true) {
                   return const SizedBox(
-                    height: 24,
-                    width: 24,
+                    height: 20,
+                    width: 20,
                     child: Center(child: CircularProgressIndicator()),);
                 }
                 return Ink(

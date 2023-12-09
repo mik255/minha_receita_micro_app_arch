@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../design_system/modals/default_modal.dart';
 
 extension CoreContextExtensons on BuildContext {
-  void coreExtensionsShowDSModal({required Widget content}) {
+  void coreExtensionsShowDSModal(
+      {required Widget content, bool withScroll = true}) {
     showModalBottomSheet(
       context: this,
       isScrollControlled: true,
@@ -14,7 +15,10 @@ extension CoreContextExtensons on BuildContext {
         ),
       ),
       builder: (context) {
-        return DSModal(content: content);
+        return DSModal(
+          content: content,
+          withScroll: withScroll,
+        );
       },
     );
   }

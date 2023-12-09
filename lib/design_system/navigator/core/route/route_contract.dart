@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class RoutesCore {
+class DSNavigatorRoute {
   String routeName;
   String? routePrefix;
   Widget Function(Object? args, Map? queryParameters) page;
 
-  RoutesCore({
+  DSNavigatorRoute({
     required this.page,
     required this.routeName,
     this.routePrefix,
@@ -18,7 +18,7 @@ class RoutesCore {
       ) get routePage =>
           (context, args, queryParameters) => page(args, queryParameters);
 
-  static Set<RoutesCore> routes = {};
+  static Set<DSNavigatorRoute> routes = {};
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     var routerName = settings.name;

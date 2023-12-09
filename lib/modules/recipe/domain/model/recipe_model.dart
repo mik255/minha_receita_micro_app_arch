@@ -1,4 +1,3 @@
-import '../../../../../core/models/user.dart';
 import '../../../Recipe/domain/model/ingredient.dart';
 import '../../../Recipe/domain/model/step.dart';
 
@@ -8,9 +7,11 @@ class RecipeModel {
     required this.title,
     required this.timeInMinutes,
     required this.recipeImgUrlList,
-    this.description,
     required this.steps,
     required this.ingredients,
+    required this.difficulty,
+    required this.status,
+    this.description,
   });
 
   String userId;
@@ -20,6 +21,8 @@ class RecipeModel {
   List<String> recipeImgUrlList;
   List<Step> steps;
   List<Ingredient> ingredients;
+  final String difficulty;
+  final String status;
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) => RecipeModel(
         userId: json['userId'],
@@ -31,10 +34,11 @@ class RecipeModel {
         steps: List<Step>.from(json['steps'].map((x) => Step.fromJson(x))),
         ingredients: List<Ingredient>.from(
             json['ingredients'].map((x) => Ingredient.fromJson(x))),
+        difficulty: json["difficulty"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
-        'user': User.id,
         'title': title,
         'timeInMinutes': timeInMinutes,
         'imgUrlList': recipeImgUrlList,
@@ -42,6 +46,8 @@ class RecipeModel {
         'methodOfPreparationField':
             List<dynamic>.from(steps.map((x) => x.toJson())),
         'ingredients': List<dynamic>.from(ingredients.map((x) => x.toJson())),
+        "difficulty": difficulty,
+        "status": status,
       };
 
   //copyWith
@@ -54,6 +60,8 @@ class RecipeModel {
     List<Step>? steps,
     List<Ingredient>? ingredients,
     List<String>? recipeImgUrlList,
+    String? difficulty,
+    String? status,
   }) {
     return RecipeModel(
       userId: userId ?? this.userId,
@@ -63,6 +71,8 @@ class RecipeModel {
       recipeImgUrlList: recipeImgUrlList ?? this.recipeImgUrlList,
       steps: steps ?? this.steps,
       ingredients: ingredients ?? this.ingredients,
+      difficulty: difficulty ?? this.difficulty,
+      status: status ?? this.status,
     );
   }
 }

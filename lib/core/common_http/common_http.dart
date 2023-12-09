@@ -6,7 +6,9 @@ class CommonHttp {
   static CommonHttp? instance;
 
   late Dio dio;
-
+  void addHeader(String key, String value) {
+    dio.options.headers[key] = value;
+  }
   CommonHttp._internal({required String baseUrl}) {
     dio = Dio();
     dio.options.baseUrl = baseUrl;
@@ -19,20 +21,17 @@ class CommonHttp {
   }
 
   Future<Response> get({required String route}) async {
-    var response =  dio.get(
+    var response = dio.get(
       route,
     );
     return response;
   }
 
-  Future<Response> post({required String url, dynamic data}) async {
-    try {
-      return await dio.post(
-        url,
-        data: data,
-      );
-    } catch (e) {
-      rethrow;
-    }
+  Future<Response> post({required String route, dynamic body}) async {
+    var response = dio.post(
+      route,
+      data: body,
+    );
+    return response;
   }
 }

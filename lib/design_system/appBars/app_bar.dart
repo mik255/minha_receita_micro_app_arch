@@ -12,6 +12,8 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.actions,
     this.popLeading = false,
+    this.leading,
+    this.drawerMenuLeadingIcon,
   });
 
   final AppDSTabBarView? tabBar;
@@ -19,6 +21,9 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final List<Widget>? actions;
   final bool popLeading;
+  final Widget? leading;
+  final bool? drawerMenuLeadingIcon;
+
   @override
   Widget build(BuildContext context) {
     if (type == AppDSBarType.variant1) {
@@ -31,15 +36,31 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
             centerTitle: true,
             backgroundColor: Theme.of(context).colorScheme.background,
             elevation: 0,
-            leading: !popLeading?null:IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            leading: () {
+              if (popLeading) {
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                );
+              }
+              if (leading != null) {
+                return leading;
+              }
+              if (drawerMenuLeadingIcon != null) {
+                return IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                    ));
+              }
+            }(),
             title: Text(
               title ?? 'Minha Receita',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(

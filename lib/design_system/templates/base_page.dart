@@ -8,6 +8,7 @@ class AppDSBasePage extends StatelessWidget {
     required this.body,
     this.bottomNavigationBar,
     this.appDSAppBar,
+    this.drawer,
     this.floatingActionButton,
     this.withScroll = true,
   });
@@ -17,6 +18,7 @@ class AppDSBasePage extends StatelessWidget {
   final AppDSAppBar? appDSAppBar;
   final Widget? floatingActionButton;
   final bool withScroll;
+  final Widget? drawer;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class AppDSBasePage extends StatelessWidget {
         }
         return body;
       }(),
+      drawer: drawer,
       bottomNavigationBar: bottomNavigationBar != null
           ? SafeArea(
               child: bottomNavigationBar!,

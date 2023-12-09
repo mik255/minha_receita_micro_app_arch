@@ -2,9 +2,7 @@ import '../../model/post_entity.dart';
 import '../../repository/post_repository.dart';
 
 abstract class GetPostLikesUseCase {
-  late int count;
-
-  Future<PostEntity> call(PostEntity feedEntity);
+  Future<PostEntity> call(PostEntity feedEntity,int page);
 }
 
 class GetPostLikesUseCaseImpl implements GetPostLikesUseCase {
@@ -14,13 +12,9 @@ class GetPostLikesUseCaseImpl implements GetPostLikesUseCase {
       : _postRepository = postRepository;
 
   @override
-  int count = 0;
-
-  @override
-  Future<PostEntity> call(PostEntity postEntity) async {
-    count += 5;
-    final likesList = await _postRepository.getPostLikes(postEntity.id, count);
-    postEntity.likesList = likesList;
+  Future<PostEntity> call(PostEntity postEntity,int page) async {
+    final likesList = await _postRepository.getPostLikes(postEntity.id, page);
+    postEntity.likesList.addAll(likesList);
     return postEntity;
   }
 }

@@ -4,9 +4,11 @@ class DSModal extends StatelessWidget {
   const DSModal({
     super.key,
     required this.content,
+    this.withScroll = true,
   });
 
   final Widget content;
+  final bool withScroll;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,13 @@ class DSModal extends StatelessWidget {
         children: [
           closeButton(context),
           const SizedBox(height: 16),
+          if(withScroll)
           Expanded(
             child: SingleChildScrollView(
               child: content,
             ),
-          )
+          )else
+          content,
         ],
       ),
     );

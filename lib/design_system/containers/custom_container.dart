@@ -16,6 +16,7 @@ class DSCustomContainer extends StatelessWidget {
     this.child,
     this.leadingText,
     this.circularRadius,
+    this.shadows = false,
   });
 
   final IconData? iconData;
@@ -31,19 +32,28 @@ class DSCustomContainer extends StatelessWidget {
   final EdgeInsetsGeometry? iconPadding;
   final Widget? child;
   final double? circularRadius;
+  final bool shadows;
+
   @override
   Widget build(BuildContext context) {
     var height = this.height;
     var width = this.width;
     return Container(
         clipBehavior: Clip.antiAlias,
-        height: circularRadius??height,
-        width: circularRadius??width,
+        height: circularRadius ?? height,
+        width: circularRadius ?? width,
         decoration: ShapeDecoration(
-          color: backgroundColor ??
-              Theme.of(context).colorScheme.tertiaryContainer,
-          shape: shape ?? const OvalBorder(),
-        ),
+            color: backgroundColor ??
+                Theme.of(context).colorScheme.tertiaryContainer,
+            shape: shape ?? const OvalBorder(),
+            shadows: [
+              if (shadows)
+                const BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
+                )
+            ]),
         child: Stack(
           children: [
             if (iconData != null || leadingText != null)
@@ -54,7 +64,8 @@ class DSCustomContainer extends StatelessWidget {
                       ? Text(
                           leadingText!,
                           style: TextStyle(
-                              color: Theme.of(context).colorScheme.background),
+                            color: Theme.of(context).colorScheme.background,
+                          ),
                         )
                       : Icon(
                           size: height != null ? (height * 0.6) : null,

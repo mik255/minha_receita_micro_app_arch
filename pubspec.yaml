@@ -62,6 +62,7 @@ dev_dependencies:
 flutter:
   assets:
     - lib/design_system/animations/assets/
+    - lib/design_system/assets/
 
 
   uses-material-design: true

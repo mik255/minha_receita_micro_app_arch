@@ -1,10 +1,10 @@
-import '../../../../../core/route/route_contract.dart';
+import '../../../../design_system/navigator/core/route/route_contract.dart';
 import '../pages/home_page.dart';
 
-final recipeMainRoutes = <RoutesCore>[
-  RoutesCore(
-    routePrefix: '/recipe',
+final recipeMainRoutes = <DSNavigatorRoute>[
+  DSNavigatorRoute(
+    routePrefix: '/home',
     routeName: '/main',
-    page: (args, queryParameters) => const RecipeMainPage(),
+    page: (args, queryParameters) => const HomePage(),
   ),
 ];

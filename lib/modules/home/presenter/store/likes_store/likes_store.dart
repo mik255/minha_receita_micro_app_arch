@@ -12,11 +12,11 @@ class LikesStore extends ChangeNotifier {
 
   LikesState state = FeedLikesLoadingState();
 
-  Future<void> getPostLikes(PostEntity feed) async {
+  Future<void> getPostLikes(PostEntity feed,int page) async {
     try {
       state = FeedLikesLoadingState();
       notifyListeners();
-      var feedWithComments = await getFeedLikesUseCase(feed);
+      var feedWithComments = await getFeedLikesUseCase(feed,page);
       state = FeedLikesSuccessState(feedWithComments);
       notifyListeners();
     } catch (e) {

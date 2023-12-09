@@ -9,7 +9,7 @@ import '../../domain/repository/post_repository.dart';
 import '../../domain/usecases/post/get_post_comments_use_case.dart';
 import '../../domain/usecases/post/get_post_likes_use_case.dart';
 import '../../domain/usecases/post/get_post_list_use_case.dart';
-import '../../presenter/store/home_store/home_store.dart';
+import '../../presenter/store/feed_store/feed_store.dart';
 
 class HomeInjections {
   GetIt getIt = GetIt.instance;
@@ -53,7 +53,7 @@ class HomeInjections {
   }
 
   void _registerStores() {
-    getIt.registerSingleton<HomeStore>(HomeStore(
+    getIt.registerSingleton<FeedStore>(FeedStore(
       getListFeedUseCase: getIt<GetListPostUseCase>(),
       getFeedCommentsUseCase: getIt<GetPostCommentsUseCase>(),
     ));

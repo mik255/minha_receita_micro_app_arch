@@ -22,23 +22,28 @@ class _LikesModalContentState extends State<LikesModalContent> {
   LikesStore get store => GetIt.I.get<LikesStore>();
   final ScrollController _scrollController = ScrollController();
 
-  int get count => store.getFeedLikesUseCase.count;
+  int page = 1;
+
+  bool _isShowLinearLoading() {
+    return store.state is FeedLikesLoadingState && page > 1;
+  }
 
   bool _verifyIfCanLoadMore() {
-    return store.state is! FeedLikesLoadingState && count > 0;
+    return store.state is! FeedLikesLoadingState && page > 0;
   }
 
   bool _isInitialLoading() {
-    return store.state is FeedLikesLoadingState && count == 0;
+    return store.state is FeedLikesLoadingState && page == 1;
   }
 
   @override
   void initState() {
     super.initState();
-    store.getPostLikes(widget.postEntity);
+    store.getPostLikes(widget.postEntity,page);
     _scrollController.onBottomListener(() {
       if (_verifyIfCanLoadMore()) {
-        store.getPostLikes(widget.postEntity);
+        page++;
+        store.getPostLikes(widget.postEntity,page);
       }
     });
   }
@@ -56,35 +61,46 @@ class _LikesModalContentState extends State<LikesModalContent> {
       child: ListenableBuilder(
           listenable: store,
           builder: (context, _) {
-            if (_isInitialLoading()) {
+            if (_isInitialLoading()){
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-            return Column(
+          }
+            return Stack(
               children: [
-                if (_verifyIfCanLoadMore())
-                  const Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                ...widget.postEntity.likesList.map(
-                  (like) => Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(like.urlImg),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.68,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        ...widget.postEntity.likesList.map(
+                          (like) => Column(
+                            children: [
+                              ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: NetworkImage(like.urlImg),
+                                ),
+                                title: Text(like.name),
+                                subtitle: Text(like.description),
+                                trailing: DSTextButton(
+                                  text: 'Seguir',
+                                  onPressed: () {},
+                                ),
+                              ),
+                              const DSDivider(),
+                            ],
+                          ),
                         ),
-                        title: Text(like.name),
-                        subtitle: Text(like.description),
-                        trailing: DSTextButton(
-                          text: 'Seguir',
-                          onPressed: () {},
-                        ),
-                      ),
-                      const DSDivider(),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+                if (_isShowLinearLoading())
+                  const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: LinearProgressIndicator(),
+                  ),
               ],
             );
           }),

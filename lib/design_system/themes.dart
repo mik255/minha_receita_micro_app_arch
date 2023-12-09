@@ -23,17 +23,20 @@ class DSMaterialThemeSingleton {
           tertiaryContainer: const Color(0x8EB9C2D5),
           secondaryContainer: const Color(0xFF151528),
           background: const Color(0xFFFFFFFF),
+          inversePrimary: const Color(0xFF18A207),
+          error: const Color(0xFFE83F5B),
+          primaryContainer: const Color(0xFF0968C2),
         ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             fontSize: 12,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF3D3D4D),
+            fontWeight: FontWeight.w400,
+            color: Color(0xBE191921),
           ),
           titleLarge: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF3D3D4D),
+            color: Color(0xFF262636),
           ),
         ),
         useMaterial3: true,

@@ -1,28 +1,33 @@
 import 'package:flutter/cupertino.dart';
-import 'package:minha_receita/modules/home/presenter/store/home_store/states/home_state.dart';
+import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
+import 'package:minha_receita/modules/home/presenter/store/feed_store/states/feed_state.dart';
 import '../../../domain/usecases/post/get_post_comments_use_case.dart';
 import '../../../domain/usecases/post/get_post_list_use_case.dart';
 
-class HomeStore extends ChangeNotifier {
+class FeedStore extends ChangeNotifier {
   final GetListPostUseCase _getListFeedUseCase;
 
-  HomeStore({
+  FeedStore({
     required GetListPostUseCase getListFeedUseCase,
     required GetPostCommentsUseCase getFeedCommentsUseCase,
   }) : _getListFeedUseCase = getListFeedUseCase;
 
-  HomeState state = HomeLoadingState();
+  FeedState state = FeedLoadingState();
 
   Future<void> getListFeed() async {
     try {
-      state = HomeLoadingState();
+      state = FeedLoadingState();
       notifyListeners();
       var feedsList = await _getListFeedUseCase();
-      state = HomeSuccessState(feedsList);
+      state = FeedSuccessState(feedsList);
       notifyListeners();
     } catch (e) {
-      state = HomeFailureState("Serviço indisponível");
+      state = FeedFailureState("Serviço indisponível");
       notifyListeners();
     }
+  }
+
+  void onLikedEvent(PostEntity feed, bool isLiked) {
+    feed.userLiked = isLiked;
   }
 }

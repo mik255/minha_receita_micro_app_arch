@@ -1,3 +1,4 @@
+
 import 'comment_entity.dart';
 import 'like_entity.dart';
 
@@ -7,6 +8,7 @@ class PostEntity {
     required this.avatarImgUrl,
     required this.recipeImgUrlList,
     required this.likesCount,
+    required this.commentsCount,
     required this.userLiked,
     required this.description,
     required this.createdAt,
@@ -20,7 +22,8 @@ class PostEntity {
   final String name;
   final List<String> recipeImgUrlList;
   final int likesCount;
-  final bool userLiked;
+  final int commentsCount;
+  bool userLiked;
   late List<CommentEntity> comments;
   final String? description;
   final String? createdAt;
@@ -38,6 +41,7 @@ class PostEntity {
         userLiked: json["userLiked"],
         description: json["description"],
         createdAt: json["createdAt"],
+        commentsCount: json["commentsCount"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,5 +54,6 @@ class PostEntity {
         "userLiked": userLiked,
         "description": description,
         "created_at": createdAt,
+        "commentsCount": commentsCount,
       };
 }
