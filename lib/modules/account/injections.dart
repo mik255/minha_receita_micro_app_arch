@@ -1,11 +1,10 @@
 import 'package:get_it/get_it.dart';
-
-import '../../../../core/common_http/common_http.dart';
-import '../../data/datasource/account_datasource.dart';
-import '../../data/repository/account_repository.dart';
-import '../../domain/repository/account_repository.dart';
-import '../../domain/usecases/login_usecase.dart';
-import '../../presenter/store/login_store.dart';
+import '../../core/http/core_http.dart';
+import 'data/datasource/account_datasource.dart';
+import 'data/repository/account_repository.dart';
+import 'domain/repository/account_repository.dart';
+import 'domain/usecases/login_usecase.dart';
+import 'presenter/store/login_store.dart';
 
 class AccountInjections {
   GetIt getIt = GetIt.instance;
@@ -19,7 +18,7 @@ class AccountInjections {
 
   void _registerDataSources() {
     getIt.registerSingleton<AccountDataSource>(LoginDataSourceImpl(
-      getIt<CommonHttp>(),
+      getIt<CoreHttp>(),
     ));
   }
 

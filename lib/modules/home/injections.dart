@@ -4,12 +4,13 @@ import 'package:minha_receita/modules/home/data/repository/feed_repository.dart'
 import 'package:minha_receita/modules/home/presenter/store/comments_store/comments_store.dart';
 import 'package:minha_receita/modules/home/presenter/store/likes_store/likes_store.dart';
 
-import '../../domain/repository/post_repository.dart';
+import '../../core/http/core_http.dart';
+import 'domain/repository/post_repository.dart';
 
-import '../../domain/usecases/post/get_post_comments_use_case.dart';
-import '../../domain/usecases/post/get_post_likes_use_case.dart';
-import '../../domain/usecases/post/get_post_list_use_case.dart';
-import '../../presenter/store/feed_store/feed_store.dart';
+import 'domain/usecases/post/get_post_comments_use_case.dart';
+import 'domain/usecases/post/get_post_likes_use_case.dart';
+import 'domain/usecases/post/get_post_list_use_case.dart';
+import 'presenter/store/feed_store/feed_store.dart';
 
 class HomeInjections {
   GetIt getIt = GetIt.instance;
@@ -22,7 +23,9 @@ class HomeInjections {
   }
 
   void _registerDataSources() {
-    getIt.registerSingleton<PostDataSource>(PostDataSourceImpl());
+    getIt.registerSingleton<PostDataSource>(PostDataSourceImpl(
+      getIt<CoreHttp>(),
+    ));
   }
 
   void _registerRepositories() {

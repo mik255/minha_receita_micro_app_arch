@@ -1,8 +1,8 @@
-import '../../../../design_system/navigator/core/route/route_contract.dart';
+import '../../../common/navigator/navigator.dart';
 import '../pages/recipe_page.dart';
 
-final recipeRoutes = <DSNavigatorRoute>[
-  DSNavigatorRoute(
+final recipeRoutes = <CommonNavigator>[
+  CommonNavigator(
     routePrefix: '/recipe',
     routeName: '/ingredients',
     page: (args, queryParameters) => const RecipePage(),

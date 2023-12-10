@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/design_system/cards/default_dialog.dart';
 import 'package:minha_receita/design_system/templates/base_page.dart';
-
-import '../../../../core/config/config.dart';
 import '../../../../design_system/bottons/buttom.dart';
 import '../../../../design_system/check_box/check_box.dart';
 import '../../../../design_system/text_inputs/text_field.dart';

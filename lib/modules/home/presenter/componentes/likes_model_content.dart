@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minha_receita/core/extensions/scroll_controller.dart';
+
 import 'package:minha_receita/design_system/bottons/text_button.dart';
+import 'package:minha_receita/modules/common/extensions/scroll_controller.dart';
 import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
 import 'package:minha_receita/modules/home/presenter/store/likes_store/likes_store.dart';
 
@@ -39,11 +40,11 @@ class _LikesModalContentState extends State<LikesModalContent> {
   @override
   void initState() {
     super.initState();
-    store.getPostLikes(widget.postEntity,page);
+    store.getPostLikes(widget.postEntity, page);
     _scrollController.onBottomListener(() {
       if (_verifyIfCanLoadMore()) {
         page++;
-        store.getPostLikes(widget.postEntity,page);
+        store.getPostLikes(widget.postEntity, page);
       }
     });
   }
@@ -61,11 +62,11 @@ class _LikesModalContentState extends State<LikesModalContent> {
       child: ListenableBuilder(
           listenable: store,
           builder: (context, _) {
-            if (_isInitialLoading()){
+            if (_isInitialLoading()) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-          }
+            }
             return Stack(
               children: [
                 SizedBox(

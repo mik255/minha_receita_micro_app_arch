@@ -1,7 +1,7 @@
 import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
 import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
 import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
-import '../../../../../core/common_http/common_http.dart';
+import '../../../../core/http/core_http.dart';
 import '../../../../core/mappers/lists.dart';
 
 abstract class PostDataSource {
@@ -13,9 +13,13 @@ abstract class PostDataSource {
 }
 
 class PostDataSourceImpl implements PostDataSource {
+  CoreHttp coreHttp;
+
+  PostDataSourceImpl(this.coreHttp);
+
   @override
   Future<List<PostEntity>> getListPost() async {
-    var response = await CommonHttp.instance!.get(
+    var response = await coreHttp.get(
       route: '/feeds',
     );
     return coreMappersParseList(response.data, (e) => PostEntity.fromJson(e));
@@ -23,7 +27,7 @@ class PostDataSourceImpl implements PostDataSource {
 
   @override
   Future<List<CommentEntity>> getPostComments(String id, int count) async {
-    var response = await CommonHttp.instance!.get(
+    var response = await coreHttp.get(
       route: '/comments/$id?total=10',
     );
     return coreMappersParseList(
@@ -34,9 +38,12 @@ class PostDataSourceImpl implements PostDataSource {
 
   @override
   Future<List<LikeEntity>> getPostLikes(String id, int count) async {
-    var response = await CommonHttp.instance!.get(
+    var response = await coreHttp.get(
       route: '/likes/$id?total=10',
     );
-    return coreMappersParseList(response.data, (e) => LikeEntity.fromJson(e));
+    return coreMappersParseList(
+      response.data,
+      (e) => LikeEntity.fromJson(e),
+    );
   }
 }

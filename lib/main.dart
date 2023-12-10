@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'core/config/config.dart';
-import 'core/di/modules_injections.dart';
-import 'design_system/navigator/core/route/route_contract.dart';
+
+import 'modules/common/navigator/navigator.dart';
+import 'modules_injections.dart';
+
 import 'design_system/themes.dart';
 import 'modules/account/presenter/pages/login_page.dart';
 import 'modules/home/presenter/routes/recipe_main_routes.dart';
 import 'modules/recipe/presenter/routes/recipe_routes.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     AppInjections().init();
-    DSNavigatorRoute.routes.addAll([...recipeMainRoutes, ...recipeRoutes]);
+    CommonNavigator.routes.addAll([...recipeMainRoutes, ...recipeRoutes]);
     DSMaterialThemeSingleton.instance.setTheme(isDark: false);
   }
 
@@ -35,8 +35,8 @@ class _MyAppState extends State<MyApp> {
         builder: (context, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            navigatorKey: navigateKey,
-            onGenerateRoute: DSNavigatorRoute.generateRoute,
+            navigatorKey: CommonNavigator.navigateKey,
+            onGenerateRoute: CommonNavigator.generateRoute,
             theme: DSMaterialThemeSingleton.instance.currentTheme.value,
             home: const LoginPage(),
           );

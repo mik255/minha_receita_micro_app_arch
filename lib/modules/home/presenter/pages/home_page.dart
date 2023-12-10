@@ -12,8 +12,8 @@ import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu
 import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
-import '../../../../core/theme/presenter/store/theme.dart';
 import '../../../../design_system/loadings/default_loading.dart';
+import '../../../common/theme/presenter/store/theme.dart';
 import '../componentes/feed_card.dart';
 import '../store/feed_store/feed_store.dart';
 import '../store/feed_store/states/feed_state.dart';

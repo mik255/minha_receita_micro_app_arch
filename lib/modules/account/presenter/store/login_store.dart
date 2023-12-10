@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:minha_receita/modules/account/domain/models/credentials.dart';
 import 'package:minha_receita/modules/account/domain/usecases/login_usecase.dart';
-
-import '../../../../core/config/config.dart';
+import '../../../common/navigator/navigator.dart';
 import '../../domain/exeptions/account_exeptions.dart';
 import '../states/login_states.dart';
 
@@ -67,7 +65,7 @@ class LoginStore extends ChangeNotifier {
       state = LoginLoading();
       notifyListeners();
       await _loginUseCase(credentials);
-      navigateKey.currentState?.pushNamedAndRemoveUntil(
+      CommonNavigator.navigateKey.currentState?.pushNamedAndRemoveUntil(
         '/home/main',
         (route) => false,
       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:minha_receita/core/extensions/date.dart';
+
+import 'package:minha_receita/modules/common/extensions/date.dart';
 import '../containers/custom_container.dart';
 
 class DSAvatar extends StatelessWidget {

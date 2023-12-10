@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../design_system/modals/default_modal.dart';
+import '../../../design_system/modals_contents/default_modal.dart';
 
 extension CoreContextExtensons on BuildContext {
   void coreExtensionsShowDSModal(

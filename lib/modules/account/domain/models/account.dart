@@ -1,4 +1,4 @@
-import 'package:minha_receita/modules/account/domain/models/user.dart';
+import '../../../common/user/domain/models/user.dart';
 
 class Account {
   final UserModel user;

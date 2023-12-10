@@ -5,8 +5,8 @@ import '../../domain/repository/recipe_repository.dart';
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeDataSource _recipeDataSource;
 
-  RecipeRepositoryImpl({RecipeDataSource? recipeDataSource})
-      : _recipeDataSource = recipeDataSource ?? RecipeDataSourceImpl();
+  RecipeRepositoryImpl({required RecipeDataSource recipeDataSource})
+      : _recipeDataSource = recipeDataSource;
 
   @override
   Future<RecipeModel> getById(String recipeId) async {

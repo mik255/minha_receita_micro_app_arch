@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minha_receita/core/extensions/context.dart';
-import 'package:minha_receita/core/extensions/string.dart';
+import 'package:minha_receita/modules/common/extensions/context.dart';
+import 'package:minha_receita/modules/common/extensions/string.dart';
 import '../../../../design_system/avatar/avatar.dart';
 import '../../../../design_system/bottons/text_button.dart';
 import '../../../../design_system/containers/custom_container.dart';
-import '../../../../design_system/icon/bottons/favorite.dart';
+import '../../../../design_system/icon/favorite.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
 import '../../domain/model/post_entity.dart';

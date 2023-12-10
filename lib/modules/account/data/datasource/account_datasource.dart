@@ -1,4 +1,4 @@
-import 'package:minha_receita/core/common_http/common_http.dart';
+import '../../../../core/http/core_http.dart';
 import '../../domain/models/credentials.dart';
 import '../exeptions/account_exeptions.dart';
 
@@ -7,13 +7,13 @@ abstract class AccountDataSource {
 }
 
 class LoginDataSourceImpl implements AccountDataSource {
-  CommonHttp commonHttp;
+  CoreHttp coreHttp;
 
-  LoginDataSourceImpl(this.commonHttp);
+  LoginDataSourceImpl(this.coreHttp);
 
   @override
   Future<void> login(Credentials credentials) async {
-    var response = await commonHttp.post(
+    var response = await coreHttp.post(
       route: '/account/auth',
       body: credentials.toJson(),
     );
@@ -21,7 +21,7 @@ class LoginDataSourceImpl implements AccountDataSource {
       throw LoginRequestError(
           response.data['message'] ?? 'Servidor indisponível');
     }
-    CommonHttp.instance!.addHeader(
+    coreHttp.addHeader(
       'Authorization',
       response.data['token'],
     );

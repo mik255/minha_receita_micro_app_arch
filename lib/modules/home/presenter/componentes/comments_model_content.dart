@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minha_receita/core/extensions/scroll_controller.dart';
-import 'package:minha_receita/core/extensions/string.dart';
 import 'package:minha_receita/design_system/avatar/avatar.dart';
+import 'package:minha_receita/modules/common/extensions/scroll_controller.dart';
+import 'package:minha_receita/modules/common/extensions/string.dart';
 import 'package:minha_receita/modules/home/presenter/store/comments_store/comments_store.dart';
 
 import '../../../../design_system/divider/divider.dart';

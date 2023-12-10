@@ -1,8 +1,8 @@
-import '../../../../design_system/navigator/core/route/route_contract.dart';
+import '../../../common/navigator/navigator.dart';
 import '../pages/home_page.dart';
 
-final recipeMainRoutes = <DSNavigatorRoute>[
-  DSNavigatorRoute(
+final recipeMainRoutes = <CommonNavigator>[
+  CommonNavigator(
     routePrefix: '/home',
     routeName: '/main',
     page: (args, queryParameters) => const HomePage(),

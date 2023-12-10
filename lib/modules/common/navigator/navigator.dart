@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DSNavigatorRoute {
+class CommonNavigator {
   String routeName;
   String? routePrefix;
   Widget Function(Object? args, Map? queryParameters) page;
-
-  DSNavigatorRoute({
+  static GlobalKey<NavigatorState> navigateKey = GlobalKey<NavigatorState>();
+  CommonNavigator({
     required this.page,
     required this.routeName,
     this.routePrefix,
@@ -18,7 +18,7 @@ class DSNavigatorRoute {
       ) get routePage =>
           (context, args, queryParameters) => page(args, queryParameters);
 
-  static Set<DSNavigatorRoute> routes = {};
+  static Set<CommonNavigator> routes = {};
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     var routerName = settings.name;

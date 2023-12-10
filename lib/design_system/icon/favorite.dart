@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../snack_bar/sack_bar.dart';
+import '../snack_bar/sack_bar.dart';
 
 class DSFavoriteButtonIcon extends StatefulWidget {
   const DSFavoriteButtonIcon(
