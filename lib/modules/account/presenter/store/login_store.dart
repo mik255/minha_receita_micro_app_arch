@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:minha_receita/modules/account/domain/models/credentials.dart';
 import 'package:minha_receita/modules/account/domain/usecases/login_usecase.dart';
+import 'package:minha_receita/modules/common/user/domain/models/user.dart';
 import '../../../common/navigator/navigator.dart';
 import '../../domain/exeptions/account_exeptions.dart';
 import '../states/login_states.dart';
@@ -64,12 +66,15 @@ class LoginStore extends ChangeNotifier {
     try {
       state = LoginLoading();
       notifyListeners();
-      await _loginUseCase(credentials);
+      var account = await _loginUseCase(credentials);
+      GetIt.I<UserModel>().setUser(account.user);
+      state = LoginInitial();
+      buttonEnabled = true;
+      notifyListeners();
       CommonNavigator.navigateKey.currentState?.pushNamedAndRemoveUntil(
         '/home/main',
         (route) => false,
       );
-      notifyListeners();
     } catch (e, _) {
       if (kDebugMode) {
         print(e);

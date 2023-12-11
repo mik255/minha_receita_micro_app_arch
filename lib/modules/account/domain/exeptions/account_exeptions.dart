@@ -61,3 +61,8 @@ class CredentialsAtLeast1Lowercase implements DomainAccountException {
   @override
   final String message = "Devem ter pelo menos 1 letra minúscula";
 }
+
+class InvalidCodeException implements DomainAccountException {
+  @override
+  final String message = "Código inválido";
+}

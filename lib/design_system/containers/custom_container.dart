@@ -17,6 +17,7 @@ class DSCustomContainer extends StatelessWidget {
     this.leadingText,
     this.circularRadius,
     this.shadows = false,
+    this.borderSide,
   });
 
   final IconData? iconData;
@@ -33,6 +34,7 @@ class DSCustomContainer extends StatelessWidget {
   final Widget? child;
   final double? circularRadius;
   final bool shadows;
+  final BorderSide? borderSide;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +45,11 @@ class DSCustomContainer extends StatelessWidget {
         height: circularRadius ?? height,
         width: circularRadius ?? width,
         decoration: ShapeDecoration(
-            color: backgroundColor ??
-                Theme.of(context).colorScheme.tertiaryContainer,
-            shape: shape ?? const OvalBorder(),
+            color: backgroundColor ?? Theme.of(context).colorScheme.surface,
+            shape: shape ??
+                OvalBorder(
+                  side: borderSide ?? BorderSide.none,
+                ),
             shadows: [
               if (shadows)
                 const BoxShadow(

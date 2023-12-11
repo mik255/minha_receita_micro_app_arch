@@ -19,13 +19,13 @@ class DSMaterialThemeSingleton {
           tertiary: Colors.white,
           primary: const Color(0xFFFF9811),
           secondary: const Color(0xFF3D3D4D),
-          onSecondary: const Color(0x94000000),
-          tertiaryContainer: const Color(0x8EB9C2D5),
+          onSecondary: const Color(0x69000000),
+          tertiaryContainer: const Color(0x3DB9C2D5),
           secondaryContainer: const Color(0xFF151528),
           background: const Color(0xFFFFFFFF),
           inversePrimary: const Color(0xFF18A207),
           error: const Color(0xFFE83F5B),
-          primaryContainer: const Color(0xFF0968C2),
+          primaryContainer: const Color(0xFF2B4BF2),
         ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(

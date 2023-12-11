@@ -1,10 +1,11 @@
+import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
+
 import '../../../common/navigator/navigator.dart';
-import '../pages/recipe_page.dart';
 
 final recipeRoutes = <CommonNavigator>[
   CommonNavigator(
     routePrefix: '/recipe',
-    routeName: '/ingredients',
+    routeName: '/main',
     page: (args, queryParameters) => const RecipePage(),
   ),
 ];

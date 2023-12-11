@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
+import 'modules/account/presenter/pages/login_page.dart';
+import 'modules/account/presenter/routes/account_routes.dart';
 import 'modules/common/navigator/navigator.dart';
 import 'modules_injections.dart';
 
 import 'design_system/themes.dart';
-import 'modules/account/presenter/pages/login_page.dart';
-import 'modules/home/presenter/routes/recipe_main_routes.dart';
+import 'modules/home/presenter/routes/home_routes.dart';
 import 'modules/recipe/presenter/routes/recipe_routes.dart';
 
 void main() {
@@ -24,7 +25,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     AppInjections().init();
-    CommonNavigator.routes.addAll([...recipeMainRoutes, ...recipeRoutes]);
+    CommonNavigator.routes.addAll([
+      ...accountRoutes,
+      ...homeRoutes,
+      ...recipeRoutes,
+    ]);
     DSMaterialThemeSingleton.instance.setTheme(isDark: false);
   }
 
@@ -34,12 +39,13 @@ class _MyAppState extends State<MyApp> {
         listenable: DSMaterialThemeSingleton.instance.currentTheme,
         builder: (context, _) {
           return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            navigatorKey: CommonNavigator.navigateKey,
-            onGenerateRoute: CommonNavigator.generateRoute,
-            theme: DSMaterialThemeSingleton.instance.currentTheme.value,
-            home: const LoginPage(),
-          );
+              debugShowCheckedModeBanner: false,
+              navigatorKey: CommonNavigator.navigateKey,
+              onGenerateRoute: CommonNavigator.generateRoute,
+              theme: DSMaterialThemeSingleton.instance.currentTheme.value,
+              //home: const HomePage(),
+               home: const LoginPage());
+              //home: const RecipePage());
         });
   }
 }

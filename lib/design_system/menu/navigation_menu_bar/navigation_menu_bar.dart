@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:minha_receita/design_system/containers/custom_container.dart';
 
 import 'item.dart';
 
@@ -21,6 +22,7 @@ class DSNavigationMenuBar extends StatefulWidget {
   final void Function(int index) onTap;
   final DSNavigationMenuBarVariants? dsNavigationMenuBarVariants;
   final double? horizontalSpacing;
+
   @override
   State<DSNavigationMenuBar> createState() => _DSNavigationMenuBarState();
 }
@@ -50,7 +52,8 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...widget.items.map((e) => Padding(
-                      padding:  EdgeInsets.only(right: widget.horizontalSpacing ?? 8),
+                      padding:
+                          EdgeInsets.only(right: widget.horizontalSpacing ?? 8),
                       child: GestureDetector(
                         onTap: () {
                           widget.onTap(widget.items.indexOf(e));
@@ -66,24 +69,48 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
             children: [
               CarouselSlider(
                 options: CarouselOptions(
-                  viewportFraction: 1,
+                    viewportFraction: 1,
                     pageSnapping: true,
                     enlargeStrategy: CenterPageEnlargeStrategy.zoom,
                     height: 275.0,
                     enlargeCenterPage: true,
-                    autoPlay: true,
+                    autoPlay: widget.items.isNotEmpty,
                     autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     onPageChanged: (index, reason) {
                       currentIndex = index;
                       setState(() {});
                     }),
-                items: widget.items.map((e) {
-                  return Builder(
-                    builder: (BuildContext context) => e,
-                  );
-                }).toList(),
+                items: () {
+                  if(widget.items.isEmpty){
+                    return [
+                      if(widget.items.isEmpty)
+                         Padding(
+                           padding: const EdgeInsets.symmetric(horizontal: 24.0,vertical: 16),
+                           child: DSCustomContainer(
+                             backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                             shape: RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(10),
+                             ),
+                             child: Center(
+                              child: Icon(
+                                Icons.add_a_photo_outlined,
+                                size: 50,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                        ),
+                           ),
+                         ),
+                    ];
+                  }
+                  return widget.items.map((e) {
+                    return Builder(
+                      builder: (BuildContext context) => e,
+                    );
+                  }).toList();
+                }(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

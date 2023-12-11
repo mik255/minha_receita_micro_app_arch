@@ -92,7 +92,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget _carousel() {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/recipe/ingredients', arguments: '1');
+        Navigator.of(context).pushNamed('/recipe/main', arguments: '1');
       },
       child: DSNavigationMenuBar(
         dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
@@ -125,7 +125,7 @@ class _FeedCardState extends State<FeedCard> {
     }
     return InkWell(
       onTap: () {
-        context.coreExtensionsShowDSModal(
+        context.commonExtensionsShowDSModal(
             withScroll: false,
             content: LikesModalContent(
               postEntity: widget.feedEntity,
@@ -202,7 +202,7 @@ class _FeedCardState extends State<FeedCard> {
   Widget seeCommentsTextButton() {
     return InkWell(
       onTap: () {
-        context.coreExtensionsShowDSModal(
+        context.commonExtensionsShowDSModal(
             withScroll: false,
             content: CommentsModalContent(
               postEntity: widget.feedEntity,

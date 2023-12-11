@@ -17,7 +17,7 @@ class GetPostCommentsUseCaseImpl implements GetPostCommentsUseCase {
       postEntity.id,
       page,
     );
-    postEntity.comments = comments;
+    postEntity.comments.addAll(comments);
     return postEntity;
   }
 }

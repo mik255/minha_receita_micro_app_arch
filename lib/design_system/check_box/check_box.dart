@@ -23,6 +23,7 @@ class _DSCheckBoxState extends State<DSCheckBox> {
       child: Row(
         children: [
           Checkbox(
+            visualDensity: VisualDensity.compact,
             value: isChecked,
             activeColor: Theme.of(context).colorScheme.primaryContainer,
             shape: RoundedRectangleBorder(

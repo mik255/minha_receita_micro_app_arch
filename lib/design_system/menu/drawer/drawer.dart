@@ -17,31 +17,33 @@ class DSDrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      child: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 48).copyWith(bottom: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: DSAvatar(
-                      size: 100,
-                      imgUrl: avatarImgUrl,
-                      name: avatarName,
-                      nameBelowAvatar: true,
-                      namePadding: const EdgeInsets.symmetric(vertical: 16),
-                      nameStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          )),
-                ),
-              ],
+      child: Container(
+        color: Theme.of(context).colorScheme.background,
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 48).copyWith(bottom: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: DSAvatar(
+                        size: 100,
+                        imgUrl: avatarImgUrl,
+                        name: avatarName,
+                        nameBelowAvatar: true,
+                        namePadding: const EdgeInsets.symmetric(vertical: 16),
+                        nameStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                            )),
+                  ),
+                ],
+              ),
             ),
-          ),
-          ...items
-        ],
+            ...items
+          ],
+        ),
       ),
     );
   }

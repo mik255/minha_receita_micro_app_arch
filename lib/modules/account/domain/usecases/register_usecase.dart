@@ -1,20 +1,22 @@
+
+
 import '../models/account.dart';
 import '../models/credentials.dart';
 import '../repository/account_repository.dart';
 
-abstract class LoginUseCase {
+abstract class RegisterUseCase {
   Future<Account> call(Credentials params);
 }
 
-class LoginUseCaseImpl implements LoginUseCase {
+class RegisterUseCaseImpl implements RegisterUseCase {
   final AccountRepository repository;
 
-  LoginUseCaseImpl(this.repository);
+  RegisterUseCaseImpl(this.repository);
 
   @override
   Future<Account> call(Credentials credentials) async {
     credentials.emailValidate();
     credentials.passwordValidate();
-    return await repository.login(credentials);
+    return await repository.register(credentials);
   }
 }

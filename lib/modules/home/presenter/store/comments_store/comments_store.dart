@@ -18,7 +18,8 @@ class CommentsStore extends ChangeNotifier {
       var feedWithComments = await _getFeedCommentsUseCase(feed,page);
       state = CommentSuccessState(feedWithComments);
       notifyListeners();
-    } catch (e) {
+    } catch (e,_) {
+      print(_);
       state = CommentFailureState("Serviço indisponível");
       notifyListeners();
     }

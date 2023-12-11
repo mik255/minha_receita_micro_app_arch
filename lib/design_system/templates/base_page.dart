@@ -22,23 +22,28 @@ class AppDSBasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: floatingActionButton,
-      appBar: appDSAppBar,
-      body: () {
-        if (withScroll) {
-          return SingleChildScrollView(
-            child: body,
-          );
-        }
-        return body;
-      }(),
-      drawer: drawer,
-      bottomNavigationBar: bottomNavigationBar != null
-          ? SafeArea(
-              child: bottomNavigationBar!,
-            )
-          : null,
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: floatingActionButton,
+        appBar: appDSAppBar,
+        body: () {
+          if (withScroll) {
+            return SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: body,
+              ),
+            );
+          }
+          return body;
+        }(),
+        drawer: drawer,
+        bottomNavigationBar: bottomNavigationBar != null
+            ? SafeArea(
+                child: bottomNavigationBar!,
+              )
+            : null,
+      ),
     );
   }
 }

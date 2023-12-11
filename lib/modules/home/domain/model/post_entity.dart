@@ -13,8 +13,8 @@ class PostEntity {
     required this.description,
     required this.createdAt,
     required this.name,
-    this.likesList = const [],
-    this.comments = const [],
+    required this.likesList,
+    required this.comments,
   });
 
   final String id;
@@ -24,10 +24,10 @@ class PostEntity {
   final int likesCount;
   final int commentsCount;
   bool userLiked;
-  late List<CommentEntity> comments;
   final String? description;
   final String? createdAt;
-  late List<LikeEntity> likesList;
+  final List<LikeEntity> likesList;
+  final List<CommentEntity> comments;
 
   factory PostEntity.fromJson(Map<String, dynamic> json) => PostEntity(
         id: json["id"],
@@ -42,6 +42,8 @@ class PostEntity {
         description: json["description"],
         createdAt: json["createdAt"],
         commentsCount: json["commentsCount"],
+        comments: json["comments"]!=null?List<CommentEntity>.from(
+            json["comments"].map((x) => CommentEntity.fromJson(x))):[],
       );
 
   Map<String, dynamic> toJson() => {

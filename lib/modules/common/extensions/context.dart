@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../design_system/modals_contents/default_modal.dart';
 
-extension CoreContextExtensons on BuildContext {
-  void coreExtensionsShowDSModal(
-      {required Widget content, bool withScroll = true}) {
+extension CommonContextExtensons on BuildContext {
+  void commonExtensionsShowDSModal({
+    Widget? content,
+    bool withScroll = true,
+    Widget? customContent,
+  }) {
     showModalBottomSheet(
       context: this,
       isScrollControlled: true,
@@ -15,7 +18,7 @@ extension CoreContextExtensons on BuildContext {
         ),
       ),
       builder: (context) {
-        return DSModal(
+        return customContent??DSModal(
           content: content,
           withScroll: withScroll,
         );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum AppDSTextFieldType { simple, outlined }
+enum AppDSTextFieldType { onlyText, simple, outlined }
 
 class AppDSTextField extends StatefulWidget {
   const AppDSTextField({
@@ -11,7 +11,11 @@ class AppDSTextField extends StatefulWidget {
     this.maxLines,
     this.onChange,
     this.onValidate,
+    this.type = AppDSTextFieldType.outlined,
     this.obscureText = false,
+    this.style,
+    this.focusNode,
+    this.padding = const EdgeInsets.symmetric(vertical: 8),
   });
 
   final String? hintText;
@@ -21,6 +25,11 @@ class AppDSTextField extends StatefulWidget {
   final ValueChanged<String>? onChange;
   final String? Function(String?)? onValidate;
   final bool obscureText;
+  final AppDSTextFieldType type;
+  final TextStyle? style;
+  final FocusNode? focusNode;
+  final EdgeInsets padding;
+
   @override
   State<AppDSTextField> createState() => _AppDSTextFieldState();
 }
@@ -36,13 +45,17 @@ class _AppDSTextFieldState extends State<AppDSTextField> {
         color: Theme.of(context).colorScheme.tertiaryContainer,
       ),
     );
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+
+    return Container(
+      padding: widget.padding,
       child: TextFormField(
+          focusNode: widget.focusNode,
+          style: widget.style,
           obscureText: widget.obscureText,
           controller: widget.controller,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: widget.onChange,
+          maxLines: widget.obscureText ? 1 : widget.maxLines,
           validator: (String? value) {
             var error = widget.onValidate?.call(value);
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -54,6 +67,14 @@ class _AppDSTextFieldState extends State<AppDSTextField> {
             return error;
           },
           decoration: () {
+            if (widget.type == AppDSTextFieldType.onlyText) {
+              return  InputDecoration(
+                hintText: widget.hintText,
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+                border: InputBorder.none, //
+              );
+            }
             return InputDecoration(
               focusedBorder: borderDecoration.copyWith(
                 borderSide: BorderSide(
@@ -98,6 +119,37 @@ class _AppDSTextFieldState extends State<AppDSTextField> {
               }),
             );
           }()),
+    );
+  }
+}
+
+extension EditText on Text {
+  Widget convertToInput({
+    required TextEditingController controller,
+    required String? Function(String?) onValidate,
+    required FocusNode focusNode,
+    String? hintText,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: AppDSTextField(
+            hintText: hintText,
+            padding: EdgeInsets.zero,
+            type: AppDSTextFieldType.onlyText,
+            controller: controller,
+            onValidate: onValidate,
+            style: style,
+          ),
+        ),
+        // IconButton(
+        //   color: Colors.black.withOpacity(0.2),
+        //   onPressed: () {
+        //   //  focusNode.requestFocus();
+        //   },
+        //   icon: const Icon(Icons.edit),
+        // ),
+      ],
     );
   }
 }

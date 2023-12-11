@@ -51,4 +51,7 @@ class CommonNavigator {
       },
     );
   }
+  static void navigateTo(String routeName, {Object? args, Map? queryParameters}) {
+    navigateKey.currentState?.pushNamed(routeName, arguments: args);
+  }
 }

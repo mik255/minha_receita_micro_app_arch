@@ -8,10 +8,10 @@ class UserModel {
     this.recipeListId,
   });
 
-  final String? id;
-  final String? name;
-  final String? avatarImgUrl;
-  final String? recipeListId;
+  String? id;
+  String? name;
+  String? avatarImgUrl;
+  String? recipeListId;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
@@ -26,4 +26,11 @@ class UserModel {
         "avatarImgUrl": avatarImgUrl,
         "recipeListId": recipeListId,
       };
+
+  void setUser(UserModel user) {
+    id = user.id;
+    name = user.name;
+    avatarImgUrl = user.avatarImgUrl;
+    recipeListId = user.recipeListId;
+  }
 }

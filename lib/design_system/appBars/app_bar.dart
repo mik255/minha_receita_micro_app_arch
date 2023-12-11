@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../tab_bar/tab_bar_view.dart';
 
@@ -8,12 +9,14 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AppDSAppBar({
     super.key,
     this.tabBar,
-    this.type = AppDSBarType.standart,
     this.title,
     this.actions,
-    this.popLeading = false,
     this.leading,
+    this.backgroundColor,
     this.drawerMenuLeadingIcon,
+    this.onlyLeading = false,
+    this.popLeading = false,
+    this.type = AppDSBarType.standart,
   });
 
   final AppDSTabBarView? tabBar;
@@ -23,7 +26,8 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool popLeading;
   final Widget? leading;
   final bool? drawerMenuLeadingIcon;
-
+  final bool onlyLeading;
+  final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
     if (type == AppDSBarType.variant1) {
@@ -34,7 +38,11 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
             actions: actions,
             bottom: tabBar,
             centerTitle: true,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Theme.of(context).brightness,
+            ),
+            backgroundColor: backgroundColor??Theme.of(context).colorScheme.background,
             elevation: 0,
             leading: () {
               if (popLeading) {
@@ -61,13 +69,14 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ));
               }
             }(),
-            title: Text(
+            title: onlyLeading?null:Text(
               title ?? 'Minha Receita',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
             ),
           ),
+          if(!onlyLeading)
           Container(
             height: 0.5,
             color: Theme.of(context).colorScheme.secondary,
@@ -82,7 +91,7 @@ class AppDSAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       child: AppBar(
         bottom: tabBar,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: backgroundColor??Theme.of(context).colorScheme.primary,
         elevation: 5,
         title: const Text(
           'Minha Receita',

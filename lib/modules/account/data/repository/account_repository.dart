@@ -17,7 +17,7 @@ class AccountRepositoryImp implements AccountRepository {
   }
 
   @override
-  Future<void> login(Credentials credentials) {
+  Future<Account> login(Credentials credentials) {
     return accountDataSource.login(credentials);
   }
 
@@ -28,8 +28,17 @@ class AccountRepositoryImp implements AccountRepository {
   }
 
   @override
-  Future<void> saveAccount(Account account) {
-    // TODO: implement saveAccount
-    throw UnimplementedError();
+  Future<Account> register(Credentials credentials) {
+    return accountDataSource.register(credentials);
+  }
+
+  @override
+  Future<bool> registerCodeVerification(String code) {
+    return accountDataSource.registerCodeVerification(code);
+  }
+
+  @override
+  Future<bool> sendConfirmRegister() {
+    return accountDataSource.sendConfirmRegisterCode();
   }
 }

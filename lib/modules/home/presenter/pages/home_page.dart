@@ -14,6 +14,7 @@ import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
 import '../../../../design_system/loadings/default_loading.dart';
 import '../../../common/theme/presenter/store/theme.dart';
+import '../../../common/user/domain/models/user.dart';
 import '../componentes/feed_card.dart';
 import '../store/feed_store/feed_store.dart';
 import '../store/feed_store/states/feed_state.dart';
@@ -25,13 +26,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final AnimationController controller;
   final AppThemeStore appTheme = AppThemeStore();
   final feedStore = GetIt.I.get<FeedStore>();
   final pageController = PageController();
-
+  UserModel get userModel => GetIt.I<UserModel>();
   @override
   void initState() {
     feedStore.getListFeed();
@@ -47,14 +47,18 @@ class _HomePageState extends State<HomePage>
         type: AppDSBarType.variant1,
         actions: _actions(),
       ),
-      drawer: const DSDrawerMenu(
-        avatarImgUrl: 'https://source.unsplash.com/random/801x600/?person',
-        avatarName: 'João',
-        items: [
-          DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
-          DSDrawerMenuItem(text: 'Minhas receitas'),
-          DSDrawerMenuItem(text: 'Alterar nome'),
-          DSDrawerMenuItem(text: 'Sair'),
+      drawer:  DSDrawerMenu(
+        avatarImgUrl: userModel.avatarImgUrl??'https://source.unsplash.com/random/80x600/?person_icon',
+        avatarName: userModel.name??'Usuário',
+        items:   [
+          const DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
+          const DSDrawerMenuItem(text: 'Minhas receitas'),
+          const DSDrawerMenuItem(text: 'Alterar nome'),
+          DSDrawerMenuItem(text: 'Sair',onTap: (){
+            Navigator.of(context).pushNamedAndRemoveUntil(
+            '/account/login'
+            , (route) => false);
+          },),
         ],
       ),
       body: ListenableBuilder(
@@ -138,6 +142,15 @@ class _HomePageState extends State<HomePage>
                   subtitle: e.description,
                   width: 70,
                   customContainer: DSCustomContainer(
+                    borderSide: BorderSide(
+                      width: 2.5,
+                      style: BorderStyle.solid,
+                      strokeAlign: 2,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.8),
+                    ),
                     width: 40,
                     height: 40,
                     iconPadding: const EdgeInsets.all(8),

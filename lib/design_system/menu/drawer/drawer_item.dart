@@ -5,10 +5,11 @@ class DSDrawerMenuItem extends StatelessWidget {
   const DSDrawerMenuItem({
     super.key,
     required this.text,
+    this.onTap,
   });
 
   final String text;
-
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,9 +19,7 @@ class DSDrawerMenuItem extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
                   )),
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: onTap,
         ),
         const DSDivider()
       ],

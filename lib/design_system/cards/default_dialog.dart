@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minha_receita/design_system/containers/custom_container.dart';
 
-import '../bottons/buttom.dart';
+import '../icon/close_icon.dart';
 
 class DSDefaultCardDialogContent extends StatelessWidget {
   const DSDefaultCardDialogContent({
@@ -10,16 +10,33 @@ class DSDefaultCardDialogContent extends StatelessWidget {
     this.subtitle,
     this.middleCustomContent,
     this.buttons = const [],
+    this.buttonAxis = Axis.vertical,
+    this.alignCenter = false,
+    this.closeIcon = false,
   });
 
   final String? title;
   final String? subtitle;
   final Widget? middleCustomContent;
-  final List<AppDSButtom> buttons;
+  final List<Widget> buttons;
+  final Axis buttonAxis;
+  final bool alignCenter;
+  final bool closeIcon;
 
   @override
   Widget build(BuildContext context) {
     var space = const SizedBox(height: 16);
+    var buttonsList = <Widget>[];
+    if (buttons.isNotEmpty) {
+       buttonsList = buttons
+          .map((e) => Row(
+                children: [
+                  Expanded(child: e),
+                ],
+              ))
+          .toList();
+    }
+
     return DSCustomContainer(
       shadows: true,
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -27,11 +44,16 @@ class DSDefaultCardDialogContent extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment:
+              alignCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
+          crossAxisAlignment: alignCenter
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
           children: [
+            if (closeIcon) DSCloseIcon(context: context),
             Text(
               title ?? '',
               style: Theme.of(context).textTheme.titleLarge,
@@ -43,10 +65,26 @@ class DSDefaultCardDialogContent extends StatelessWidget {
             ),
             middleCustomContent ?? Container(),
             space,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: buttons.map((e) => Expanded(child: e)).toList(),
-            )
+            if (buttonAxis == Axis.horizontal)
+              Row(
+                mainAxisAlignment: alignCenter
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
+                crossAxisAlignment: alignCenter
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: buttonsList,
+              )
+            else if (buttonAxis == Axis.vertical)
+              Column(
+                mainAxisAlignment: alignCenter
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.start,
+                crossAxisAlignment: alignCenter
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: buttonsList,
+              )
           ],
         ),
       ),

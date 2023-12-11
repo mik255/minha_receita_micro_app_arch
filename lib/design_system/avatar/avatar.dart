@@ -37,6 +37,7 @@ class DSAvatar extends StatelessWidget {
       ),
     );
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Column(
           children: [
