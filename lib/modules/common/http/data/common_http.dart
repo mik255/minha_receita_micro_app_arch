@@ -16,14 +16,16 @@ class CommonHttp implements CoreHttp {
   CommonHttp({required String baseUrl}) {
     dio = Dio();
     dio.options.baseUrl = baseUrl;
-    final logInterceptor =
-        PrettyDioLogger(requestBody: true, requestHeader: true);
+    final logInterceptor = PrettyDioLogger(
+      requestBody: true,
+      requestHeader: true,
+    );
 
     dio.interceptors.add(logInterceptor);
     //add cors
-  //   dio.options.headers['Access-Control-Allow-Origin'] = '*';
-  //   dio.options.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
-  //   dio.options.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
+    //   dio.options.headers['Access-Control-Allow-Origin'] = '*';
+    //   dio.options.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+    //   dio.options.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token';
   }
 
   @override
