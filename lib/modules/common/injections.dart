@@ -11,7 +11,11 @@ class CommonInjections {
 
   void _registerUseCases() {
     getIt.registerSingleton<UserModel>(
-      UserModel(),
+      UserModel(
+        id: '123',
+        name: 'Mikael Rocha',
+        avatarImgUrl: 'https://source.unsplash.com/random/80x600/?person_icon',
+      ),
     );
   }
 }

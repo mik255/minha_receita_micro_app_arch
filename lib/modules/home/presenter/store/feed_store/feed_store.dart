@@ -14,11 +14,11 @@ class FeedStore extends ChangeNotifier {
 
   FeedState state = FeedLoadingState();
 
-  Future<void> getListFeed() async {
+  Future<void> getListFeed(int page) async {
     try {
       state = FeedLoadingState();
       notifyListeners();
-      var feedsList = await _getListFeedUseCase();
+      var feedsList = await _getListFeedUseCase(page,10);
       state = FeedSuccessState(feedsList);
       notifyListeners();
     } catch (e) {

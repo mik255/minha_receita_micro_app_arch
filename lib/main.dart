@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
 import 'modules/account/presenter/pages/login_page.dart';
 import 'modules/account/presenter/routes/account_routes.dart';
 import 'modules/common/navigator/navigator.dart';

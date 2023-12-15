@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 import 'package:minha_receita/design_system/menu/drawer/drawer.dart';
 import 'package:minha_receita/design_system/menu/drawer/drawer_item.dart';
+import 'package:minha_receita/modules/common/extensions/scroll_controller.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../design_system/botton_navigation_bars/defalt_botton_navigation_bar.dart';
@@ -31,10 +32,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final AppThemeStore appTheme = AppThemeStore();
   final feedStore = GetIt.I.get<FeedStore>();
   final pageController = PageController();
+  final ScrollController scrollController = ScrollController();
+
   UserModel get userModel => GetIt.I<UserModel>();
+  int page = 1;
+  final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+
   @override
   void initState() {
-    feedStore.getListFeed();
+    feedStore.getListFeed(page);
+    scrollController.onBottomListener(() async {
+      if (!isLoading.value) {
+        setState(() {
+          isLoading.value = true;
+        });
+        await feedStore.getListFeed(page);
+        setState(() {
+          isLoading.value = false;
+        });
+      }
+    });
     controller = AnimationController(vsync: this);
     super.initState();
   }
@@ -47,18 +64,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         type: AppDSBarType.variant1,
         actions: _actions(),
       ),
-      drawer:  DSDrawerMenu(
-        avatarImgUrl: userModel.avatarImgUrl??'https://source.unsplash.com/random/80x600/?person_icon',
-        avatarName: userModel.name??'Usuário',
-        items:   [
+      drawer: DSDrawerMenu(
+        avatarImgUrl: userModel.avatarImgUrl ??
+            'https://source.unsplash.com/random/80x600/?person_icon',
+        avatarName: userModel.name ?? 'Usuário',
+        items: [
           const DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
           const DSDrawerMenuItem(text: 'Minhas receitas'),
           const DSDrawerMenuItem(text: 'Alterar nome'),
-          DSDrawerMenuItem(text: 'Sair',onTap: (){
-            Navigator.of(context).pushNamedAndRemoveUntil(
-            '/account/login'
-            , (route) => false);
-          },),
+          DSDrawerMenuItem(
+            text: 'Sair',
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/account/login', (route) => false);
+            },
+          ),
         ],
       ),
       body: ListenableBuilder(
@@ -67,7 +87,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             if (feedStore.state is FeedFailureState) {
               return DSErrorHandle(
                   errorMsg: 'Serviço indisponível',
-                  tryAgain: () => feedStore.getListFeed());
+                  tryAgain: () => feedStore.getListFeed(page));
             }
             if (feedStore.state is FeedLoadingState) {
               return const Center(child: DSDefaultLoading());
@@ -79,9 +99,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      _topNavigatorMenu(state),
-                      ...feeds(state),
-                      // _carousel(),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            _topNavigatorMenu(state),
+                            ...feeds(state),
+                            // _carousel(),
+                          ],
+                        ),
+                      ),
+                      ListenableBuilder(
+                          listenable: isLoading,
+                          builder: (ctx, _) {
+                            return LinearProgressIndicator(
+                              color: Theme.of(context).colorScheme.secondary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.background,
+                              value: isLoading.value ? null : 0,
+                            );
+                          })
                     ],
                   ),
                 ),

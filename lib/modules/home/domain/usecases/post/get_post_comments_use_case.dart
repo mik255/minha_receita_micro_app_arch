@@ -13,11 +13,11 @@ class GetPostCommentsUseCaseImpl implements GetPostCommentsUseCase {
 
   @override
   Future<PostEntity> call(PostEntity postEntity, int page) async {
-    var comments = await _postRepository.getPostCommentsByPostId(
-      postEntity.id,
-      page,
-    );
-    postEntity.comments.addAll(comments);
+    // var comments = await _postRepository.getPostCommentsByPostId(
+    //   postEntity.id,
+    //   page,
+    // );
+   // postEntity.comments.addAll(comments);
     return postEntity;
   }
 }

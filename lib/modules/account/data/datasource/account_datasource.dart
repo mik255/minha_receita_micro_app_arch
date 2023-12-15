@@ -22,7 +22,7 @@ class LoginDataSourceImpl implements AccountDataSource {
   @override
   Future<Account> login(Credentials credentials) async {
     var response = await coreHttp.post(
-      route: '/account/auth',
+      route: '/account/login',
       body: credentials.toJson(),
     );
     if (response.statusCode == 400) {
@@ -31,7 +31,7 @@ class LoginDataSourceImpl implements AccountDataSource {
     }
     coreHttp.addHeader(
       'Authorization',
-      response.data['token'],
+      'Bearer ${response.data['token']}',
     );
     return Account.fromJson(response.data);
   }

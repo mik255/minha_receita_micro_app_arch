@@ -29,9 +29,10 @@ class CommonHttp implements CoreHttp {
   }
 
   @override
-  Future<CommonResponse> get({required String route}) async {
+  Future<CommonResponse> get({required String route,dynamic queryParameters}) async {
     var response = await dio.get(
       route,
+      queryParameters: queryParameters,
     );
     return CommonResponse(
       statusCode: response.statusCode,

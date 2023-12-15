@@ -5,7 +5,7 @@ import '../../../../core/http/core_http.dart';
 import '../../../../core/mappers/lists.dart';
 
 abstract class PostDataSource {
-  Future<List<PostEntity>> getListPost();
+  Future<List<PostEntity>> getListPost(int page,int size);
 
   Future<List<CommentEntity>> getPostComments(String feedId, int count);
 
@@ -18,9 +18,13 @@ class PostDataSourceImpl implements PostDataSource {
   PostDataSourceImpl(this.coreHttp);
 
   @override
-  Future<List<PostEntity>> getListPost() async {
+  Future<List<PostEntity>> getListPost(int page,int size) async {
     var response = await coreHttp.get(
-      route: '/feeds',
+      route: '/posts',
+      queryParameters: {
+        'page': page,
+        'size': size,
+      },
     );
     return coreMappersParseList(response.data, (e) => PostEntity.fromJson(e));
   }

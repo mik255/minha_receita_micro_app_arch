@@ -12,10 +12,10 @@ class LikeEntity {
   bool isFallowing;
 
   factory LikeEntity.fromJson(Map<String, dynamic> json) => LikeEntity(
-        urlImg: json["urlImg"],
-        name: json["name"],
-        description: json["description"],
-        isFallowing: json["isFallowing"],
+        urlImg: json["userImgUrl"]??'https://i.stack.imgur.com/l60Hf.png',
+        name: json["userName"],
+        description: json["description"]??'Sem descrição',
+        isFallowing: json["isUserFollowing"],
       );
 
   Map<String, dynamic> toJson() => {

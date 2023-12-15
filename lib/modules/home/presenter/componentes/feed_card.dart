@@ -97,7 +97,7 @@ class _FeedCardState extends State<FeedCard> {
       child: DSNavigationMenuBar(
         dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
         items: [
-          ...widget.feedEntity.recipeImgUrlList
+          ...widget.feedEntity.imgUrlList
               .map((e) => DSNavigationMenuBarItem(
                     customContainer: DSCustomContainer(
                       // description: e.description,

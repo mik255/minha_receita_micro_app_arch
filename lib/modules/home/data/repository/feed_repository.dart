@@ -12,8 +12,8 @@ class FeedRepositoryImpl implements PostRepository {
       : _feedDataSource = feedDataSource;
 
   @override
-  Future<List<PostEntity>> getPostList() async {
-    return await _feedDataSource.getListPost();
+  Future<List<PostEntity>> getPostList(int page,int size) async {
+    return await _feedDataSource.getListPost(page,size);
   }
 
   @override
