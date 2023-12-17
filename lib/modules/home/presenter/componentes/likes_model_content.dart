@@ -8,6 +8,7 @@ import 'package:minha_receita/modules/home/presenter/store/likes_store/likes_sto
 import '../../../../design_system/divider/divider.dart';
 
 import '../../../../design_system/modals_contents/list_modal_with_lazy_loading.dart';
+import '../../../../modules_injections.dart';
 import '../store/likes_store/states/likes_states.dart';
 
 class LikesModalContent extends StatefulWidget {
@@ -65,7 +66,7 @@ class _LikesModalContentState extends State<LikesModalContent> {
                         dense: true,
                         contentPadding: const EdgeInsets.all(0),
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(like.urlImg),
+                          backgroundImage: NetworkImage("${AppInjections.baseUrl}/${like.urlImg}"),
                         ),
                         title: Text(like.name),
                         subtitle: Text(like.description),

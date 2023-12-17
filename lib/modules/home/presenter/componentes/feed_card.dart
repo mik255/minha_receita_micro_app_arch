@@ -8,6 +8,7 @@ import '../../../../design_system/containers/custom_container.dart';
 import '../../../../design_system/icon/favorite.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
+import '../../../../modules_injections.dart';
 import '../../domain/model/post_entity.dart';
 import '../store/feed_store/feed_store.dart';
 import 'comments_model_content.dart';
@@ -76,7 +77,7 @@ class _FeedCardState extends State<FeedCard> {
     return Row(
       children: [
         DSAvatar(
-          imgUrl: widget.feedEntity.avatarImgUrl,
+          imgUrl: '${AppInjections.baseUrl}/${widget.feedEntity.avatarImgUrl}',
           name: widget.feedEntity.name,
           date: widget.feedEntity.createdAt?.coreExtensionsConvertToDate(),
         ),
@@ -100,9 +101,8 @@ class _FeedCardState extends State<FeedCard> {
           ...widget.feedEntity.imgUrlList
               .map((e) => DSNavigationMenuBarItem(
                     customContainer: DSCustomContainer(
-                      // description: e.description,
                       descriptionPadding: const EdgeInsets.all(8),
-                      imgURL: e,
+                      imgURL: "${AppInjections.baseUrl}/$e",
                       height: 250,
                       width: MediaQuery.of(context).size.width * 0.9,
                       shape: const RoundedRectangleBorder(
@@ -146,7 +146,7 @@ class _FeedCardState extends State<FeedCard> {
                       child: DSCustomContainer(
                         height: 24,
                         width: 24,
-                        imgURL: likeList[index].urlImg,
+                        imgURL: "${AppInjections.baseUrl}/${likeList[index].urlImg}",
                       ),
                     ),
                   )
@@ -154,7 +154,7 @@ class _FeedCardState extends State<FeedCard> {
                   DSCustomContainer(
                     height: 24,
                     width: 24,
-                    imgURL: likeList[0].urlImg,
+                    imgURL: "${AppInjections.baseUrl}/${likeList[0].urlImg}",
                   )
               ],
             ),

@@ -14,6 +14,7 @@ import '../../../../../../design_system/templates/base_page.dart';
 import '../../../../../design_system/errors/error_handle.dart';
 import '../../../../../design_system/page_view/page_view.dart';
 import '../../../../design_system/loadings/default_loading.dart';
+import '../../../../modules_injections.dart';
 import '../../../common/theme/presenter/store/theme.dart';
 import '../../../common/user/domain/models/user.dart';
 import '../componentes/feed_card.dart';
@@ -37,19 +38,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   UserModel get userModel => GetIt.I<UserModel>();
   int page = 1;
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
-
+  bool initial = true;
   @override
   void initState() {
     feedStore.getListFeed(page);
     scrollController.onBottomListener(() async {
       if (!isLoading.value) {
-        setState(() {
           isLoading.value = true;
-        });
-        await feedStore.getListFeed(page);
-        setState(() {
+          page++;
+          await feedStore.getMore(page);
           isLoading.value = false;
-        });
       }
     });
     controller = AnimationController(vsync: this);
@@ -65,8 +63,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         actions: _actions(),
       ),
       drawer: DSDrawerMenu(
-        avatarImgUrl: userModel.avatarImgUrl ??
-            'https://source.unsplash.com/random/80x600/?person_icon',
+        avatarImgUrl: "${AppInjections.baseUrl}/${userModel.avatarImgUrl}",
         avatarName: userModel.name ?? 'Usuário',
         items: [
           const DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
@@ -92,14 +89,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             if (feedStore.state is FeedLoadingState) {
               return const Center(child: DSDefaultLoading());
             }
+            initial = false;
             var state = feedStore.state as FeedSuccessState;
             return DSPageView(
               pageController: pageController,
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SingleChildScrollView(
+                Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
                         child: Column(
                           children: [
                             _topNavigatorMenu(state),
@@ -108,18 +107,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      ListenableBuilder(
-                          listenable: isLoading,
-                          builder: (ctx, _) {
-                            return LinearProgressIndicator(
-                              color: Theme.of(context).colorScheme.secondary,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.background,
-                              value: isLoading.value ? null : 0,
-                            );
-                          })
-                    ],
-                  ),
+                    ),
+                    ListenableBuilder(
+                        listenable: isLoading,
+                        builder: (ctx, _) {
+                          return LinearProgressIndicator(
+                            color: Theme.of(context).colorScheme.secondary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
+                            value: isLoading.value ? null : 0,
+                          );
+                        })
+                  ],
                 ),
                 const RecipePage(),
                 Container(

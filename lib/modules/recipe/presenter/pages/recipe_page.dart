@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/design_system/bottons/buttom.dart';
-import 'package:minha_receita/design_system/text_inputs/text_field.dart';
 import '../../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../../design_system/templates/base_page.dart';
-import '../../../../../../design_system/containers/custom_container.dart';
-import '../../../../../../design_system/menu/navigation_menu_bar/item.dart';
-import '../../../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
-import '../../../../../../design_system/title/default_title.dart';
-import '../../../../design_system/divider/divider.dart';
 import '../../../../design_system/loadings/default_loading.dart';
-import '../../domain/model/recipe_model.dart';
 import '../components/about.dart';
 import '../components/carousel.dart';
 import '../components/ingredients.dart';
@@ -73,7 +66,7 @@ class _RecipePageState extends State<RecipePage> {
           );
           return AppDSBasePage(
               withScroll: false,
-              appDSAppBar: _appBar(model.title),
+              //appDSAppBar: _appBar(model.title),
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 32),

@@ -13,14 +13,25 @@ class FeedStore extends ChangeNotifier {
   }) : _getListFeedUseCase = getListFeedUseCase;
 
   FeedState state = FeedLoadingState();
-
+  var feedList = <PostEntity>[];
   Future<void> getListFeed(int page) async {
     try {
       state = FeedLoadingState();
       notifyListeners();
-      var feedsList = await _getListFeedUseCase(page,10);
+      var feedsList = await _getListFeedUseCase(page,3);
+      feedList.addAll(feedsList.toSet().toList());
       state = FeedSuccessState(feedsList);
       notifyListeners();
+    } catch (e) {
+      state = FeedFailureState("Serviço indisponível");
+      notifyListeners();
+    }
+  }
+
+  Future<void> getMore(int page) async {
+    try {
+      var feedsList = await _getListFeedUseCase(page,3);
+      feedList.addAll(feedsList.toSet().toList());
     } catch (e) {
       state = FeedFailureState("Serviço indisponível");
       notifyListeners();

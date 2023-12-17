@@ -39,7 +39,8 @@ dependencies:
   get_it:
   flutter_animate: ^4.2.0+1
   image_picker: ^1.0.4
-  permission_handler: ^11.0.1
+  multi_image_picker:
+  permission_handler:
   lottie: ^1.1.0
   carousel_slider: ^4.2.1
   pretty_dio_logger:

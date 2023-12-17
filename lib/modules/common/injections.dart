@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 
+import '../../core/drivers/camera_access.dart';
+import 'drivers/camera_access_impl.dart';
 import 'user/domain/models/user.dart';
 
 class CommonInjections {
@@ -17,5 +19,6 @@ class CommonInjections {
         avatarImgUrl: 'https://source.unsplash.com/random/80x600/?person_icon',
       ),
     );
+    getIt.registerLazySingleton<CameraAccess>(() => CameraAccessImpl());
   }
 }

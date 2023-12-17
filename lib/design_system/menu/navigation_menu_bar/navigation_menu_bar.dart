@@ -86,7 +86,6 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
                 items: () {
                   if(widget.items.isEmpty){
                     return [
-                      if(widget.items.isEmpty)
                          Padding(
                            padding: const EdgeInsets.symmetric(horizontal: 24.0,vertical: 16),
                            child: DSCustomContainer(
