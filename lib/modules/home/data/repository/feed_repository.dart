@@ -5,10 +5,10 @@ import 'package:minha_receita/modules/home/domain/repository/post_repository.dar
 
 import '../datasource/feed_datasource.dart';
 
-class FeedRepositoryImpl implements PostRepository {
-  final PostDataSource _feedDataSource;
+class FeedRepositoryImpl implements HomeFeedRepository {
+  final FeedDataSource _feedDataSource;
 
-  FeedRepositoryImpl({required PostDataSource feedDataSource})
+  FeedRepositoryImpl({required FeedDataSource feedDataSource})
       : _feedDataSource = feedDataSource;
 
   @override

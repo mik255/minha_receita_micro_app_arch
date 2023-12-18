@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/modules/common/extensions/context.dart';
 import 'package:minha_receita/modules/common/extensions/string.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../design_system/avatar/avatar.dart';
 import '../../../../design_system/bottons/text_button.dart';
 import '../../../../design_system/containers/custom_container.dart';
@@ -9,6 +10,7 @@ import '../../../../design_system/icon/favorite.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';
 import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.dart';
 import '../../../../modules_injections.dart';
+import '../../../recipe/presenter/components/video_player_component.dart';
 import '../../domain/model/post_entity.dart';
 import '../store/feed_store/feed_store.dart';
 import 'comments_model_content.dart';
@@ -21,7 +23,6 @@ class FeedCard extends StatefulWidget {
   });
 
   final PostEntity feedEntity;
-
   @override
   State<FeedCard> createState() => _FeedCardState();
 }
@@ -35,29 +36,40 @@ class _FeedCardState extends State<FeedCard> {
   @override
   Widget build(BuildContext context) {
     var space = const SizedBox(height: 8);
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _avatar(),
-              _carousel(),
-              space,
-              _like(),
-              space,
-              _avatarsLikes(),
-              space,
-              _textDescription(),
-              space,
-              seeCommentsTextButton(),
-              space,
-              _textInputComment()
-            ],
-          ),
+          child: _avatar(),
         ),
+        _carousel(),
+        space,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: _like(),
+        ),
+        space,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: _avatarsLikes(),
+        ),
+        space,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: _textDescription(),
+        ),
+        space,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: seeCommentsTextButton(),
+        ),
+        space,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: _textInputComment(),
+        )
       ],
     );
   }
@@ -91,30 +103,55 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _carousel() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed('/recipe/main', arguments: '1');
-      },
-      child: DSNavigationMenuBar(
-        dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
-        items: [
-          ...widget.feedEntity.imgUrlList
-              .map((e) => DSNavigationMenuBarItem(
-                    customContainer: DSCustomContainer(
-                      descriptionPadding: const EdgeInsets.all(8),
-                      imgURL: "${AppInjections.baseUrl}/$e",
-                      height: 250,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
-                        ),
-                      ),
+    return DSNavigationMenuBar(
+      height: 300,
+      dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
+      items: [
+        ...widget.feedEntity.imgUrlList.map((e) => DSNavigationMenuBarItem(
+              customContainer: DSCustomContainer(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                  descriptionPadding: const EdgeInsets.all(0),
+                  width: MediaQuery.of(context).size.width,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(0),
                     ),
-                  )),
-        ],
-        onTap: (int index) {},
-      ),
+                  ),
+                  child: Builder(builder: (context) {
+                    String extension = e.split('.').last.toLowerCase();
+                    var url = "${AppInjections.baseUrl}/$e";
+                    if (extension == 'mp4') {
+                      return SizedBox(
+                        height: 250,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
+                                    child: VideoPlayerWidget(url: url),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    return Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                    );
+                  })),
+            )),
+      ],
+      onTap: (int index) {},
     );
   }
 
@@ -146,7 +183,8 @@ class _FeedCardState extends State<FeedCard> {
                       child: DSCustomContainer(
                         height: 24,
                         width: 24,
-                        imgURL: "${AppInjections.baseUrl}/${likeList[index].urlImg}",
+                        imgURL:
+                            "${AppInjections.baseUrl}/${likeList[index].urlImg}",
                       ),
                     ),
                   )

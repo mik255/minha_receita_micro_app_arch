@@ -46,10 +46,10 @@ class _RecipeCarouselState extends State<RecipeCarousel> {
                         customContainer: DSCustomContainer(
                             descriptionPadding: const EdgeInsets.all(8),
                             height: 250,
-                            width: MediaQuery.of(context).size.width * 0.9,
+                            // width: MediaQuery.of(context).size.width * 0.9,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(8),
+                                Radius.circular(0),
                               ),
                             ),
                             child: Row(
@@ -63,7 +63,9 @@ class _RecipeCarouselState extends State<RecipeCarousel> {
                                         children: [
                                           Expanded(
                                               child: VideoPlayerWidget(
-                                                  videoFile: e)),
+                                                  videoFile: e,
+
+                                              )),
                                         ],
                                       );
                                     }
@@ -75,7 +77,8 @@ class _RecipeCarouselState extends State<RecipeCarousel> {
                                   }),
                                 ),
                               ],
-                            )),
+                            )
+                        ),
                       ),
                     )
                     .toList(),

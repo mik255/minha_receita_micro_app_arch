@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:video_compress/video_compress.dart';
 
 import '../../../core/drivers/camera_access.dart';
 
@@ -44,7 +45,8 @@ class CameraAccessImpl implements DeviceDataAccess {
       if (pickedFiles.isNotEmpty) {
         // Converter XFile para File
         List<File> selectedVideos = pickedFiles.map((file) => File(file.path)).toList();
-        return selectedVideos;
+        var convertedVideos = await Future.wait(selectedVideos.map((video) => converterPara720p(video.path)));
+        return convertedVideos;
       } else {
         // O usuário cancelou a seleção
         return [];
@@ -55,7 +57,20 @@ class CameraAccessImpl implements DeviceDataAccess {
       return [];
     }
   }
-
+  Future<File> converterPara720p(String caminhoDoVideo) async {
+    try {
+      final result = await VideoCompress.compressVideo(
+        caminhoDoVideo,
+        quality: VideoQuality.Res640x480Quality, // Pode ajustar conforme necessário
+        deleteOrigin: true,
+        includeAudio: true,
+      );
+      return result!.file!;
+    } catch (error) {
+      print('Erro ao converter o vídeo: $error');
+      throw error;
+    }
+  }
   @override
   Future<void> requestPermission() async {
     List<bool> status = await Future.wait([

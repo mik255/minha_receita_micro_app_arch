@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'modules/account/presenter/pages/login_page.dart';
 import 'modules/account/presenter/routes/account_routes.dart';
 import 'modules/common/navigator/navigator.dart';
+import 'modules/post/presenter/routes/post_routes.dart';
 import 'modules_injections.dart';
 
 import 'design_system/themes.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
       ...accountRoutes,
       ...homeRoutes,
       ...recipeRoutes,
+      ...postRoutes,
     ]);
     DSMaterialThemeSingleton.instance.setTheme(isDark: false);
   }

@@ -5,6 +5,7 @@ import 'package:minha_receita/design_system/menu/drawer/drawer.dart';
 import 'package:minha_receita/design_system/menu/drawer/drawer_item.dart';
 import 'package:minha_receita/modules/common/extensions/scroll_controller.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
+import 'package:video_player/video_player.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../design_system/botton_navigation_bars/defalt_botton_navigation_bar.dart';
 import '../../../../../../design_system/containers/custom_container.dart';
@@ -102,7 +103,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Column(
                           children: [
                             _topNavigatorMenu(state),
-                            ...feeds(state),
+                           ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.feedEntityList.length,
+                              itemBuilder: (context, index) {
+                                return FeedCard(
+                                  feedEntity: state.feedEntityList[index],
+                                );
+                              },
+                            ),
                             // _carousel(),
                           ],
                         ),
@@ -256,11 +266,4 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     ];
   }
 
-  List<Widget> feeds(FeedSuccessState state) {
-    return state.feedEntityList
-        .map((e) => FeedCard(
-              feedEntity: e,
-            ))
-        .toList();
-  }
 }

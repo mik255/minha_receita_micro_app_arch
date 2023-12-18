@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:minha_receita/modules/common/navigator/navigator.dart';
 import 'package:minha_receita/modules/common/user/domain/models/user.dart';
 import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
 import 'package:minha_receita/modules/recipe/domain/use_case/post_recipe.dart';
@@ -86,6 +87,7 @@ class RecipeStore extends ChangeNotifier {
     ingredients: [],
     difficulty: 'dificuldade',
     status: 'tipo da receita',
+    id: '',
   );
 
   RecipeStore({
@@ -97,6 +99,9 @@ class RecipeStore extends ChangeNotifier {
         _fileServiceInterface = fileServiceInterface;
 
   void getRecipe(String? recipeId) async {
+    state = RecipeSuccessState(recipeModel: recipeModel);
+     notifyListeners();
+     return;
     ingredientsController = [];
     stepsController = [];
     state = RecipeLoadingState();
@@ -116,8 +121,8 @@ class RecipeStore extends ChangeNotifier {
       for (var element in recipeModel.steps) {
         stepsController.add(TextEditingController(text: element.description));
       }
-
       state = RecipeSuccessState(recipeModel: recipeModel);
+      CommonNavigator.navigateTo('/post/recipe');
       notifyListeners();
     } catch (e) {
       state = RecipeException();
@@ -184,8 +189,6 @@ class RecipeStore extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   void addTime() {
     timeInMinutes = int.parse(timeTextController.text);
     notifyListeners();
@@ -197,7 +200,7 @@ class RecipeStore extends ChangeNotifier {
       var recipe = recipeModel.copyWith(
         userId: GetIt.I.get<UserModel>().id,
         description: descriptionController.text,
-        title: titleController.text,
+        title: 'Nova Receita',
         timeInMinutes: timeInMinutes,
         difficulty: dificulty.getName(),
         status: status.getName(),
@@ -210,13 +213,14 @@ class RecipeStore extends ChangeNotifier {
             .toList(),
         recipeImgUrlList: listImagesUrl,
       );
-      await _postRecipeUseCase(recipe);
-      state = RecipeSuccessState(recipeModel: recipe);
+      var recipeResponse = await _postRecipeUseCase(recipe);
+      state = RecipeSuccessState(recipeModel: recipeResponse);
       notifyListeners();
-    } catch (e,_) {
+      CommonNavigator.navigateTo('/post/recipe',args: recipeResponse);
+    } catch (e, _) {
       print(_);
-    //  state = RecipeException();
-    //  notifyListeners();
+      //  state = RecipeException();
+      //  notifyListeners();
     }
   }
 

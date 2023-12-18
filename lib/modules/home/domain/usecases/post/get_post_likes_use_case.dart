@@ -6,9 +6,9 @@ abstract class GetPostLikesUseCase {
 }
 
 class GetPostLikesUseCaseImpl implements GetPostLikesUseCase {
-  final PostRepository _postRepository;
+  final HomeFeedRepository _postRepository;
 
-  GetPostLikesUseCaseImpl({required PostRepository postRepository})
+  GetPostLikesUseCaseImpl({required HomeFeedRepository postRepository})
       : _postRepository = postRepository;
 
   @override

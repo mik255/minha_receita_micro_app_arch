@@ -47,6 +47,9 @@ dependencies:
   logger:
   intl: ^0.18.1
   video_player:
+  webview_flutter: ^3.0.0
+  video_compress:
+  visibility_detector:
 dev_dependencies:
   flutter_test:
     sdk: flutter

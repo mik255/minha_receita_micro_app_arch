@@ -5,7 +5,7 @@ import '../../domain/model/recipe_model.dart';
 
 abstract class RecipeDataSource {
   Future<RecipeModel> getById(String recipeId);
-  Future<void> postRecipe(RecipeModel recipeEntity);
+  Future<RecipeModel> postRecipe(RecipeModel recipeEntity);
 }
 
 class RecipeDataSourceImpl implements RecipeDataSource {
@@ -28,12 +28,13 @@ class RecipeDataSourceImpl implements RecipeDataSource {
   }
 
   @override
-  Future<void> postRecipe(RecipeModel recipeModel) {
+  Future<RecipeModel> postRecipe(RecipeModel recipeModel) async{
     try {
-      return coreHttp.post(
+      var response =await  coreHttp.post(
         route: '/recipe',
         body: recipeModel.toJson(),
       );
+      return RecipeModel.fromJson(response.data['value']);
     } catch (e, _) {
       if (kDebugMode) {
         print(e);

@@ -23,15 +23,15 @@ class HomeInjections {
   }
 
   void _registerDataSources() {
-    getIt.registerSingleton<PostDataSource>(PostDataSourceImpl(
+    getIt.registerSingleton<FeedDataSource>(FeedDataSourceImpl(
       getIt<CoreHttp>(),
     ));
   }
 
   void _registerRepositories() {
-    getIt.registerSingleton<PostRepository>(
+    getIt.registerSingleton<HomeFeedRepository>(
       FeedRepositoryImpl(
-        feedDataSource: getIt<PostDataSource>(),
+        feedDataSource: getIt<FeedDataSource>(),
       ),
     );
   }
@@ -39,18 +39,18 @@ class HomeInjections {
   void _registerUseCases() {
     getIt.registerSingleton<GetListPostUseCase>(
       GetListPostUseCaseImpl(
-        feedRepository: getIt<PostRepository>(),
+        feedRepository: getIt<HomeFeedRepository>(),
       ),
     );
     getIt.registerSingleton<GetPostCommentsUseCase>(
       GetPostCommentsUseCaseImpl(
-        postRepository: getIt<PostRepository>(),
+        postRepository: getIt<HomeFeedRepository>(),
       ),
     );
 
     getIt.registerSingleton<GetPostLikesUseCase>(
       GetPostLikesUseCaseImpl(
-        postRepository: getIt<PostRepository>(),
+        postRepository: getIt<HomeFeedRepository>(),
       ),
     );
   }

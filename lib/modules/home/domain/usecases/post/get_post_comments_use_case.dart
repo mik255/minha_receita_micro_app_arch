@@ -6,9 +6,9 @@ abstract class GetPostCommentsUseCase {
 }
 
 class GetPostCommentsUseCaseImpl implements GetPostCommentsUseCase {
-  final PostRepository _postRepository;
+  final HomeFeedRepository _postRepository;
 
-  GetPostCommentsUseCaseImpl({required PostRepository postRepository})
+  GetPostCommentsUseCaseImpl({required HomeFeedRepository postRepository})
       : _postRepository = postRepository;
 
   @override

@@ -14,7 +14,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }
 
   @override
-  Future<void> postRecipe(RecipeModel recipeModel) {
+  Future<RecipeModel> postRecipe(RecipeModel recipeModel) {
     return _recipeDataSource.postRecipe(recipeModel);
   }
 }

@@ -4,7 +4,7 @@ import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
 import '../../../../core/http/core_http.dart';
 import '../../../../core/mappers/lists.dart';
 
-abstract class PostDataSource {
+abstract class FeedDataSource {
   Future<List<PostEntity>> getListPost(int page,int size);
 
   Future<List<CommentEntity>> getPostComments(String feedId, int count);
@@ -12,10 +12,10 @@ abstract class PostDataSource {
   Future<List<LikeEntity>> getPostLikes(String feedId, int count);
 }
 
-class PostDataSourceImpl implements PostDataSource {
+class FeedDataSourceImpl implements FeedDataSource {
   CoreHttp coreHttp;
 
-  PostDataSourceImpl(this.coreHttp);
+  FeedDataSourceImpl(this.coreHttp);
 
   @override
   Future<List<PostEntity>> getListPost(int page,int size) async {

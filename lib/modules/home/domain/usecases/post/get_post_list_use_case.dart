@@ -7,9 +7,9 @@ abstract class GetListPostUseCase {
 }
 
 class GetListPostUseCaseImpl implements GetListPostUseCase {
-  final PostRepository _feedRepository;
+  final HomeFeedRepository _feedRepository;
 
-  GetListPostUseCaseImpl({required PostRepository feedRepository})
+  GetListPostUseCaseImpl({required HomeFeedRepository feedRepository})
       : _feedRepository = feedRepository;
 
   @override

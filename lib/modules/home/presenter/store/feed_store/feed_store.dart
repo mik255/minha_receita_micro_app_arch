@@ -20,7 +20,9 @@ class FeedStore extends ChangeNotifier {
       notifyListeners();
       var feedsList = await _getListFeedUseCase(page,3);
       feedList.addAll(feedsList.toSet().toList());
-      state = FeedSuccessState(feedsList);
+      feedList.sort((a, b) => DateTime.parse(b.createdAt!).compareTo(DateTime.parse(a.createdAt!)));
+      await Future.delayed(const Duration(seconds: 1));
+      state = FeedSuccessState(feedList);
       notifyListeners();
     } catch (e) {
       state = FeedFailureState("Serviço indisponível");
@@ -31,7 +33,11 @@ class FeedStore extends ChangeNotifier {
   Future<void> getMore(int page) async {
     try {
       var feedsList = await _getListFeedUseCase(page,3);
-      feedList.addAll(feedsList.toSet().toList());
+      feedList.addAll(feedsList.toList());
+      feedList = feedList.toSet().toList();
+      feedList.sort((a, b) => DateTime.parse(b.createdAt!).compareTo(DateTime.parse(a.createdAt!)));
+      state = FeedSuccessState(feedList);
+      notifyListeners();
     } catch (e) {
       state = FeedFailureState("Serviço indisponível");
       notifyListeners();

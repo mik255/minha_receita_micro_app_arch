@@ -4,7 +4,7 @@ import '../model/recipe_model.dart';
 import '../repository/recipe_repository.dart';
 
 abstract class PostRecipeUseCase {
-  Future<void> call(RecipeModel recipeEntity);
+  Future<RecipeModel> call(RecipeModel recipeEntity);
 }
 
 class PostRecipeUseCaseImpl implements PostRecipeUseCase {
@@ -14,7 +14,7 @@ class PostRecipeUseCaseImpl implements PostRecipeUseCase {
       : _recipeRepository = recipeRepository;
 
   @override
-  Future<void> call(RecipeModel recipeEntity) async {
-     await _recipeRepository.postRecipe(recipeEntity);
+  Future<RecipeModel> call(RecipeModel recipeEntity) async {
+     return await _recipeRepository.postRecipe(recipeEntity);
   }
 }

@@ -13,6 +13,7 @@ class DSNavigationMenuBar extends StatefulWidget {
     required this.onTap,
     this.title,
     this.horizontalSpacing,
+    this.height,
     this.dsNavigationMenuBarVariants =
         DSNavigationMenuBarVariants.horizontalList,
   });
@@ -22,6 +23,7 @@ class DSNavigationMenuBar extends StatefulWidget {
   final void Function(int index) onTap;
   final DSNavigationMenuBarVariants? dsNavigationMenuBarVariants;
   final double? horizontalSpacing;
+  final double? height;
 
   @override
   State<DSNavigationMenuBar> createState() => _DSNavigationMenuBarState();
@@ -66,13 +68,15 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
           )
         else
           Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               CarouselSlider(
                 options: CarouselOptions(
+                  enableInfiniteScroll: false,
                     viewportFraction: 1,
                     pageSnapping: true,
                     enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                    height: 275.0,
+                    height: widget.height??275.0,
                     enlargeCenterPage: true,
                     autoPlay: false,
                     autoPlayInterval: const Duration(seconds: 3),
@@ -81,27 +85,31 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
                     autoPlayCurve: Curves.fastOutSlowIn,
                     onPageChanged: (index, reason) {
                       currentIndex = index;
-                      setState(() {});
+                      if(mounted){
+                        setState(() {});
+                      }
                     }),
                 items: () {
-                  if(widget.items.isEmpty){
+                  if (widget.items.isEmpty) {
                     return [
-                         Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 24.0,vertical: 16),
-                           child: DSCustomContainer(
-                             backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
-                             shape: RoundedRectangleBorder(
-                               borderRadius: BorderRadius.circular(10),
-                             ),
-                             child: Center(
-                              child: Icon(
-                                Icons.add_a_photo_outlined,
-                                size: 50,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 16),
+                        child: DSCustomContainer(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.tertiaryContainer,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.add_a_photo_outlined,
+                              size: 50,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
                         ),
-                           ),
-                         ),
+                      ),
                     ];
                   }
                   return widget.items.map((e) {

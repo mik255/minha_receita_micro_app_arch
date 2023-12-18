@@ -3,6 +3,7 @@ import '../../../Recipe/domain/model/step.dart';
 
 class RecipeModel {
   RecipeModel({
+    required this.id,
     required this.userId,
     required this.title,
     required this.timeInMinutes,
@@ -13,7 +14,7 @@ class RecipeModel {
     required this.status,
     this.description,
   });
-
+  String id;
   String userId;
   String title;
   String? description;
@@ -25,6 +26,7 @@ class RecipeModel {
   final String status;
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) => RecipeModel(
+        id: json['_id'],
         userId: json['userId'],
         title: json['title'],
         timeInMinutes: json['timeInMinutes'],
@@ -53,6 +55,7 @@ class RecipeModel {
 
   //copyWith
   RecipeModel copyWith({
+    String? id,
     String? userId,
     String? title,
     String? description,
@@ -65,6 +68,7 @@ class RecipeModel {
     String? status,
   }) {
     return RecipeModel(
+      id: id?? this.id,
       userId: userId ?? this.userId,
       title: title ?? this.title,
       description: description ?? this.description,
