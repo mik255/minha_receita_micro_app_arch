@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:minha_receita/design_system/bottons/buttom.dart';
 import '../../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../../design_system/templates/base_page.dart';
+import '../../../../core/drivers/camera_access.dart';
 import '../../../../design_system/loadings/default_loading.dart';
 import '../components/about.dart';
 import '../components/carousel.dart';
@@ -32,8 +33,7 @@ class _RecipePageState extends State<RecipePage> {
   @override
   void didChangeDependencies() {
     if (!initialized) {
-      recipeId =
-          ModalRoute.of(context)!.settings.arguments as String?;
+      recipeId = ModalRoute.of(context)!.settings.arguments as String?;
       store.getRecipe(recipeId);
       initialized = true;
     }
@@ -73,7 +73,14 @@ class _RecipePageState extends State<RecipePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      RecipeCarousel(model: model),
+                      InkWell(
+                          onTap: () async{
+                            var files = await GetIt.I
+                                .get<DeviceDataAccess>()
+                                .pickVideos();
+                            store.addFiles(files);
+                          },
+                          child: RecipeCarousel(model: model)),
                       space,
                       RecipeStatusPanel(
                           context: context, theme: theme, model: model),
@@ -92,11 +99,17 @@ class _RecipePageState extends State<RecipePage> {
               bottomNavigationBar: DSCustomButton(
                 text: 'Nova Receita',
                 onTap: () {
-                  // context.coreExtensionsShowDSModal(
-                  //   content: const Center(
-                  //     child: Text('Editar receita'),
-                  //   ),
-                  // );
+                  String? hasError = store.buttonIsEnable();
+                  if(hasError == null) {
+                    store.postRecipe();
+                   // Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(hasError),
+                      ),
+                    );
+                  }
                 },
               ));
         });

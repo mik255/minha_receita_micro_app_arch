@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'core_response.dart';
 
 abstract class CoreHttp {
@@ -10,4 +12,6 @@ abstract class CoreHttp {
   Future<CoreResponse> put({required String route, dynamic body});
 
   Future<CoreResponse> delete({required String route, dynamic body});
+
+  Future<CoreResponse> multipartRequest({required String route, required List<File> files});
 }

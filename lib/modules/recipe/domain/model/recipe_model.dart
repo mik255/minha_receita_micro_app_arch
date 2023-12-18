@@ -39,11 +39,12 @@ class RecipeModel {
       );
 
   Map<String, dynamic> toJson() => {
+        'userId': userId,
         'title': title,
         'timeInMinutes': timeInMinutes,
-        'imgUrlList': recipeImgUrlList,
+        'recipeImgUrlList': recipeImgUrlList,
         'description': description,
-        'methodOfPreparationField':
+        'steps':
             List<dynamic>.from(steps.map((x) => x.toJson())),
         'ingredients': List<dynamic>.from(ingredients.map((x) => x.toJson())),
         "difficulty": difficulty,

@@ -19,6 +19,6 @@ class CommonInjections {
         avatarImgUrl: 'https://source.unsplash.com/random/80x600/?person_icon',
       ),
     );
-    getIt.registerLazySingleton<CameraAccess>(() => CameraAccessImpl());
+    getIt.registerLazySingleton<DeviceDataAccess>(() => CameraAccessImpl());
   }
 }

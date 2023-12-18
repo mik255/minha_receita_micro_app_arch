@@ -46,6 +46,7 @@ dependencies:
   pretty_dio_logger:
   logger:
   intl: ^0.18.1
+  video_player:
 dev_dependencies:
   flutter_test:
     sdk: flutter

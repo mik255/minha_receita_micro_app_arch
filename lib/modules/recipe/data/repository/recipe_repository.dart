@@ -12,4 +12,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<RecipeModel> getById(String recipeId) async {
     return await _recipeDataSource.getById(recipeId);
   }
+
+  @override
+  Future<void> postRecipe(RecipeModel recipeModel) {
+    return _recipeDataSource.postRecipe(recipeModel);
+  }
 }

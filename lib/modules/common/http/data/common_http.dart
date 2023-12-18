@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:minha_receita/core/http/core_response.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../../core/http/core_http.dart';
@@ -29,7 +33,8 @@ class CommonHttp implements CoreHttp {
   }
 
   @override
-  Future<CommonResponse> get({required String route,dynamic queryParameters}) async {
+  Future<CommonResponse> get(
+      {required String route, dynamic queryParameters}) async {
     var response = await dio.get(
       route,
       queryParameters: queryParameters,
@@ -78,5 +83,52 @@ class CommonHttp implements CoreHttp {
       data: response.data,
       headers: dio.options.headers,
     );
+  }
+
+  @override
+  Future<CommonResponse> multipartRequest(
+      {required String route, required List<File> files}) async {
+    try {
+      var filesData = Future.wait(
+        files.map(
+          (file) async {
+            return await MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last,
+            );
+          },
+        ),
+      );
+      FormData formData = FormData.fromMap({
+        'files': await filesData,
+        // Adicione outros parâmetros aqui, se necessário
+      });
+
+      // Faça a requisição usando postFormData
+      var response = await dio.post(
+        route,
+        data: formData,
+        options: Options(
+          headers: {
+            ...dio.options.headers,
+            'Content-Type': 'multipart/form-data',
+          },
+        ),
+      );
+
+      return CommonResponse(
+        statusCode: response.statusCode,
+        data: response.data,
+        headers: dio.options.headers,
+      );
+    } catch (error) {
+      // Trate os erros aqui
+      print('Erro na requisição multipart: $error');
+      return CommonResponse(
+        statusCode: -1, // Defina um código de status adequado para erros
+        data: null,
+        headers: dio.options.headers,
+      );
+    }
   }
 }

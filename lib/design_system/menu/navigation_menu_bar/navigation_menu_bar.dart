@@ -74,7 +74,7 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
                     enlargeStrategy: CenterPageEnlargeStrategy.zoom,
                     height: 275.0,
                     enlargeCenterPage: true,
-                    autoPlay: widget.items.isNotEmpty,
+                    autoPlay: false,
                     autoPlayInterval: const Duration(seconds: 3),
                     autoPlayAnimationDuration:
                         const Duration(milliseconds: 800),

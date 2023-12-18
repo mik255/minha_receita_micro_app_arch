@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/drivers/camera_access.dart';
 
-class CameraAccessImpl implements CameraAccess {
+class CameraAccessImpl implements DeviceDataAccess {
   @override
   Future<List<String>> getMultiImages() async {
     await requestPermission();
@@ -29,6 +30,30 @@ class CameraAccessImpl implements CameraAccess {
       base64Images.add(base64Image);
     }
     return base64Images;
+  }
+
+  @override
+  Future<List<File>> pickVideos() async {
+    try {
+      // Solicitar permissão antes de acessar a galeria
+      await requestPermission();
+
+      // Permitir que o usuário selecione vídeos da galeria
+      List<XFile>? pickedFiles = await ImagePicker().pickMultipleMedia();
+
+      if (pickedFiles.isNotEmpty) {
+        // Converter XFile para File
+        List<File> selectedVideos = pickedFiles.map((file) => File(file.path)).toList();
+        return selectedVideos;
+      } else {
+        // O usuário cancelou a seleção
+        return [];
+      }
+    } catch (error) {
+      // Tratar erros, por exemplo, permissões negadas
+      print('Erro ao selecionar vídeos: $error');
+      return [];
+    }
   }
 
   @override
