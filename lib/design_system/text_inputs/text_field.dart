@@ -56,16 +56,7 @@ class _AppDSTextFieldState extends State<AppDSTextField> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: widget.onChange,
           maxLines: widget.obscureText ? 1 : widget.maxLines,
-          validator: (String? value) {
-            var error = widget.onValidate?.call(value);
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {
-                errorMsg = error;
-              });
-            });
-
-            return error;
-          },
+          validator: widget.onValidate,
           decoration: () {
             if (widget.type == AppDSTextFieldType.onlyText) {
               return  InputDecoration(

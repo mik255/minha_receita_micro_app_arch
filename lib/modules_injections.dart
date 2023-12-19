@@ -11,11 +11,11 @@ import 'modules/recipe/injections.dart';
 class AppInjections {
   var getIt = GetIt.instance;
 
-  // static String get baseUrl => const String.fromEnvironment('baseUrl',
-  //     defaultValue: 'http://10.0.2.2:3001');
-
   static String get baseUrl => const String.fromEnvironment('baseUrl',
-      defaultValue: 'http://192.168.1.31:3001');
+      defaultValue: 'http://10.0.2.2:3001');
+
+  // static String get baseUrl => const String.fromEnvironment('baseUrl',
+  //     defaultValue: 'http://192.168.1.31:3001');
 
   init() {
     getIt.registerSingleton<CoreHttp>(CommonHttp(

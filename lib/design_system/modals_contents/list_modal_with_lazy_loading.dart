@@ -30,7 +30,7 @@ class _DSListModalWithLazyLoadingState
         setState(() {
           isLoading = true;
         });
-        await widget.onLazeLoading.call();
+        await widget.onLazeLoading();
         setState(() {
           isLoading = false;
         });

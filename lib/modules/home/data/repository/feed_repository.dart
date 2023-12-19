@@ -17,12 +17,17 @@ class FeedRepositoryImpl implements HomeFeedRepository {
   }
 
   @override
-  Future<List<CommentEntity>> getPostCommentsByPostId(String id,int count) {
-    return _feedDataSource.getPostComments(id,count);
+  Future<List<CommentEntity>> getPostCommentsByPostId(String postId, int page,int size) {
+    return _feedDataSource.getPostComments(postId,page,size);
   }
 
   @override
   Future<List<LikeEntity>> getPostLikes(String id,int count) {
     return _feedDataSource.getPostLikes(id,count);
+  }
+
+  @override
+  Future<CommentEntity> createComment(String postId, String comment) {
+    return _feedDataSource.createComment(postId,comment);
   }
 }

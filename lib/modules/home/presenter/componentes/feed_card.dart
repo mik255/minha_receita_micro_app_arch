@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/modules/common/extensions/context.dart';
 import 'package:minha_receita/modules/common/extensions/string.dart';
+import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../design_system/avatar/avatar.dart';
 import '../../../../design_system/bottons/text_button.dart';
@@ -12,6 +13,7 @@ import '../../../../design_system/menu/navigation_menu_bar/navigation_menu_bar.d
 import '../../../../modules_injections.dart';
 import '../../../recipe/presenter/components/video_player_component.dart';
 import '../../domain/model/post_entity.dart';
+import '../store/comments_store/comments_store.dart';
 import '../store/feed_store/feed_store.dart';
 import 'comments_model_content.dart';
 import 'likes_model_content.dart';
@@ -32,7 +34,8 @@ class _FeedCardState extends State<FeedCard> {
     return ValueNotifier(widget.feedEntity.userLiked);
   }();
   var store = GetIt.I.get<FeedStore>();
-
+  var commentsStore = GetIt.I.get<CommentsStore>();
+  var commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var space = const SizedBox(height: 8);
@@ -221,6 +224,8 @@ class _FeedCardState extends State<FeedCard> {
       children: [
         Expanded(
           child: TextField(
+            controller: commentController,
+            maxLines: null,
             decoration: InputDecoration(
               hintText: 'Adicione um comentário...',
               hintStyle: Theme.of(context).textTheme.bodySmall,
@@ -231,7 +236,26 @@ class _FeedCardState extends State<FeedCard> {
         const SizedBox(width: 8),
         DSTextButton(
           text: 'Publicar',
-          onPressed: () {},
+          onPressed: () async{
+            bool success = await commentsStore.createComment(widget.feedEntity, commentController.text);
+            if(success){
+              commentController.clear();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Comentário criado com sucesso'),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+
+            }else{
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Falha ao enviar comentário'),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            }
+          },
         ),
       ],
     );

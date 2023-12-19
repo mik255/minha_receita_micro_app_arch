@@ -24,15 +24,15 @@ class CommentEntity {
   });
 
   factory CommentEntity.fromJson(Map<String, dynamic> json) => CommentEntity(
-        id: json["id"],
-        comment: json["comment"],
-        createdAt: json["createdAt"],
-        updatedAt: json["updatedAt"],
-        userId: json["userId"],
-        postId: json["postId"],
-        urlImg: json["urlImg"],
-        name: json["name"],
-        replyChildrenId: json["replyChildrenId"],
+        id: json["_id"]??'',
+        comment: json['value']["comment"],
+        createdAt: json['value']["createdAt"],
+        updatedAt: '',
+        userId: json['user']["_id"],
+        postId: json['value']["postId"],
+        urlImg: json['user']["avatarUrl"],
+        name: json['user']["nome"],
+        replyChildrenId: '',
       );
 
   Map<String, dynamic> toJson() => {

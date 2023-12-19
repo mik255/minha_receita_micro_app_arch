@@ -67,7 +67,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       onVisibilityChanged: (visibilityInfo) {
                         var visiblePercentage =
                             visibilityInfo.visibleFraction * 100;
-                        if (visiblePercentage > 50) {
+                        if (visiblePercentage > 90) {
                           _controller.setVolume(VideoPlayerWidget.volume);
                           _controller.play();
                           if(mounted){

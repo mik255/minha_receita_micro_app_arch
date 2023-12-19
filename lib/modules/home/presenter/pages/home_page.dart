@@ -5,7 +5,6 @@ import 'package:minha_receita/design_system/menu/drawer/drawer.dart';
 import 'package:minha_receita/design_system/menu/drawer/drawer_item.dart';
 import 'package:minha_receita/modules/common/extensions/scroll_controller.dart';
 import 'package:minha_receita/modules/recipe/presenter/pages/recipe_page.dart';
-import 'package:video_player/video_player.dart';
 import '../../../../../../design_system/appBars/app_bar.dart';
 import '../../../../../../design_system/botton_navigation_bars/defalt_botton_navigation_bar.dart';
 import '../../../../../../design_system/containers/custom_container.dart';
@@ -40,15 +39,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int page = 1;
   final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   bool initial = true;
+
   @override
   void initState() {
     feedStore.getListFeed(page);
     scrollController.onBottomListener(() async {
       if (!isLoading.value) {
-          isLoading.value = true;
-          page++;
-          await feedStore.getMore(page);
-          isLoading.value = false;
+        isLoading.value = true;
+        page++;
+        await feedStore.getMore(page);
+        isLoading.value = false;
       }
     });
     controller = AnimationController(vsync: this);
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Column(
                           children: [
                             _topNavigatorMenu(state),
-                           ListView.builder(
+                            ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.feedEntityList.length,
@@ -265,5 +265,4 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     ];
   }
-
 }

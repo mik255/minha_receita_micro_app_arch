@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
 import 'package:minha_receita/modules/home/presenter/store/feed_store/states/feed_state.dart';
-import '../../../domain/usecases/post/get_post_comments_use_case.dart';
+import '../../../domain/usecases/post/comments_use_case.dart';
 import '../../../domain/usecases/post/get_post_list_use_case.dart';
 
 class FeedStore extends ChangeNotifier {

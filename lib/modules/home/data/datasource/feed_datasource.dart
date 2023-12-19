@@ -7,9 +7,11 @@ import '../../../../core/mappers/lists.dart';
 abstract class FeedDataSource {
   Future<List<PostEntity>> getListPost(int page,int size);
 
-  Future<List<CommentEntity>> getPostComments(String feedId, int count);
+  Future<List<CommentEntity>> getPostComments(String postId, int page,int size);
 
   Future<List<LikeEntity>> getPostLikes(String feedId, int count);
+
+  Future<CommentEntity> createComment(String postId, String comment);
 }
 
 class FeedDataSourceImpl implements FeedDataSource {
@@ -30,9 +32,14 @@ class FeedDataSourceImpl implements FeedDataSource {
   }
 
   @override
-  Future<List<CommentEntity>> getPostComments(String id, int count) async {
+  Future<List<CommentEntity>> getPostComments(String postId, int page,int size) async {
     var response = await coreHttp.get(
-      route: '/comments/$id?total=10',
+      route: '/comment',
+      queryParameters: {
+        'postId': postId,
+        'page': page,
+        'size': size,
+      },
     );
     return coreMappersParseList(
       response.data,
@@ -49,5 +56,17 @@ class FeedDataSourceImpl implements FeedDataSource {
       response.data,
       (e) => LikeEntity.fromJson(e),
     );
+  }
+
+  @override
+  Future<CommentEntity> createComment(String postId, String comment) async{
+    var response = await coreHttp.post(
+      route: '/comment',
+      body: {
+        "postId": postId,
+        "comment":comment
+      }
+    );
+    return CommentEntity.fromJson(response.data);
   }
 }

@@ -7,7 +7,7 @@ import 'package:minha_receita/modules/home/presenter/store/likes_store/likes_sto
 import '../../core/http/core_http.dart';
 import 'domain/repository/post_repository.dart';
 
-import 'domain/usecases/post/get_post_comments_use_case.dart';
+import 'domain/usecases/post/comments_use_case.dart';
 import 'domain/usecases/post/get_post_likes_use_case.dart';
 import 'domain/usecases/post/get_post_list_use_case.dart';
 import 'presenter/store/feed_store/feed_store.dart';

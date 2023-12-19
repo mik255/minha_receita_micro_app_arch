@@ -1,3 +1,4 @@
+import '../../../../domain/model/comment_entity.dart';
 import '../../../../domain/model/post_entity.dart';
 
 sealed class CommentsState {}
@@ -5,9 +6,9 @@ sealed class CommentsState {}
 class CommentLoadingState extends CommentsState {}
 
 class CommentSuccessState extends CommentsState {
-  PostEntity feedEntityList;
+  List<CommentEntity> listComments;
 
-  CommentSuccessState(this.feedEntityList);
+  CommentSuccessState(this.listComments);
 }
 
 class CommentFailureState extends CommentsState {
