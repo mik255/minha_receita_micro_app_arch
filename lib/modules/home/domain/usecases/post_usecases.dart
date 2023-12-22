@@ -49,8 +49,9 @@ class GetPostUseCasesImpl implements PostUseCases {
     PostEntity feedEntity,
     LikeEntity like,
   ) async {
-    var result = await _postRepository.createLike(feedEntity.id, like);
-    feedEntity.likesList.add(result);
+    await _postRepository.createLike(feedEntity.id, like);
+    feedEntity.likesList.add(like);
+    feedEntity.likesList.toSet().toList();
   }
 
   @override

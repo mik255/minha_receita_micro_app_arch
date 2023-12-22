@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
 import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
 import 'package:minha_receita/modules/home/domain/model/post_entity.dart';
@@ -55,7 +56,12 @@ class HomeStore {
       await _postUseCases.createLike(post, like);
       postState.value = PostStateLoaded(postList: _cachedPostList);
       return null;
-    } catch (e) {
+    } catch (e, _) {
+      if (kDebugMode) {
+        print(e);
+        print(_);
+      }
+
       postState.value = PostStateError(
         message: e.toString(),
       );
@@ -66,11 +72,18 @@ class HomeStore {
   Future<String?> onCreateComment(
       PostEntity post, CommentEntity comment) async {
     try {
-      postState.value = PostStateLoading();
+      commentsState.value = CommentOnPostStateLoading(
+        postId: post.id,
+        commentsList: post.commentsList,
+      );
       await _postUseCases.createComment(post, comment);
       postState.value = PostStateLoaded(postList: _cachedPostList);
       return null;
-    } catch (e) {
+    } catch (e,_) {
+      if (kDebugMode) {
+        print(e);
+        print(_);
+      }
       postState.value = PostStateError(
         message: e.toString(),
       );

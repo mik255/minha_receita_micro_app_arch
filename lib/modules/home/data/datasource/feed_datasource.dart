@@ -52,7 +52,12 @@ class FeedDataSourceImpl implements FeedDataSource {
   @override
   Future<List<LikeEntity>> getPostLikes(String id, int page,int size) async {
     var response = await coreHttp.get(
-      route: '/likes/$id?total=10',
+      route: '/likes',
+      queryParameters: {
+        'postId': id,
+        'page': page,
+        'size': size,
+      },
     );
     return coreMappersParseList(
       response.data,
@@ -66,14 +71,19 @@ class FeedDataSourceImpl implements FeedDataSource {
       route: '/comment',
       body: {
         "postId": postId,
-        "comment":comment.id
+        "comment":comment.comment
       }
     );
     return CommentEntity.fromJson(response.data);
   }
 
   @override
-  void createLike(id, LikeEntity like) {
-    // TODO: implement createLike
+  void createLike(id, LikeEntity like) async{
+    await coreHttp.post(
+      route: '/likes',
+      body: {
+        "postId":id
+      }
+    );
   }
 }

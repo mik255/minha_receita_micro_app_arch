@@ -59,6 +59,15 @@ abstract class CommentsState {}
 
 class CommentsInactive extends CommentsState {}
 
+class CommentOnPostStateLoading extends CommentsStateLoaded {
+  String? postId;
+
+  CommentOnPostStateLoading({
+    this.postId,
+    required super.commentsList,
+  });
+}
+
 class CommentsStateLoading extends CommentsState {}
 
 class CommentsStateLoaded extends CommentsState {
