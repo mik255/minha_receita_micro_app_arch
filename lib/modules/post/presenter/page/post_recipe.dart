@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/design_system/avatar/avatar.dart';
@@ -30,7 +31,9 @@ class _PostRecipePageState extends State<PostRecipePage> {
     if(initialState){
       var recipeData = ModalRoute.of(context)!.settings.arguments as RecipeModel;
       recipe = recipeData;
-      print("recipe id "+recipe!.id);
+      if (kDebugMode) {
+        print("recipe id ${recipe!.id}");
+      }
       initialState = false;
     }
     super.didChangeDependencies();

@@ -5,29 +5,36 @@ import 'package:minha_receita/modules/home/domain/repository/post_repository.dar
 
 import '../datasource/feed_datasource.dart';
 
-class FeedRepositoryImpl implements HomeFeedRepository {
+class FeedRepositoryImpl implements PostRepository {
   final FeedDataSource _feedDataSource;
 
   FeedRepositoryImpl({required FeedDataSource feedDataSource})
       : _feedDataSource = feedDataSource;
 
   @override
-  Future<List<PostEntity>> getPostList(int page,int size) async {
-    return await _feedDataSource.getListPost(page,size);
+  Future<List<PostEntity>> getPostList(int page, int size) async {
+    return await _feedDataSource.getListPost(page, size);
   }
 
   @override
-  Future<List<CommentEntity>> getPostCommentsByPostId(String postId, int page,int size) {
-    return _feedDataSource.getPostComments(postId,page,size);
+  Future<List<CommentEntity>> getCommentsByPostId(
+      String postId, int page, int size) {
+    return _feedDataSource.getPostComments(postId, page, size);
   }
 
   @override
-  Future<List<LikeEntity>> getPostLikes(String id,int count) {
-    return _feedDataSource.getPostLikes(id,count);
+  Future<List<LikeEntity>> getPostLikes(String id, int page, int size) {
+    return _feedDataSource.getPostLikes(id, page, size);
   }
 
   @override
-  Future<CommentEntity> createComment(String postId, String comment) {
-    return _feedDataSource.createComment(postId,comment);
+  Future<CommentEntity> createComment(String postId, CommentEntity comment) {
+    return _feedDataSource.createComment(postId, comment);
   }
+
+  @override
+  createLike(id, LikeEntity like) {
+     _feedDataSource.createLike(id, like);
+  }
+  
 }

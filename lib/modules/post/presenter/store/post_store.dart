@@ -1,8 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
-import 'package:minha_receita/modules/common/user/domain/models/user.dart';
-import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
-import 'package:minha_receita/modules/recipe/domain/use_case/post_recipe.dart';
 
 import '../../domain/models/post.dart';
 import '../../domain/usecases/post_usecases.dart';

@@ -1,5 +1,6 @@
 
-import 'comment_entity.dart';
+import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
+
 import 'like_entity.dart';
 class PostEntity {
   PostEntity({
@@ -21,13 +22,13 @@ class PostEntity {
   final String avatarImgUrl;
   final String name;
   final List<String> imgUrlList;
-  final int likesCount;
-  final int commentsCount;
+  int likesCount;
+  int commentsCount;
   bool userLiked;
   final String? description;
   final String? createdAt;
-  final List<LikeEntity> likesList;
-
+  List<LikeEntity> likesList;
+  final List<CommentEntity> commentsList = [];
   factory PostEntity.fromJson(Map<String, dynamic> json) =>
       PostEntity(
         id: json["id"],
@@ -39,7 +40,7 @@ class PostEntity {
         likesList: List<LikeEntity>.from(
             json["towFirstLikes"].map((x) => LikeEntity.fromJson(x))),
         likesCount: json["likesCount"],
-        userLiked: json["userLiked"]??false,
+        userLiked: json["userIsFollowing"]??false,
         description: json["description"]??'description null',
         createdAt: json["createdAt"],
         commentsCount: json["commentsCount"],

@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:minha_receita/core/drivers/camera_access.dart';
 import 'package:minha_receita/modules/recipe/presenter/components/video_player_component.dart';
-import 'package:minha_receita/modules/recipe/presenter/states/ingredients_states.dart';
 
 import '../../../../design_system/containers/custom_container.dart';
 import '../../../../design_system/menu/navigation_menu_bar/item.dart';

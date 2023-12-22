@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/design_system/avatar/avatar.dart';
 import 'package:minha_receita/modules/common/extensions/string.dart';
-import 'package:minha_receita/modules/home/presenter/store/comments_store/comments_store.dart';
-
+import 'package:minha_receita/modules/home/presenter/store/home_states.dart';
+import 'package:minha_receita/modules/home/presenter/store/home_store.dart';
 import '../../../../design_system/divider/divider.dart';
 import '../../../../design_system/modals_contents/list_modal_with_lazy_loading.dart';
 import '../../../../modules_injections.dart';
 import '../../domain/model/post_entity.dart';
-import '../store/comments_store/states/comments_states.dart';
 
 class CommentsModalContent extends StatefulWidget {
-  const CommentsModalContent({super.key, required this.postEntity});
+  const CommentsModalContent({
+    super.key,
+    required this.postEntity,
+  });
 
   final PostEntity postEntity;
 
@@ -20,45 +22,36 @@ class CommentsModalContent extends StatefulWidget {
 }
 
 class _CommentsModalContentState extends State<CommentsModalContent> {
-  CommentsStore get store => GetIt.I.get<CommentsStore>();
   final ScrollController _scrollController = ScrollController();
-
   int page = 1;
 
-  bool _isInitialLoading() {
-    return store.state is CommentLoadingState && page == 1;
-  }
+  HomeStore get store => GetIt.I.get<HomeStore>();
 
   @override
   void initState() {
-    super.initState();
     store.getPostComments(widget.postEntity, page);
+    super.initState();
   }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-        listenable: store,
+    return StreamBuilder(
+        stream: store.commentsState,
         builder: (context, _) {
-          if (_isInitialLoading()) {
+          var state = store.commentsState.value;
+          if (state is CommentsStateLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (store.state is CommentFailureState) {
+          if (state is CommentsStateError) {
             return const Center(child: Text("Serviço indisponível"));
           }
+          state = state as CommentsStateLoaded;
           return DSListModalWithLazyLoading(
             scrollController: _scrollController,
             onLazeLoading: () async {
               page++;
               await store.getPostComments(widget.postEntity, page);
             },
-            items: store.comments
+            items: state.commentsList
                 .map(
                   (index) => Column(
                     mainAxisAlignment: MainAxisAlignment.start,

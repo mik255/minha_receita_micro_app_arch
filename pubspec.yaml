@@ -50,6 +50,7 @@ dependencies:
   webview_flutter: ^3.0.0
   video_compress:
   visibility_detector:
+  rxdart:
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:minha_receita/core/services/files_service_interface.dart';
 import 'package:minha_receita/modules/recipe/data/repository/recipe_repository.dart';
 import 'package:minha_receita/modules/recipe/domain/use_case/get_recipe_by_id.dart';
 import 'package:minha_receita/modules/recipe/domain/use_case/post_recipe.dart';

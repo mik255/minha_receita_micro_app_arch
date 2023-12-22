@@ -9,9 +9,11 @@ abstract class FeedDataSource {
 
   Future<List<CommentEntity>> getPostComments(String postId, int page,int size);
 
-  Future<List<LikeEntity>> getPostLikes(String feedId, int count);
+  Future<List<LikeEntity>> getPostLikes(String feedId, int page,int size);
 
-  Future<CommentEntity> createComment(String postId, String comment);
+  Future<CommentEntity> createComment(String postId, CommentEntity comment);
+
+  void createLike(id, LikeEntity like);
 }
 
 class FeedDataSourceImpl implements FeedDataSource {
@@ -48,7 +50,7 @@ class FeedDataSourceImpl implements FeedDataSource {
   }
 
   @override
-  Future<List<LikeEntity>> getPostLikes(String id, int count) async {
+  Future<List<LikeEntity>> getPostLikes(String id, int page,int size) async {
     var response = await coreHttp.get(
       route: '/likes/$id?total=10',
     );
@@ -59,14 +61,19 @@ class FeedDataSourceImpl implements FeedDataSource {
   }
 
   @override
-  Future<CommentEntity> createComment(String postId, String comment) async{
+  Future<CommentEntity> createComment(String postId, CommentEntity comment) async{
     var response = await coreHttp.post(
       route: '/comment',
       body: {
         "postId": postId,
-        "comment":comment
+        "comment":comment.id
       }
     );
     return CommentEntity.fromJson(response.data);
+  }
+
+  @override
+  void createLike(id, LikeEntity like) {
+    // TODO: implement createLike
   }
 }

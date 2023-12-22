@@ -4,10 +4,10 @@ import '../snack_bar/sack_bar.dart';
 
 class DSFavoriteButtonIcon extends StatefulWidget {
   const DSFavoriteButtonIcon(
-      {super.key, required this.onTap, required this.userLiked});
+      {super.key, required this.onTap, required this.isFavorite});
 
   final Function(bool) onTap;
-  final bool userLiked;
+  final bool isFavorite;
 
   @override
   State<DSFavoriteButtonIcon> createState() => _DSFavoriteButtonIconState();
@@ -15,7 +15,7 @@ class DSFavoriteButtonIcon extends StatefulWidget {
 
 class _DSFavoriteButtonIconState extends State<DSFavoriteButtonIcon> {
   late bool userLiked = () {
-    return widget.userLiked;
+    return widget.isFavorite;
   }();
 
   void onTap() {

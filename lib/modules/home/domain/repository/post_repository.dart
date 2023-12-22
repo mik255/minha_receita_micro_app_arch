@@ -3,12 +3,14 @@ import 'package:minha_receita/modules/home/domain/model/like_entity.dart';
 
 import '../model/comment_entity.dart';
 
-abstract class HomeFeedRepository {
+abstract class PostRepository {
   Future<List<PostEntity>> getPostList(int page,int size);
 
-  Future<List<CommentEntity>> getPostCommentsByPostId(String postId, int page,int size);
+  Future<List<CommentEntity>> getCommentsByPostId(String postId, int page,int size);
 
-  Future<List<LikeEntity>> getPostLikes(String postId, int count);
+  Future<List<LikeEntity>> getPostLikes(String postId, int page,int size);
 
-  Future<CommentEntity> createComment(String postId, String comment);
+  Future<CommentEntity> createComment(String postId, CommentEntity comment);
+
+  createLike(id, LikeEntity like);
 }

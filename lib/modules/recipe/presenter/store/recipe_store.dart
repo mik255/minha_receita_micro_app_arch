@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/modules/common/navigator/navigator.dart';
 import 'package:minha_receita/modules/common/user/domain/models/user.dart';
@@ -218,7 +218,9 @@ class RecipeStore extends ChangeNotifier {
       notifyListeners();
       CommonNavigator.navigateTo('/post/recipe',args: recipeResponse);
     } catch (e, _) {
-      print(_);
+      if (kDebugMode) {
+        print(_);
+      }
       //  state = RecipeException();
       //  notifyListeners();
     }

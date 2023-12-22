@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../tokens/colors/colors.dart';
 import '../tokens/typography/app_typography.dart';
 
 enum DSCustomButtonTypes { solid, outline }

@@ -53,7 +53,9 @@ class CameraAccessImpl implements DeviceDataAccess {
       }
     } catch (error) {
       // Tratar erros, por exemplo, permissões negadas
-      print('Erro ao selecionar vídeos: $error');
+      if (kDebugMode) {
+        print('Erro ao selecionar vídeos: $error');
+      }
       return [];
     }
   }
@@ -67,8 +69,10 @@ class CameraAccessImpl implements DeviceDataAccess {
       );
       return result!.file!;
     } catch (error) {
-      print('Erro ao converter o vídeo: $error');
-      throw error;
+      if (kDebugMode) {
+        print('Erro ao converter o vídeo: $error');
+      }
+      rethrow;
     }
   }
   @override

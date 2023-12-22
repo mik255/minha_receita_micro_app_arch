@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:minha_receita/core/http/core_response.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../../../core/http/core_http.dart';
@@ -123,7 +122,9 @@ class CommonHttp implements CoreHttp {
       );
     } catch (error) {
       // Trate os erros aqui
-      print('Erro na requisição multipart: $error');
+      if (kDebugMode) {
+        print('Erro na requisição multipart: $error');
+      }
       return CommonResponse(
         statusCode: -1, // Defina um código de status adequado para erros
         data: null,
