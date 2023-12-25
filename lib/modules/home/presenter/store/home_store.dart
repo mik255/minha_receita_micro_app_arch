@@ -68,7 +68,24 @@ class HomeStore {
       return 'Erro ao curtir postagem';
     }
   }
+  Future<String?> onRemoveLike(PostEntity post, LikeEntity like) async {
+    try {
+      postState.value = PostStateLoading();
+      await _postUseCases.removeLike(post, like);
+      postState.value = PostStateLoaded(postList: _cachedPostList);
+      return null;
+    } catch (e, _) {
+      if (kDebugMode) {
+        print(e);
+        print(_);
+      }
 
+      postState.value = PostStateError(
+        message: e.toString(),
+      );
+      return 'Erro ao descurtir postagem';
+    }
+  }
   Future<String?> onCreateComment(
       PostEntity post, CommentEntity comment) async {
     try {
@@ -79,7 +96,7 @@ class HomeStore {
       await _postUseCases.createComment(post, comment);
       postState.value = PostStateLoaded(postList: _cachedPostList);
       return null;
-    } catch (e,_) {
+    } catch (e, _) {
       if (kDebugMode) {
         print(e);
         print(_);
@@ -90,6 +107,8 @@ class HomeStore {
       return 'Erro ao comentar postagem';
     }
   }
+
+
 
   Future<void> getPostLikes(PostEntity post, int page) async {
     try {

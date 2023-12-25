@@ -14,6 +14,8 @@ abstract class FeedDataSource {
   Future<CommentEntity> createComment(String postId, CommentEntity comment);
 
   void createLike(id, LikeEntity like);
+
+  void removeLike(String id, LikeEntity like);
 }
 
 class FeedDataSourceImpl implements FeedDataSource {
@@ -83,6 +85,17 @@ class FeedDataSourceImpl implements FeedDataSource {
       route: '/likes',
       body: {
         "postId":id
+      }
+    );
+  }
+
+  @override
+  void removeLike(String id, LikeEntity like) {
+    coreHttp.delete(
+      route: '/likes',
+      queryParameters: {
+        "postId":id,
+        "likeId":like.id
       }
     );
   }

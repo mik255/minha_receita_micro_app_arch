@@ -1,7 +1,7 @@
-
 import 'package:minha_receita/modules/home/domain/model/comment_entity.dart';
 
 import 'like_entity.dart';
+
 class PostEntity {
   PostEntity({
     required this.id,
@@ -29,32 +29,31 @@ class PostEntity {
   final String? createdAt;
   List<LikeEntity> likesList;
   final List<CommentEntity> commentsList = [];
-  factory PostEntity.fromJson(Map<String, dynamic> json) =>
-      PostEntity(
+
+  factory PostEntity.fromJson(Map<String, dynamic> json) => PostEntity(
         id: json["id"],
         recipeId: json["recipeId"],
-        name: json["userData"]["nome"]??'name null',
-        avatarImgUrl: json["userData"]["avatarUrl"],
+        name: json["userData"]["nome"] ?? 'name null',
+        avatarImgUrl: json["userData"]?["avatarUrl"]?? 'https://i.stack.imgur.com/l60Hf.png',
         imgUrlList:
-        List<String>.from(json["recipeImageUrl"].map((x) => x['url'])),
+            List<String>.from(json["recipeImageUrl"].map((x) => x['url'])),
         likesList: List<LikeEntity>.from(
             json["towFirstLikes"].map((x) => LikeEntity.fromJson(x))),
         likesCount: json["likesCount"],
-        userLiked: json["userIsFollowing"]??false,
-        description: json["description"]??'description null',
+        userLiked: json["userLiked"] ?? false,
+        description: json["description"] ?? 'description null',
         createdAt: json["createdAt"],
         commentsCount: json["commentsCount"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "recipeId": recipeId,
         "name": name,
         "avatarImgUrl": avatarImgUrl,
         "recipeImgUrlList": List<dynamic>.from(imgUrlList.map((x) => x)),
         "listTowFirstLikes":
-        List<dynamic>.from(likesList.map((x) => x.toJson())),
+            List<dynamic>.from(likesList.map((x) => x.toJson())),
         "likesCount": likesCount,
         "userLiked": userLiked,
         "description": description,

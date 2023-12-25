@@ -15,6 +15,8 @@ abstract class PostUseCases {
       PostEntity feedEntity, int page, int size);
 
   Future<void> createComment(PostEntity feedEntity, CommentEntity comment);
+
+  Future<void> removeLike(PostEntity post, LikeEntity like);
 }
 
 class GetPostUseCasesImpl implements PostUseCases {
@@ -30,8 +32,7 @@ class GetPostUseCasesImpl implements PostUseCases {
   ) async {
     var list = await _postRepository.getPostList(page, size);
     list = list.toSet().toList();
-    list.sort((a, b) =>
-        DateTime.parse(b.createdAt!).compareTo(DateTime.parse(a.createdAt!)));
+    list.sort((a, b) => DateTime.parse(b.createdAt!).compareTo(DateTime.parse(a.createdAt!)));
     return list;
   }
 
@@ -41,6 +42,7 @@ class GetPostUseCasesImpl implements PostUseCases {
     CommentEntity comment,
   ) async {
     var result = await _postRepository.createComment(feedEntity.id, comment);
+    feedEntity.commentsCount++;
     feedEntity.commentsList.add(result);
   }
 
@@ -52,6 +54,7 @@ class GetPostUseCasesImpl implements PostUseCases {
     await _postRepository.createLike(feedEntity.id, like);
     feedEntity.likesList.add(like);
     feedEntity.likesList.toSet().toList();
+    feedEntity.likesCount++;
   }
 
   @override
@@ -60,13 +63,21 @@ class GetPostUseCasesImpl implements PostUseCases {
     int page,
     int size,
   ) async {
-    var comments = await _postRepository.getCommentsByPostId(feedEntity.id, page, size);
+    var comments = await _postRepository.getCommentsByPostId(
+      feedEntity.id,
+      page,
+      size,
+    );
     feedEntity.commentsList.addAll(comments);
     feedEntity.commentsList.toSet().toList();
-    feedEntity.commentsList.sort((a, b) =>
-        DateTime.parse(b.createdAt).compareTo(DateTime.parse(a.createdAt)));
+    feedEntity.commentsList.sort(
+      (a, b) => DateTime.parse(b.createdAt).compareTo(
+        DateTime.parse(a.createdAt),
+      ),
+    );
     feedEntity.commentsCount = feedEntity.commentsList.length - 1;
-    if(feedEntity.commentsCount < 0) feedEntity.commentsCount = 0;
+    if (feedEntity.commentsCount < 0) feedEntity.commentsCount = 0;
+
     return comments;
   }
 
@@ -80,6 +91,20 @@ class GetPostUseCasesImpl implements PostUseCases {
     feedEntity.likesList.addAll(likes);
     feedEntity.likesList.toSet().toList();
     feedEntity.likesCount++;
+    Map<String, LikeEntity> list = {};
+    for (var element in feedEntity.likesList) {
+      list[element.name] = element;
+    }
+    feedEntity.likesList = list.values.toList();
     return likes;
+  }
+
+  @override
+  Future<void> removeLike(PostEntity post, LikeEntity like) async {
+    await _postRepository.removeLike(post.id, like);
+    post.likesList.remove(like);
+    post.likesList.toSet().toList();
+    post.likesCount--;
+    if (post.likesCount < 0) post.likesCount = 0;
   }
 }

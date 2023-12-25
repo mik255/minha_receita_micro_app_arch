@@ -86,13 +86,24 @@ class _FeedCardState extends State<FeedCard> {
             onTap: (bool isLiked) async {
               widget.feedEntity.userLiked = isLiked;
               var user = GetIt.I.get<UserModel>();
-              LikeEntity like = LikeEntity(
-                urlImg: user.avatarImgUrl!,
-                name: user.name!,
-                description: '',
-                isFallowing: isLiked,
-              );
-              var hasError = await store.onCreateLike(widget.feedEntity, like);
+
+              String? hasError = await () async {
+                if (isLiked) {
+                  LikeEntity like = LikeEntity(
+                    id: '',
+                    autorUserId: user.id!,
+                    urlImg: user.avatarImgUrl??'null in string',
+                    name: user.name!,
+                    description: '',
+                    isFallowing: isLiked,
+                  );
+                  return await store.onCreateLike(widget.feedEntity, like);
+                }
+                var like = widget.feedEntity.likesList.firstWhere(
+                  (element) => element.autorUserId == user.id,
+                );
+                return await store.onRemoveLike(widget.feedEntity, like);
+              }();
               if (hasError != null) {
                 // ignore: use_build_context_synchronously
                 context.commonExtensionsShowDSModal(
@@ -289,7 +300,7 @@ class _FeedCardState extends State<FeedCard> {
                   var user = GetIt.I.get<UserModel>();
                   final comment = CommentEntity(
                     id: '',
-                    urlImg: user.avatarImgUrl!,
+                    urlImg: user.avatarImgUrl??'null in string',
                     name: user.name!,
                     comment: commentTextController.text,
                     createdAt: '',

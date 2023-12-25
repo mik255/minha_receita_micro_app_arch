@@ -36,5 +36,10 @@ class FeedRepositoryImpl implements PostRepository {
   createLike(id, LikeEntity like) {
      _feedDataSource.createLike(id, like);
   }
+
+  @override
+  removeLike(String id, LikeEntity like) {
+    _feedDataSource.removeLike(id, like);
+  }
   
 }

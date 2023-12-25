@@ -31,11 +31,6 @@ class _LikesModalContentState extends State<LikesModalContent> {
     store.getPostLikes(widget.postEntity, page);
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

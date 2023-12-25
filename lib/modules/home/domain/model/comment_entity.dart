@@ -30,7 +30,7 @@ class CommentEntity {
         updatedAt: '',
         userId: json['user']["_id"],
         postId: json['value']["postId"],
-        urlImg: json['user']["avatarUrl"],
+        urlImg: json['user']?["avatarUrl"]??'https://i.stack.imgur.com/l60Hf.png',
         name: json['user']["nome"],
         replyChildrenId: '',
       );

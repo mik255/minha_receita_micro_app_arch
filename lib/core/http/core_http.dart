@@ -7,11 +7,11 @@ abstract class CoreHttp {
 
   Future<CoreResponse> get({required String route, dynamic queryParameters});
 
-  Future<CoreResponse> post({required String route, dynamic body});
+  Future<CoreResponse> post({required String route, dynamic body,queryParameters});
 
-  Future<CoreResponse> put({required String route, dynamic body});
+  Future<CoreResponse> put({required String route, dynamic body,queryParameters});
 
-  Future<CoreResponse> delete({required String route, dynamic body});
+  Future<CoreResponse> delete({required String route, dynamic body,queryParameters});
 
   Future<CoreResponse> multipartRequest({required String route, required List<File> files});
 }

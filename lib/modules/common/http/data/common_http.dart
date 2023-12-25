@@ -46,7 +46,8 @@ class CommonHttp implements CoreHttp {
   }
 
   @override
-  Future<CommonResponse> post({required String route, dynamic body}) async {
+  Future<CommonResponse> post(
+      {required String route, dynamic body, queryParameters}) async {
     var response = await dio.post(
       route,
       data: body,
@@ -59,10 +60,12 @@ class CommonHttp implements CoreHttp {
   }
 
   @override
-  Future<CommonResponse> delete({required String route, body}) async {
-    var response = await dio.post(
+  Future<CommonResponse> delete(
+      {required String route, body, queryParameters}) async {
+    var response = await dio.delete(
       route,
       data: body,
+      queryParameters: queryParameters,
     );
     return CommonResponse(
       statusCode: response.statusCode,
@@ -72,7 +75,8 @@ class CommonHttp implements CoreHttp {
   }
 
   @override
-  Future<CommonResponse> put({required String route, body}) async {
+  Future<CommonResponse> put(
+      {required String route, body, queryParameters}) async {
     var response = await dio.post(
       route,
       data: body,
