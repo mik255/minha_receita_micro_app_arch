@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/auth/build" />
+      <excludeFolder url="file://$MODULE_DIR$/auth/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/auth/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_common/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_common/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_common/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_auth/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_auth/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_auth/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_core/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_core/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_core/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_design_system/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_design_system/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_design_system/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_account/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_account/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_account/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_home/build" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_home/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/micro_app_home/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/file_selector_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/image_picker_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/windows/flutter/ephemeral/.plugin_symlinks/permission_handler_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/file_selector_linux/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/base_app/linux/flutter/ephemeral/.plugin_symlinks/image_picker_linux/example/.dart_tool" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
+  </component>
+</module>
