@@ -27,5 +27,7 @@ export 'src/text_inputs/exports.dart';
 export 'src/title/exports.dart';
 export 'src/tokens/exports.dart';
 export 'src/themes.dart';
+export 'src/logo/app_logo.dart';
+export 'src/animations/gets/dark_mode.dart';
 
 

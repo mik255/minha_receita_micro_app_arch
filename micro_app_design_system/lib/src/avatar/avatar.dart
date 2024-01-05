@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:micro_app_design_system/micro_app_design_system.dart';
 import '../containers/custom_container.dart';
 
 class DSAvatar extends StatelessWidget {
@@ -54,7 +55,7 @@ class DSAvatar extends StatelessWidget {
         if (date != null)
           Text(
             //'• ${date!.coreExtensionsLastTime}',
-            '• ${date!.toString()}',
+            '• ${date!.coreExtensionsLastTime}',
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: theme.colorScheme.onSecondary),
           ),
