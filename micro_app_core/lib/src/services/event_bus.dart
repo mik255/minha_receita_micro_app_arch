@@ -1,5 +1,7 @@
-class EventData{}
+abstract class EventData{
+  Map<String,dynamic> toJson();
+}
 abstract class EventBusService{
-  void on<EventData>(Function(EventData) callback);
-  void emit<EventData>(EventData event);
+  void on<T extends EventData>(Function(T) callback);
+  void emit<T extends EventData>(T event);
 }

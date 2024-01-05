@@ -214,11 +214,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           width: !appTheme.isDarkTheme ? 25 : 20,
                           duration: const Duration(milliseconds: 1000),
                           curve: Curves.easeIn,
-                          child: Lottie.asset(
-                            'lib/design_system/animations/assets/dark_mode.json',
-                            repeat: false,
-                            animate: true,
-                            controller: appTheme.getAnimController(this),
+                          child: DSGetAnimations().darkMode(
+                            appTheme.getAnimController(this),
                           ),
                         ),
                         const SizedBox(

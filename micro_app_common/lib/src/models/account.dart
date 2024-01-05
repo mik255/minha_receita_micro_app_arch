@@ -18,4 +18,9 @@ class Account {
         "user": user.toJson(),
         "token": token,
       };
+
+  @override
+  String toString() {
+    return 'Account{user: $user, token: $token}';
+  }
 }

@@ -16,7 +16,7 @@ class AuthService {
   void auth() async {
     eventBusService.on<AuthEvent>((event) async {
       var response = await authRepositoryImp.auth(event.credentials);
-      eventBusService.emit(AuthenticatedEvent(response));
+      eventBusService.emit<AuthenticatedEvent>(AuthenticatedEvent(response));
     });
   }
 }

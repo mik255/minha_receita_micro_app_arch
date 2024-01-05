@@ -16,4 +16,9 @@ class Credentials {
         "email": email,
         "password": password,
       };
+
+  @override
+  String toString() {
+    return 'Credentials{email: $email, password: $password}';
+  }
 }

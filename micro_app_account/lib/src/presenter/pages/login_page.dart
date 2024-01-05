@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 80),
-                    child: Image.asset('lib/design_system/assets/logo.png'),
+                    child: DSLogo().get(),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(32.0),

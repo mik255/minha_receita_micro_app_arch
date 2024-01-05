@@ -8,7 +8,7 @@ class LikeEntity {
     required this.autorUserId,
   });
   String id;
-  String urlImg;
+  String? urlImg;
   String name;
   String description;
   bool isFallowing;
@@ -16,7 +16,7 @@ class LikeEntity {
 
   factory LikeEntity.fromJson(Map<String, dynamic> json) => LikeEntity(
         id: json["id"],
-        urlImg: json["avatarUrl"]??'https://i.stack.imgur.com/l60Hf.png',
+        urlImg: json["avatarUrl"],
         name: json["userName"],
         description: json["description"]??'Sem descrição',
         isFallowing: json["userIsFollowing"],

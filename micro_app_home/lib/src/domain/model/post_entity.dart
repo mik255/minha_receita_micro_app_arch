@@ -18,7 +18,7 @@ class PostEntity {
 
   final String id;
   final String recipeId;
-  final String avatarImgUrl;
+  final String? avatarImgUrl;
   final String name;
   final List<String> imgUrlList;
   int likesCount;
@@ -33,7 +33,7 @@ class PostEntity {
         id: json["id"],
         recipeId: json["recipeId"],
         name: json["userData"]["nome"] ?? 'name null',
-        avatarImgUrl: json["userData"]?["avatarUrl"]?? 'https://i.stack.imgur.com/l60Hf.png',
+        avatarImgUrl: json["userData"]?["avatarUrl"],
         imgUrlList:
             List<String>.from(json["recipeImageUrl"].map((x) => x['url'])),
         likesList: List<LikeEntity>.from(

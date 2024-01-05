@@ -82,7 +82,7 @@ class _FeedCardState extends State<FeedCard> {
                   LikeEntity like = LikeEntity(
                     id: '',
                     autorUserId: user.id!,
-                    urlImg: user.avatarImgUrl ?? 'null in string',
+                    urlImg: user.avatarImgUrl ??'https://i.stack.imgur.com/l60Hf.png',
                     name: user.name!,
                     description: '',
                     isFallowing: isLiked,
@@ -125,7 +125,8 @@ class _FeedCardState extends State<FeedCard> {
       children: [
         DSAvatar(
           imgUrl:
-              '${CommonInjections.baseUrl}/${widget.feedEntity.avatarImgUrl}',
+          widget.feedEntity.avatarImgUrl??'https://i.stack.imgur.com/l60Hf.png',
+             // '${CommonInjections.baseUrl}/${widget.feedEntity.avatarImgUrl}',
           name: widget.feedEntity.name,
           date: widget.feedEntity.createdAt?.coreExtensionsConvertToDate(),
         ),
@@ -219,8 +220,8 @@ class _FeedCardState extends State<FeedCard> {
                       child: DSCustomContainer(
                         height: 24,
                         width: 24,
-                        imgURL:
-                            "${CommonInjections.baseUrl}/${likeList[index].urlImg}",
+                        imgURL: likeList[index].urlImg ??'https://i.stack.imgur.com/l60Hf.png'
+                          //  "${CommonInjections.baseUrl}/${likeList[index].urlImg}",
                       ),
                     ),
                   )
@@ -228,7 +229,8 @@ class _FeedCardState extends State<FeedCard> {
                   DSCustomContainer(
                     height: 24,
                     width: 24,
-                    imgURL: "${CommonInjections.baseUrl}/${likeList[0].urlImg}",
+                    imgURL: likeList[0].urlImg ??'https://i.stack.imgur.com/l60Hf.png'
+                   // "${CommonInjections.baseUrl}/${likeList[0].urlImg}",
                   )
               ],
             ),
