@@ -1,4 +1,4 @@
-sealed class RegisterState {}
+abstract class RegisterState {}
 
 class RegisterInitial extends RegisterState {}
 class RegisterLoading extends RegisterState {}

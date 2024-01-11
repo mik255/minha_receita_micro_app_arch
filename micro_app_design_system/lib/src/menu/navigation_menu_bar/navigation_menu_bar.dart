@@ -50,6 +50,7 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

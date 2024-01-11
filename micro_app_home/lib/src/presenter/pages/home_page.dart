@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:micro_app_common/micro_app_common.dart';
+import 'package:micro_app_core/micro_app_core.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
 import '../componentes/feed_card.dart';
 import '../store/home_states.dart';
@@ -19,7 +20,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final homeStore = GetIt.I.get<HomeStore>();
   final pageController = PageController();
   final ScrollController scrollController = ScrollController();
- // UserModel get userModel => GetIt.I<UserModel>();
+
+  // UserModel get userModel => GetIt.I<UserModel>();
   int page = 1;
 
   @override
@@ -32,6 +34,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       }
     });
     controller = AnimationController(vsync: this);
+    GetIt.I<EventBusService>().on<AccountAuthenticatedEvent>((event) {
+      homeStore.getListPosts(page);
+    });
     super.initState();
   }
 
@@ -51,9 +56,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           const DSDrawerMenuItem(text: 'Minhas receitas'),
           const DSDrawerMenuItem(text: 'Alterar nome'),
           DSDrawerMenuItem(
+            text: 'Adicionar receita',
+            onTap: () {
+              CommonNavigator.navigateKey.currentState!
+                  .pushNamed('/recipe/register');
+            },
+          ),
+          DSDrawerMenuItem(
             text: 'Sair',
             onTap: () {
-              Navigator.of(context)
+              CommonNavigator.navigateKey.currentState!
                   .pushNamedAndRemoveUntil('/account/login', (route) => false);
             },
           ),
@@ -76,11 +88,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               pageController: pageController,
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
                         controller: scrollController,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _topNavigatorMenu(state),
                             ListView.builder(
@@ -89,7 +104,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               itemCount: state.postList.length,
                               itemBuilder: (context, index) {
                                 return FeedCard(
-                                  feedEntity: (state as PostStateLoaded).postList[index],
+                                  feedEntity: (state as PostStateLoaded)
+                                      .postList[index],
                                 );
                               },
                             ),
@@ -163,7 +179,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             items: [
               ...state.postList.map(
                 (e) => DSNavigationMenuBarItem(
-                  subtitle: e.description,
+                 // subtitle: e.description,
                   width: 70,
                   customContainer: DSCustomContainer(
                     borderSide: BorderSide(
@@ -199,8 +215,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: InkWell(
           onTap: appTheme.switchTheme,
           child: Center(
-            child: ListenableBuilder(
-                listenable: appTheme,
+            child: AnimatedBuilder(
+                animation: appTheme,
                 builder: (context, _) {
                   return ColorFiltered(
                     colorFilter: const ColorFilter.mode(

@@ -22,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return AppDSBasePage(
       withScroll: true,
-      body: ListenableBuilder(
-          listenable: store,
+      body: AnimatedBuilder(
+          animation: store,
           builder: (context, snapshot) {
             return SingleChildScrollView(
               child: Column(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:micro_app_common/micro_app_common.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
+import '../../../micro_app_home.dart';
 import '../../domain/model/comment_entity.dart';
 import '../../domain/model/like_entity.dart';
 import '../../domain/model/post_entity.dart';
@@ -75,7 +75,7 @@ class _FeedCardState extends State<FeedCard> {
           return DSFavoriteButtonIcon(
             onTap: (bool isLiked) async {
               widget.feedEntity.userLiked = isLiked;
-              var user = GetIt.I.get<UserModel>();
+              var user = HomeInjections.account!.user;
 
               String? hasError = await () async {
                 if (isLiked) {
@@ -290,7 +290,7 @@ class _FeedCardState extends State<FeedCard> {
               return DSTextButton(
                 text: 'Publicar',
                 onPressed: () async {
-                  var user = GetIt.I.get<UserModel>();
+                  var user =  HomeInjections.account!.user;
                   final comment = CommentEntity(
                     id: '',
                     urlImg: user.avatarImgUrl ?? 'null in string',

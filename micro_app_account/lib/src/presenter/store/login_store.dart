@@ -4,6 +4,7 @@ import 'package:micro_app_core/micro_app_core.dart';
 import '../states/login_states.dart';
 
 class LoginStore extends ChangeNotifier {
+  Account? account;
   final EventBusService _eventBusService;
   String email = '';
   String password = '';
@@ -69,10 +70,16 @@ class LoginStore extends ChangeNotifier {
           ),
         ),
       );
-      _eventBusService.on<AuthenticatedEvent>((event) async {
+      _eventBusService.on<AuthenticatedEvent>((
+        event,
+      ) async {
+        account = event.account;
         state = LoginInitial();
         buttonEnabled = true;
         notifyListeners();
+        _eventBusService.emit(
+          GetAccountEvent(account!),
+        );
         _eventBusService.emit<AccountAuthenticatedEvent>(
           AccountAuthenticatedEvent(),
         );

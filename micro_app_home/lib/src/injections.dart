@@ -7,16 +7,19 @@ import 'data/repository/feed_repository.dart';
 import 'domain/repository/post_repository.dart';
 import 'domain/usecases/post_usecases.dart';
 
-
 class HomeInjections {
+  static Account? account;
   GetIt getIt = GetIt.instance;
+  EventBusService eventBusService;
+
+  HomeInjections(this.eventBusService);
 
   void init() {
     _registerDataSources();
     _registerRepositories();
     _registerUseCases();
     _registerStores();
-    navigateListeners();
+    events();
   }
 
   void _registerDataSources() {
@@ -47,9 +50,15 @@ class HomeInjections {
     ));
   }
 
-  void navigateListeners() {
+  void events() {
     var eventBusService = getIt<EventBusService>();
-    eventBusService.on<AccountAuthenticatedEvent>((event) {
+    eventBusService.on<GetAccountEvent>((event) {
+      account = event.account;
+    });
+
+    eventBusService.on<AccountAuthenticatedEvent>((
+      event,
+    ) async {
       CommonNavigator.navigateKey.currentState!
           .pushReplacementNamed('/home/main');
     });

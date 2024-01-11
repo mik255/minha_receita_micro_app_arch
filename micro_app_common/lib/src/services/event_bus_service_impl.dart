@@ -29,7 +29,6 @@ class EventBusServiceImpl implements EventBusService {
       _logger.i(prettyJson);
       _logger.i('Stacktrace');
       _logger.i(StackTrace.current.toString().split('\n').take(6).join('\n'));
-
     }
   }
 
@@ -44,5 +43,14 @@ class EventBusServiceImpl implements EventBusService {
       _log('Event name: ${event.runtimeType}', event);
       callback(event);
     });
+  }
+
+  @override
+  void request<T extends EventData>(T event, Function(T p1) callback) {
+    _eventBus.on<T>().listen((event) {
+      _log('Event name: ${event.runtimeType}', event);
+      callback(event);
+    });
+    _eventBus.fire(event);
   }
 }

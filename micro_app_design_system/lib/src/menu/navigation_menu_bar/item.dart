@@ -23,6 +23,8 @@ class DSNavigationMenuBarItem extends StatelessWidget {
       width: width,
       height: height,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(
