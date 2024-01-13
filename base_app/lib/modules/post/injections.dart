@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:micro_app_core/micro_app_core.dart';
 
 import 'package:minha_receita/modules/post/domain/usecases/post_usecases.dart';
 import 'package:minha_receita/modules/post/presenter/store/post_store.dart';
+import '../../core/http/core_http.dart';
 import 'data/datasource/post_datasource.dart';
 import 'data/repository_impl/post_repository_impl.dart';
 import 'domain/repository/post_repository.dart';

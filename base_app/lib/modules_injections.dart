@@ -1,8 +1,12 @@
-import 'package:micro_app_account/micro_app_account.dart';
-import 'package:micro_app_auth/micro_app_auth.dart';
-import 'package:micro_app_common/micro_app_common.dart';
-import 'package:micro_app_core/micro_app_core.dart';
-import 'package:micro_app_home/micro_app_home.dart';
+import 'package:get_it/get_it.dart';
+
+import 'common/http/data/common_http.dart';
+import 'common/injections.dart';
+import 'core/http/core_http.dart';
+import 'core/services/event_bus.dart';
+import 'modules/account/injections.dart';
+import 'modules/auth/injections.dart';
+import 'modules/home/injections.dart';
 import 'modules/post/injections.dart';
 import 'modules/recipe/injections.dart';
 
@@ -16,9 +20,8 @@ class AppInjections {
     CommonInjections().init();
     RecipeInjections().init();
     PostInjections().init();
-    HomeInjections().init();
+    HomeInjections(getIt<EventBusService>()).init();
+    AuthInjections(getIt<CoreHttp>()).init();
     AccountInjections().init();
-
-    AuthInjections(getIt<EventBusService>(), getIt<CoreHttp>()).init();
   }
 }

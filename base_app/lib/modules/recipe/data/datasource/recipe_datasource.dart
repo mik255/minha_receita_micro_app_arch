@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:micro_app_core/micro_app_core.dart';
 
+import '../../../../core/http/core_http.dart';
 import '../../domain/model/recipe_model.dart';
 
 abstract class RecipeDataSource {

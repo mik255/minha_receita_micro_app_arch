@@ -1,5 +1,4 @@
-import 'package:micro_app_common/micro_app_common.dart';
-
+import '../../../../common/navigator/navigator.dart';
 import '../page/post_recipe.dart';
 
 final postRoutes = <CommonNavigator>[

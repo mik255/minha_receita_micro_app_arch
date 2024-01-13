@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:micro_app_account/micro_app_account.dart';
-import 'package:micro_app_common/micro_app_common.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
-import 'package:micro_app_home/micro_app_home.dart';
+import 'common/navigator/navigator.dart';
+import 'modules/account/presenter/routes/account_routes.dart';
+import 'modules/home/presenter/routes/home_routes.dart';
 import 'modules/post/presenter/routes/post_routes.dart';
 import 'modules_injections.dart';
 import 'modules/recipe/presenter/routes/recipe_routes.dart';
@@ -34,8 +34,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-        listenable: DSMaterialThemeSingleton.instance.currentTheme,
+    return AnimatedBuilder(
+        animation: DSMaterialThemeSingleton.instance.currentTheme,
         builder: (context, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

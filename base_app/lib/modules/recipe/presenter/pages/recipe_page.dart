@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:micro_app_core/micro_app_core.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
+import '../../../../core/drivers/camera_access.dart';
 import '../components/about.dart';
 import '../components/carousel.dart';
 import '../components/ingredients.dart';
@@ -40,8 +40,8 @@ class _RecipePageState extends State<RecipePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-        listenable: store,
+    return AnimatedBuilder(
+        animation: store,
         builder: (context, _) {
           if (store.state is RecipeLoadingState) {
             return AppDSBasePage(
@@ -71,7 +71,7 @@ class _RecipePageState extends State<RecipePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       InkWell(
-                          onTap: () async{
+                          onTap: () async {
                             var files = await GetIt.I
                                 .get<DeviceDataAccess>()
                                 .pickVideos();
@@ -97,9 +97,9 @@ class _RecipePageState extends State<RecipePage> {
                 text: 'Nova Receita',
                 onTap: () {
                   String? hasError = store.buttonIsEnable();
-                  if(hasError == null) {
+                  if (hasError == null) {
                     store.postRecipe();
-                   // Navigator.pop(context);
+                    // Navigator.pop(context);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
-import 'package:micro_app_common/src/components/video_player_component.dart';
 
+import '../../../../common/components/video_player_component.dart';
 import '../../domain/model/recipe_model.dart';
 import '../store/recipe_store.dart';
 

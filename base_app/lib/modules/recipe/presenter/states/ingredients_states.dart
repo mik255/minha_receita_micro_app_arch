@@ -1,6 +1,6 @@
 import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
 
-sealed class RecipeState {}
+abstract class RecipeState {}
 
 class RecipeLoadingState extends RecipeState {}
 

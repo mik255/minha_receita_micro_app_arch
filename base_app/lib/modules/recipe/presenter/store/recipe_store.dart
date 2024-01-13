@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import 'package:micro_app_common/micro_app_common.dart';
-import 'package:micro_app_core/micro_app_core.dart';
+
 import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
 import 'package:minha_receita/modules/recipe/domain/use_case/post_recipe.dart';
 import 'package:minha_receita/modules/recipe/presenter/states/ingredients_states.dart';
+import '../../../../common/models/user/domain/models/user.dart';
+import '../../../../common/navigator/navigator.dart';
+import '../../../../core/services/files_service_interface.dart';
 import '../../../Recipe/domain/model/ingredient.dart';
 import '../../../Recipe/domain/model/step.dart';
 import '../../domain/use_case/get_recipe_by_id.dart';

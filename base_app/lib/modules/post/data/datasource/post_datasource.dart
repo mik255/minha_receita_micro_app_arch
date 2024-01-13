@@ -1,5 +1,5 @@
-import 'package:micro_app_core/micro_app_core.dart';
 
+import '../../../../core/http/core_http.dart';
 import '../../domain/models/post.dart';
 
 abstract class PostDataSource {

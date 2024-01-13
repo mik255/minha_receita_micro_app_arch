@@ -19,7 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: ">=1.17.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -52,18 +53,9 @@ dependencies:
   visibility_detector:
   rxdart:
   event_bus:
-  micro_app_core:
-    path: ../micro_app_core
-  micro_app_auth:
-    path: ../micro_app_auth
-  micro_app_common:
-    path: ../micro_app_common
-  micro_app_account:
-    path: ../micro_app_account
+  flutter_bloc:
   micro_app_design_system:
     path: ../micro_app_design_system
-  micro_app_home:
-    path: ../micro_app_home
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:micro_app_common/micro_app_common.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
 import 'package:minha_receita/modules/post/presenter/states/post_states.dart';
 import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
+import '../../../../common/navigator/navigator.dart';
 import '../store/post_store.dart';
 
 
@@ -41,8 +41,8 @@ class _PostRecipePageState extends State<PostRecipePage> {
         title: 'Postar Receita',
         popLeading: true,
       ),
-      body: ListenableBuilder(
-          listenable: store,
+      body: AnimatedBuilder(
+          animation: store,
           builder: (context, snapshot) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -133,7 +133,7 @@ class _PostRecipePageState extends State<PostRecipePage> {
             padding: const EdgeInsets.all(32.0).copyWith(top: 0),
             child: DSDefaultCardDialogContent(
               title: 'Sucesso',
-              middleCustomContent: const Padding(
+              middleCustomContent: Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
