@@ -7,13 +7,13 @@ class About extends StatelessWidget {
   const About({
     super.key,
     required this.theme,
-    required this.store,
-    required this.model,
+   // required this.store,
+   // required this.model,
   });
 
   final ThemeData theme;
-  final RecipeStore store;
-  final RecipeModel model;
+  //final RecipeStore store;
+  //final RecipeModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +27,14 @@ class About extends StatelessWidget {
           description: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              model.description ?? 'null',
+              'Descreva sua receita',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.secondary,
               ),
             ).convertToInput(
               hintText: 'Digite aqui e fale um pouco sobre a sua receita',
               focusNode: FocusNode(),
-              controller: store.descriptionController,
+              controller: TextEditingController(),
               onValidate: (value) {
                 return null;
               },

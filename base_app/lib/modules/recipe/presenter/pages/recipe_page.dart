@@ -81,7 +81,7 @@ class _RecipePageState extends State<RecipePage> {
                       space,
                       RecipeStatusPanel(
                           context: context, theme: theme, model: model),
-                      About(theme: theme, store: store, model: model),
+                     // About(theme: theme, store: store, model: model),
                       Ingredients(store: store, theme: theme),
                       _addItemButton(() {
                         store.addIngredient();
