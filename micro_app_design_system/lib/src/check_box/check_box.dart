@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DSCheckBox extends StatefulWidget {
-  const DSCheckBox({super.key, this.description});
+  const DSCheckBox({super.key, this.description, required this.onChanged});
 
   final String? description;
-
+  final Function(bool value ) onChanged;
   @override
   State<DSCheckBox> createState() => _DSCheckBoxState();
 }
@@ -18,6 +18,7 @@ class _DSCheckBoxState extends State<DSCheckBox> {
       onTap: () {
         setState(() {
           isChecked = !isChecked;
+          widget.onChanged(isChecked);
         });
       },
       child: Row(
@@ -32,6 +33,7 @@ class _DSCheckBoxState extends State<DSCheckBox> {
             onChanged: (value) {
               setState(() {
                 isChecked = value ?? false;
+                widget.onChanged(isChecked);
               });
             },
           ),
