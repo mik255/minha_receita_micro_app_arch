@@ -35,7 +35,7 @@ class PostEntity {
         name: json["userData"]["nome"] ?? 'name null',
         avatarImgUrl: json["userData"]?["avatarUrl"],
         imgUrlList:
-            List<String>.from(json["recipeImageUrl"].map((x) => x['url'])),
+            List<String>.from(json["recipeImageUrl"].map((x) => x)),
         likesList: List<LikeEntity>.from(
             json["towFirstLikes"].map((x) => LikeEntity.fromJson(x))),
         likesCount: json["likesCount"],

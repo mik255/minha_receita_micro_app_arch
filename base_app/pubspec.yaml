@@ -54,8 +54,12 @@ dependencies:
   rxdart:
   event_bus:
   flutter_bloc:
+  flutter_modular:
+  async:
   micro_app_design_system:
     path: ../micro_app_design_system
+  equatable: ^2.0.5
+  shimmer: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

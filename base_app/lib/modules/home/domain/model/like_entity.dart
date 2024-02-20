@@ -16,10 +16,10 @@ class LikeEntity {
 
   factory LikeEntity.fromJson(Map<String, dynamic> json) => LikeEntity(
         id: json["id"],
-        urlImg: json["avatarUrl"],
-        name: json["userName"],
+        urlImg: json["urlImg"],
+        name: json["name"],
         description: json["description"]??'Sem descrição',
-        isFallowing: json["userIsFollowing"],
+        isFallowing: json["isFallowing"],
         autorUserId: json["autorUserId"],
       );
 
