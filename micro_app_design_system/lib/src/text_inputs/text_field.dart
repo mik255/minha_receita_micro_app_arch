@@ -16,8 +16,9 @@ class AppDSTextField extends StatefulWidget {
     this.style,
     this.focusNode,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
+    this.errorMsg,
   });
-
+  final String? errorMsg;
   final String? hintText;
   final String? labelText;
   final TextEditingController controller;
@@ -35,10 +36,11 @@ class AppDSTextField extends StatefulWidget {
 }
 
 class _AppDSTextFieldState extends State<AppDSTextField> {
-  String? errorMsg;
+
 
   @override
   Widget build(BuildContext context) {
+    String? errorMsg = widget.errorMsg;
     var borderDecoration = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
@@ -56,7 +58,9 @@ class _AppDSTextFieldState extends State<AppDSTextField> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: widget.onChange,
           maxLines: widget.obscureText ? 1 : widget.maxLines,
-          validator: widget.onValidate,
+          validator: widget.onValidate ?? (value){
+            return errorMsg;
+          },
           decoration: () {
             if (widget.type == AppDSTextFieldType.onlyText) {
               return  InputDecoration(

@@ -3,12 +3,18 @@ import '../../../../core/mappers/lists.dart';
 import '../../domain/model/comment_entity.dart';
 import '../../domain/model/like_entity.dart';
 import '../../domain/model/post_entity.dart';
+import '../../domain/model/stories_entity.dart';
 
-abstract class FeedDataSource {
+abstract class HomeRepository {
+  Future<List<UserStore>> getStories(int page, int size);
+
   Future<List<PostEntity>> getListPost(int page, int size);
 
   Future<List<CommentEntity>> getPostComments(
-      String postId, int page, int size);
+    String postId,
+    int page,
+    int size,
+  );
 
   Future<List<LikeEntity>> getPostLikes(String feedId, int page, int size);
 
@@ -19,15 +25,15 @@ abstract class FeedDataSource {
   void removeLike(String id, LikeEntity like);
 }
 
-class FeedDataSourceImpl implements FeedDataSource {
+class HomeRepositoryImpl implements HomeRepository {
   CoreHttp coreHttp;
 
-  FeedDataSourceImpl(this.coreHttp);
+  HomeRepositoryImpl(this.coreHttp);
 
   @override
   Future<List<PostEntity>> getListPost(int page, int size) async {
     var response = await coreHttp.get(
-      route: '/posts',
+      route: '/feeds',
       queryParameters: {
         'page': page,
         'size': size,
@@ -87,5 +93,16 @@ class FeedDataSourceImpl implements FeedDataSource {
   void removeLike(String id, LikeEntity like) {
     coreHttp.delete(
         route: '/likes', queryParameters: {"postId": id, "likeId": like.id});
+  }
+
+  @override
+  Future<List<UserStore>> getStories(int page, int size) async {
+    var response = await coreHttp.get(
+      route: '/stories',
+    );
+    return coreMappersParseList(
+      response.data,
+      (e) => UserStore.fromJson(e),
+    );
   }
 }

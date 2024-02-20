@@ -1,44 +1,91 @@
-// import 'package:minha_receita/modules/account/domain/models/account.dart';
-//
-// import 'package:minha_receita/modules/auth/models/credentials.dart';
-//
-// import '../../domain/repository/account_repository.dart';
-// import '../datasource/account_datasource.dart';
-//
-// class AccountRepositoryImp implements AccountRepository {
-//   final AccountDataSource accountDataSource;
-//
-//   AccountRepositoryImp(this.accountDataSource);
-//
-//   @override
-//   Future<void> deleteAccount() {
-//     // TODO: implement deleteAccount
-//     throw UnimplementedError();
-//   }
-//
-//   @override
-//   Future<Account> login(Credentials credentials) {
-//     return accountDataSource.login(credentials);
-//   }
-//
-//   @override
-//   Future<void> logout() {
-//     // TODO: implement logout
-//     throw UnimplementedError();
-//   }
-//
-//   @override
-//   Future<Account> register(Credentials credentials) {
-//     return accountDataSource.register(credentials);
-//   }
-//
-//   @override
-//   Future<bool> registerCodeVerification(String code) {
-//     return accountDataSource.registerCodeVerification(code);
-//   }
-//
-//   @override
-//   Future<bool> sendConfirmRegister() {
-//     return accountDataSource.sendConfirmRegisterCode();
-//   }
-// }
+import '../../../../common/models/account.dart';
+import '../../../../common/models/credentials.dart';
+import '../../../../core/http/core_http.dart';
+import '../dto/register_dto.dart';
+
+abstract class IAccountRepository {
+  Future<Account> auth(Credentials credentials);
+
+  Future<String> sendRequestCode(email);
+
+  Future<Account> confirmRequestCode(String code);
+
+  Future<void> sendUserInfo(UserInfoRequestDTO dto);
+}
+
+class AuthRepositoryImp implements IAccountRepository {
+  CoreHttp coreHttp;
+
+  AuthRepositoryImp(this.coreHttp);
+
+  @override
+  Future<Account> auth(Credentials credentials) async {
+    var response = await coreHttp.post(
+      route: '/account/auth',
+      body: credentials.toJson(),
+    );
+    if (response.statusCode! > 499) {
+      throw 'Servidor indisponível';
+    }
+    coreHttp.addHeader(
+      'Authorization',
+      'Bearer ${response.data['token']}',
+    );
+    try {
+      return Account.fromJson(response.data);
+    } catch (e, s) {
+      print(s);
+      throw 'Erro ao mappear os dados do usuário ${e.toString()}';
+    }
+  }
+
+  @override
+  Future<String> sendRequestCode(email) async {
+    try {
+      var response = await coreHttp.post(
+        route: '/account/register/requestCode',
+        body: {'email': email},
+      );
+      if (response.statusCode! > 400 && response.statusCode! < 500) {
+        throw 'Código inválido';
+      }
+      if(response.statusCode! > 500){
+        throw 'Servidor indisponível, verifique a sua internet ou tente novamente mais tarde.';
+      }
+      return response.data['code'].toString();
+    } catch (e, s) {
+      print(s);
+      throw e.toString();
+    }
+  }
+
+  @override
+  Future<Account> confirmRequestCode(String code) async {
+    try {
+      var response = await coreHttp.post(
+        route: '/account/register/confirmCode',
+        body: {'code': code},
+      );
+      if (response.statusCode == 401) {
+        throw 'Código inválido';
+      }
+      return Account.fromJson(response.data);
+    } catch (e, s) {
+      print(s);
+      throw 'Erro desconhecido, verifique a sua internet ou tente novamente mais tarde.';
+    }
+  }
+
+  @override
+  Future<void> sendUserInfo(UserInfoRequestDTO dto) async {
+    try {
+      await coreHttp.post(
+        route: '/account/register/userInfo',
+        body: dto.toJson(),
+      );
+    } catch (e, s) {
+      print(s);
+      throw 'Erro desconhecido, verifique a sua internet ou tente novamente mais tarde.';
+    }
+  }
+}

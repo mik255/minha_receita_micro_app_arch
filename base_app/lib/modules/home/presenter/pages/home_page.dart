@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
-import '../../../../common/events/account_events.dart';
+import 'package:minha_receita/modules/home/presenter/componentes/feed_card.dart';
+import 'package:minha_receita/modules/home/presenter/cubit/stories_cubit.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../common/navigator/navigator.dart';
 import '../../../../common/theme/presenter/store/theme.dart';
-import '../../../../core/services/event_bus.dart';
-import '../componentes/feed_card.dart';
-import '../store/home_states.dart';
-import '../store/home_store.dart';
+import '../../domain/model/post_entity.dart';
+import '../cubit/feed_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,29 +18,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  late final AnimationController controller;
   final AppThemeStore appTheme = AppThemeStore();
-  final homeStore = GetIt.I.get<HomeStore>();
   final pageController = PageController();
   final ScrollController scrollController = ScrollController();
+  FeedCubit feedCubit = Modular.get();
 
-  // UserModel get userModel => GetIt.I<UserModel>();
-  int page = 1;
+  StoriesCubit storiesCubit = Modular.get();
 
   @override
   void initState() {
-    homeStore.getListPosts(page);
-    scrollController.onBottomListener(() async {
-      if (homeStore.postState is PostStateLoading) {
-        page++;
-        homeStore.getListPosts(page);
-      }
-    });
-    controller = AnimationController(vsync: this);
-    GetIt.I<EventBusService>().on<AccountAuthenticatedEvent>((event) {
-      homeStore.getListPosts(page);
-    });
     super.initState();
+    feedCubit.getFeed();
+    storiesCubit.getStories();
   }
 
   @override
@@ -73,68 +63,139 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ],
       ),
-      body: StreamBuilder(
-          stream: homeStore.postState,
-          builder: (context, _) {
-            var state = homeStore.postState.value;
-            if (state is PostStateError) {
-              return DSErrorHandle(
-                  errorMsg: 'Serviço indisponível',
-                  tryAgain: () => homeStore.getListPosts(page));
-            }
-            if (state is PostStateLoading) {
-              return const Center(child: DSDefaultLoading());
-            }
-            state = state as PostStateLoaded;
-            return DSPageView(
-              pageController: pageController,
+      body: Builder(builder: (context) {
+        if (false) {
+          return DSErrorHandle(
+              errorMsg: 'Serviço indisponível', tryAgain: () {});
+        }
+        if (false) {
+          return const Center(child: DSDefaultLoading());
+        }
+
+        return DSPageView(
+          pageController: pageController,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _topNavigatorMenu(state),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: state.postList.length,
-                              itemBuilder: (context, index) {
-                                return FeedCard(
-                                  feedEntity: (state as PostStateLoaded)
-                                      .postList[index],
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: BlocBuilder(
+                        bloc: storiesCubit,
+                        builder: (context, state) {
+                          if (state is StoriesLoading) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ...List.generate(20, (index) => 0).map((e) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 24),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Shimmer.fromColors(
+                                              baseColor: Color(0xFFF0F0F0),
+                                              highlightColor: Color(0xFFF7F7F7),
+                                              child: const DSCustomContainer(
+                                                height: 40,
+                                                width: 40,
+                                                imgURL:
+                                                    'https://source.unsplash.com/random/801x600/?face',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                })
+                              ],
+                            );
+                          }
+                          if (state is StoriesError) {
+                            return const Center(
+                                child: Text('Erro ao carregar stories'));
+                          }
+
+                          StoriesLoaded _state = state as StoriesLoaded;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ..._state.stories.map((e) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 24),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          DSCustomContainer(
+                                            height: 40,
+                                            width: 40,
+                                            imgURL:
+                                                'https://source.unsplash.com/random/801x600/?face',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 );
-                              },
-                            ),
-                            // _carousel(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (state is PostStateLazyLoading)
-                      LinearProgressIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                        backgroundColor:
-                            Theme.of(context).colorScheme.background,
-                      )
-                  ],
+                              })
+                            ],
+                          );
+                        }),
+                  ),
                 ),
-                //const RecipePage(),
-                Container(
-                  color: Colors.blue,
-                ),
-                Container(
-                  color: Colors.blue,
+                Expanded(
+                  child: BlocBuilder(
+                      bloc: feedCubit,
+                      builder: (context, state) {
+                        if (state is FeedLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        if (state is FeedError) {
+                          return const Center(
+                              child: Text('Erro ao carregar feed'));
+                        }
+                        state as FeedLoaded;
+                        return ListView.builder(
+                            itemCount: state.feed.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  FeedCard(
+                                    feedEntity: state.feed[index],
+                                  )
+                                ],
+                              );
+                            });
+                      }),
                 ),
               ],
-            );
-          }),
-      bottomNavigationBar: _bottomNavigationBarWidget(),
+            ),
+            //const RecipePage(),
+            Container(
+              color: Colors.blue,
+            ),
+            Container(
+              color: Colors.blue,
+            ),
+          ],
+        );
+      }),
+      //  bottomNavigationBar: _bottomNavigationBarWidget(),
     );
   }
 
@@ -169,46 +230,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ]);
   }
 
-  Widget _topNavigatorMenu(PostStateLoaded state) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: DSNavigationMenuBar(
-            horizontalSpacing: 8,
-            items: [
-              ...state.postList.map(
-                (e) => DSNavigationMenuBarItem(
-                 // subtitle: e.description,
-                  width: 70,
-                  customContainer: DSCustomContainer(
-                    borderSide: BorderSide(
-                      width: 2.5,
-                      style: BorderStyle.solid,
-                      strokeAlign: 2,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.8),
-                    ),
-                    width: 40,
-                    height: 40,
-                    iconPadding: const EdgeInsets.all(8),
-                    imgURL:
-                        'https://source.unsplash.com/random/80${state.postList.indexOf(e)}x600/?person',
-                    iconColor: Theme.of(context).colorScheme.tertiary,
-                  ),
-                ),
-              )
-            ],
-            onTap: (int index) {},
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _topNavigatorMenu(PostStateLoaded state) {
+  //   return Column(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.all(16),
+  //         child: DSNavigationMenuBar(
+  //           horizontalSpacing: 8,
+  //           items: [
+  //             ...state.postList.map(
+  //               (e) => DSNavigationMenuBarItem(
+  //                // subtitle: e.description,
+  //                 width: 70,
+  //                 customContainer: DSCustomContainer(
+  //                   borderSide: BorderSide(
+  //                     width: 2.5,
+  //                     style: BorderStyle.solid,
+  //                     strokeAlign: 2,
+  //                     color: Theme.of(context)
+  //                         .colorScheme
+  //                         .primary
+  //                         .withOpacity(0.8),
+  //                   ),
+  //                   width: 40,
+  //                   height: 40,
+  //                   iconPadding: const EdgeInsets.all(8),
+  //                   imgURL:
+  //                       'https://source.unsplash.com/random/80${state.postList.indexOf(e)}x600/?person',
+  //                   iconColor: Theme.of(context).colorScheme.tertiary,
+  //                 ),
+  //               ),
+  //             )
+  //           ],
+  //           onTap: (int index) {},
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   List<Widget> _actions() {
     return [

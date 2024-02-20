@@ -11,18 +11,21 @@ class DSCustomButton extends StatelessWidget {
     this.backgroundColor,
     this.text,
     this.onTap,
-    this.isLoading,
+    this.isLoading = false,
     this.padding = const EdgeInsets.all(16),
     this.type = DSCustomButtonTypes.solid,
+    this.enabled = false,
   });
 
   final Widget? child;
   final String? text;
-  final bool? isLoading;
+  final bool isLoading;
   final Color? backgroundColor;
   final void Function()? onTap;
   final EdgeInsetsGeometry padding;
   final DSCustomButtonTypes type;
+
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +34,20 @@ class DSCustomButton extends StatelessWidget {
       child: SizedBox(
         height: 50,
         child: ElevatedButton(
-          onPressed: isLoading != null && isLoading == true ? null : onTap,
+          onPressed: () {
+            if (isLoading) {
+              return null;
+            }
+            if (onTap == null) {
+              return null;
+            }
+            if (enabled) {
+              return onTap;
+            }
+            return null;
+          }(),
           style: ElevatedButton.styleFrom(
             backgroundColor: () {
-
               if (type == DSCustomButtonTypes.outline) {
                 return Colors.transparent;
               }
@@ -43,8 +56,7 @@ class DSCustomButton extends StatelessWidget {
               }
 
               if (type == DSCustomButtonTypes.solid) {
-                return backgroundColor ??
-                    Theme.of(context).colorScheme.primary;
+                return backgroundColor ?? Theme.of(context).colorScheme.primary;
               }
 
               return Theme.of(context).colorScheme.primary;
@@ -81,7 +93,7 @@ class DSCustomButton extends StatelessWidget {
                   ? Text(
                       text!,
                       style: AppTypography.button.copyWith(
-                        color: (){
+                        color: () {
                           if (type == DSCustomButtonTypes.outline) {
                             return Theme.of(context).colorScheme.onSecondary;
                           }
