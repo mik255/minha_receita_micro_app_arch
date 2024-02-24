@@ -15,8 +15,6 @@ class AccountModule extends Module {
             onDispose: (bloc) => bloc.close()),
         Bind.singleton<PasswordCubit>((i) => PasswordCubit(),
             onDispose: (bloc) => bloc.close()),
-        Bind.singleton<AuthCubit>((i) => AuthCubit(i.get()),
-            onDispose: (bloc) => bloc.close()),
         Bind.singleton<UserNameCubit>((i) => UserNameCubit(),
             onDispose: (bloc) => bloc.close()),
         Bind((i) => RegisterCubit(i.get()))

@@ -13,10 +13,10 @@ abstract class IAccountRepository {
   Future<void> sendUserInfo(UserInfoRequestDTO dto);
 }
 
-class AuthRepositoryImp implements IAccountRepository {
+class AccountRepositoryImp implements IAccountRepository {
   CoreHttp coreHttp;
 
-  AuthRepositoryImp(this.coreHttp);
+  AccountRepositoryImp(this.coreHttp);
 
   @override
   Future<Account> auth(Credentials credentials) async {

@@ -24,21 +24,28 @@ class _LoginPageState extends State<LoginPage> {
 
   var passwordController = TextEditingController();
 
+  var scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     EmailCubit emailCubit = Modular.get();
     PasswordCubit passwordCubit = Modular.get();
-    AuthCubit authCubit = Modular.get();
+    AccountCubit authCubit = Modular.get();
+    //turn up
+
+
     return BlocListener(
         listener: (context, state) {
           if (state is AuthSuccessState) {
-            CommonNavigator.navigateTo(
-              '/home/main',
+            Modular.to.pushNamedAndRemoveUntil(
+              '/home',
+              (route) => false,
             );
           }
         },
         bloc: authCubit,
         child: AppDSBasePage(
+          withScroll: true,
           body: Column(
             children: [
               Padding(

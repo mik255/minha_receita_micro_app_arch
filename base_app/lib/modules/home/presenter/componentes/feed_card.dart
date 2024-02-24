@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
+import 'package:minha_receita/modules/home/presenter/componentes/comments_model_content.dart';
+import 'package:minha_receita/modules/home/presenter/cubit/comments.dart';
+import 'package:minha_receita/modules/home/presenter/cubit/like_cubit.dart';
+import 'package:minha_receita/modules/home/presenter/cubit/states/comments_states.dart';
 import '../../../../common/components/video_player_component.dart';
-import '../../../../common/injections.dart';
-import '../../domain/model/comment_entity.dart';
-import '../../domain/model/like_entity.dart';
-import '../../domain/model/post_entity.dart';
+import '../../model/post_entity.dart';
 import '../../../../common/extensions/string.dart';
+import 'likes_model_content.dart';
 
 class FeedCard extends StatefulWidget {
   const FeedCard({
@@ -20,7 +23,27 @@ class FeedCard extends StatefulWidget {
   State<FeedCard> createState() => _FeedCardState();
 }
 
-class _FeedCardState extends State<FeedCard> {
+class _FeedCardState extends State<FeedCard> with TickerProviderStateMixin {
+  late CommentsCubit commentsCubit;
+  late CommentsLoadCubit commentsLoadCubit;
+
+  late LikeLoadCubit likeLoadCubit;
+  late LikeCubit likesCubit;
+
+  @override
+  void initState() {
+    commentsLoadCubit = CommentsLoadCubit(
+      Modular.get(),
+      postId: widget.feedEntity.id,
+    );
+
+    likesCubit = LikeCubit(
+      Modular.get(),
+      postId: widget.feedEntity.id,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var space = const SizedBox(height: 8);
@@ -55,57 +78,21 @@ class _FeedCardState extends State<FeedCard> {
           child: seeCommentsTextButton(),
         ),
         space,
-        Padding(
-          padding: padding,
-          child: _textInputComment(),
-        )
       ],
     );
   }
 
   Widget _like() {
-    return DSFavoriteButtonIcon(
-      onTap: (bool isLiked) async {
-        // String? hasError = await () async {
-        //   if (isLiked) {
-        //     LikeEntity like = LikeEntity(
-        //       id: '',
-        //       autorUserId: user.id!,
-        //       urlImg: user.avatarImgUrl ??
-        //           'https://i.stack.imgur.com/l60Hf.png',
-        //       name: user.name!,
-        //       description: '',
-        //       isFallowing: isLiked,
-        //     );
-        //     return await store.onCreateLike(widget.feedEntity, like);
-        //   }
-        //   var like = widget.feedEntity.likesList.firstWhere(
-        //         (element) => element.autorUserId == user.id,
-        //   );
-        //   return await store.onRemoveLike(widget.feedEntity, like);
-        // }();
-        // if (hasError != null) {
-        //   // ignore: use_build_context_synchronously
-        //   context.commonExtensionsShowDSModal(
-        //     content: DSModal(
-        //       dsModalVariants: DSModalVariants.optionsModal,
-        //       title: 'Erro',
-        //       subtitle: hasError,
-        //       buttons: [
-        //         DSTextButton(
-        //           text: 'Ok',
-        //           onPressed: () {
-        //             Navigator.of(context).pop();
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        //   return;
-        // }
-      },
-      isFavorite: true,
-    );
+    return BlocBuilder(
+        bloc: likesCubit,
+        builder: (context, state) {
+          return DSFavoriteButtonIcon(
+            onTap: (bool isLiked) async {
+              likesCubit.postLike(isLiked);
+            },
+            isFavorite: true,
+          );
+        });
   }
 
   Widget _avatar() {
@@ -128,55 +115,59 @@ class _FeedCardState extends State<FeedCard> {
   }
 
   Widget _carousel() {
-    return DSNavigationMenuBar(
-      height: 350,
-      dsNavigationMenuBarVariants: DSNavigationMenuBarVariants.carousel,
-      items: [
-        ...widget.feedEntity.imgUrlList.map((e) => DSNavigationMenuBarItem(
-              customContainer: DSCustomContainer(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  descriptionPadding: const EdgeInsets.all(0),
-                  width: MediaQuery.of(context).size.width,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(0),
-                    ),
-                  ),
-                  child: Builder(builder: (context) {
-                    String extension = e.split('.').last.toLowerCase();
+    return Column(
+      children: [
+        SizedBox(
+          height: 275,
+          child: TabBarView(
+            physics: const BouncingScrollPhysics(),
+              controller: TabController(
+                  length: widget.feedEntity.imgUrlList.length, vsync: this),
+              children: [
+                ...widget.feedEntity.imgUrlList.map(
+                  (e) => Builder(builder: (context) {
                     var url = e;
-                    if (extension == 'mp4') {
-                      return SizedBox(
-                        height: 250,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                    child: VideoPlayerWidget(url: url),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                    return Padding(
+                      padding:(){
+                        if(widget.feedEntity.imgUrlList.first == e){
+                          return  const EdgeInsets.only(left: 32);
+                        }
+                        if (widget.feedEntity.imgUrlList.last == e) {
+                          return  const EdgeInsets.only(right: 32);
+                        }
+                        return const EdgeInsets.only(left: 0);
+                      }(),
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: () {
+                            if (widget.feedEntity.imgUrlList.first == e) {
+                              return const BorderRadius.only(
+                                topLeft: Radius.circular(50.0),
+                                bottomLeft: Radius.circular(50.0),
+                              );
+                            }
+                            if (widget.feedEntity.imgUrlList.last == e) {
+                              return const BorderRadius.only(
+                                topRight: Radius.circular(50.0),
+                                bottomRight: Radius.circular(50.0),
+                              );
+                            }
+                            return BorderRadius.zero;
+                          }(),
                         ),
-                      );
-                    }
-
-                    return Image.network(
-                      url,
-                      fit: BoxFit.cover,
+                        child: Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     );
-                  })),
-            )),
+                  }),
+                )
+              ]),
+        ),
       ],
-      onTap: (int index) {},
     );
   }
 
@@ -187,11 +178,11 @@ class _FeedCardState extends State<FeedCard> {
     }
     return InkWell(
       onTap: () {
-        // context.commonExtensionsShowDSModal(
-        //     withScroll: false,
-        //     content: LikesModalContent(
-        //       postEntity: widget.feedEntity,
-        //     ));
+        context.commonExtensionsShowDSModal(
+            withScroll: false,
+            content: LikesModalContent(
+              postId: widget.feedEntity.id,
+            ));
       },
       child: Row(
         children: [
@@ -244,40 +235,28 @@ class _FeedCardState extends State<FeedCard> {
     );
   }
 
-  Widget _textInputComment() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: TextEditingController(),
-            maxLines: null,
-            decoration: InputDecoration(
-              hintText: 'Adicione um comentário...',
-              hintStyle: Theme.of(context).textTheme.bodySmall,
-              border: InputBorder.none,
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Builder(builder: (context) {
-          return DSTextButton(
-            text: 'Publicar',
-            onPressed: () async {},
-          );
-        }),
-      ],
-    );
-  }
+  var commentTextController = TextEditingController();
+  var focus = FocusNode();
 
   Widget seeCommentsTextButton() {
     return InkWell(
-      onTap: () {},
-      child: Text(
-        'Ver todos os ${widget.feedEntity.commentsCount} comentários',
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
-      ),
+      onTap: () {
+        context.commonExtensionsShowDSModal(
+            withScroll: false,
+            content: CommentsModalContent(
+              postId: widget.feedEntity.id,
+            ));
+      },
+      child: BlocBuilder(
+          bloc: commentsLoadCubit,
+          builder: (context, state) {
+            return Text(
+              'Ver todos os ${widget.feedEntity.commentsCount} comentários',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+            );
+          }),
     );
   }
 }
