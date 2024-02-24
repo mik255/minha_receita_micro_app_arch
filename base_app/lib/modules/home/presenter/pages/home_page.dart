@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
-import 'package:minha_receita/modules/home/presenter/componentes/feed_card.dart';
-import 'package:minha_receita/modules/home/presenter/cubit/stories_cubit.dart';
-import 'package:shimmer/shimmer.dart';
-import '../../../../common/navigator/navigator.dart';
-import '../../../../common/theme/presenter/store/theme.dart';
-import '../../domain/model/post_entity.dart';
+import '../../../../../common/navigator/navigator.dart';
+import '../../../../../common/theme/presenter/store/theme.dart';
+import '../../../account/presenter/cubit/auth_cubit.dart';
+import '../componentes/feed_card.dart';
+import '../componentes/stories_component.dart';
 import '../cubit/feed_cubit.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,13 +22,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final ScrollController scrollController = ScrollController();
   FeedCubit feedCubit = Modular.get();
 
-  StoriesCubit storiesCubit = Modular.get();
+  AccountCubit accountCubit = Modular.get();
 
   @override
   void initState() {
     super.initState();
     feedCubit.getFeed();
-    storiesCubit.getStories();
   }
 
   @override
@@ -41,8 +39,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         actions: _actions(),
       ),
       drawer: DSDrawerMenu(
-        avatarImgUrl: "",
-        avatarName: 'Usuário',
+        avatarImgUrl: accountCubit.account?.user.avatarImgUrl ?? "null",
+        avatarName: accountCubit.account?.user.name ?? 'null',
         items: [
           const DSDrawerMenuItem(text: 'Adicionar ou alterar foto'),
           const DSDrawerMenuItem(text: 'Minhas receitas'),
@@ -64,14 +62,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
       ),
       body: Builder(builder: (context) {
-        if (false) {
-          return DSErrorHandle(
-              errorMsg: 'Serviço indisponível', tryAgain: () {});
-        }
-        if (false) {
-          return const Center(child: DSDefaultLoading());
-        }
-
         return DSPageView(
           pageController: pageController,
           children: [
@@ -80,89 +70,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: BlocBuilder(
-                        bloc: storiesCubit,
-                        builder: (context, state) {
-                          if (state is StoriesLoading) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ...List.generate(20, (index) => 0).map((e) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 24),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Shimmer.fromColors(
-                                              baseColor: Color(0xFFF0F0F0),
-                                              highlightColor: Color(0xFFF7F7F7),
-                                              child: const DSCustomContainer(
-                                                height: 40,
-                                                width: 40,
-                                                imgURL:
-                                                    'https://source.unsplash.com/random/801x600/?face',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                })
-                              ],
-                            );
-                          }
-                          if (state is StoriesError) {
-                            return const Center(
-                                child: Text('Erro ao carregar stories'));
-                          }
-
-                          StoriesLoaded _state = state as StoriesLoaded;
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ..._state.stories.map((e) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(left: 24),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const [
-                                          DSCustomContainer(
-                                            height: 40,
-                                            width: 40,
-                                            imgURL:
-                                                'https://source.unsplash.com/random/801x600/?face',
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              })
-                            ],
-                          );
-                        }),
-                  ),
-                ),
                 Expanded(
                   child: BlocBuilder(
                       bloc: feedCubit,
                       builder: (context, state) {
                         if (state is FeedLoading) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                         if (state is FeedError) {
                           return const Center(
@@ -170,14 +84,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         }
                         state as FeedLoaded;
                         return ListView.builder(
-                            itemCount: state.feed.length,
+                            itemCount: state.feed.length + 1,
                             itemBuilder: (context, index) {
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  FeedCard(
-                                    feedEntity: state.feed[index],
-                                  )
+                                  if (index == 0)
+                                    const StoriesComponent()
+                                  else
+                                    FeedCard(
+                                      feedEntity: state.feed[index],
+                                    )
                                 ],
                               );
                             });
@@ -195,7 +112,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         );
       }),
-      //  bottomNavigationBar: _bottomNavigationBarWidget(),
+      bottomNavigationBar: _bottomNavigationBarWidget(),
     );
   }
 
@@ -273,51 +190,51 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   List<Widget> _actions() {
     return [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: InkWell(
-          onTap: appTheme.switchTheme,
-          child: Center(
-            child: AnimatedBuilder(
-                animation: appTheme,
-                builder: (context, _) {
-                  return ColorFiltered(
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.modulate,
-                    ),
-                    child: Row(
-                      children: [
-                        AnimatedContainer(
-                          height: !appTheme.isDarkTheme ? 30 : 20,
-                          width: !appTheme.isDarkTheme ? 25 : 20,
-                          duration: const Duration(milliseconds: 1000),
-                          curve: Curves.easeIn,
-                          child: DSGetAnimations().darkMode(
-                            appTheme.getAnimController(this),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          !appTheme.isDarkTheme ? 'Brilho' : 'Escuro',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: !appTheme.isDarkTheme
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context).colorScheme.primary,
-                              ),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-          ),
-        ),
-      ),
+      // Padding(
+      //   padding: const EdgeInsets.all(16.0),
+      //   child: InkWell(
+      //     onTap: appTheme.switchTheme,
+      //     child: Center(
+      //       child: AnimatedBuilder(
+      //           animation: appTheme,
+      //           builder: (context, _) {
+      //             return ColorFiltered(
+      //               colorFilter: const ColorFilter.mode(
+      //                 Colors.white,
+      //                 BlendMode.modulate,
+      //               ),
+      //               child: Row(
+      //                 children: [
+      //                   AnimatedContainer(
+      //                     height: !appTheme.isDarkTheme ? 30 : 20,
+      //                     width: !appTheme.isDarkTheme ? 25 : 20,
+      //                     duration: const Duration(milliseconds: 1000),
+      //                     curve: Curves.easeIn,
+      //                     child: DSGetAnimations().darkMode(
+      //                       appTheme.getAnimController(this),
+      //                     ),
+      //                   ),
+      //                   const SizedBox(
+      //                     width: 4,
+      //                   ),
+      //                   Text(
+      //                     !appTheme.isDarkTheme ? 'Brilho' : 'Escuro',
+      //                     style: Theme.of(context)
+      //                         .textTheme
+      //                         .bodySmall
+      //                         ?.copyWith(
+      //                           color: !appTheme.isDarkTheme
+      //                               ? Theme.of(context).colorScheme.secondary
+      //                               : Theme.of(context).colorScheme.primary,
+      //                         ),
+      //                   ),
+      //                 ],
+      //               ),
+      //             );
+      //           }),
+      //     ),
+      //   ),
+      // ),
     ];
   }
 }

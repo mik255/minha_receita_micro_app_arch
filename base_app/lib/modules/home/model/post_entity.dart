@@ -32,8 +32,8 @@ class PostEntity {
   factory PostEntity.fromJson(Map<String, dynamic> json) => PostEntity(
         id: json["id"],
         recipeId: json["recipeId"],
-        name: json["userData"]["nome"] ?? 'name null',
-        avatarImgUrl: json["userData"]?["avatarUrl"],
+        name: json["userData"]["name"] ?? 'name null',
+        avatarImgUrl: json["avatarImgUrl"],
         imgUrlList:
             List<String>.from(json["recipeImageUrl"].map((x) => x)),
         likesList: List<LikeEntity>.from(

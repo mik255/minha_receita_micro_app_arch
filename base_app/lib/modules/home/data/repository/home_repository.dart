@@ -1,9 +1,9 @@
 import '../../../../core/http/core_http.dart';
 import '../../../../core/mappers/lists.dart';
-import '../../domain/model/comment_entity.dart';
-import '../../domain/model/like_entity.dart';
-import '../../domain/model/post_entity.dart';
-import '../../domain/model/stories_entity.dart';
+import '../../model/comment_entity.dart';
+import '../../model/like_entity.dart';
+import '../../model/post_entity.dart';
+import '../../model/stories_entity.dart';
 
 abstract class HomeRepository {
   Future<List<UserStore>> getStories(int page, int size);
@@ -18,11 +18,11 @@ abstract class HomeRepository {
 
   Future<List<LikeEntity>> getPostLikes(String feedId, int page, int size);
 
-  Future<CommentEntity> createComment(String postId, CommentEntity comment);
+  Future<void> createComment(String postId, String comment);
 
-  void createLike(id, LikeEntity like);
+  Future<void> createLike(String postId);
 
-  void removeLike(String id, LikeEntity like);
+  Future<void> removeLike(String postId);
 }
 
 class HomeRepositoryImpl implements HomeRepository {
@@ -39,14 +39,20 @@ class HomeRepositoryImpl implements HomeRepository {
         'size': size,
       },
     );
-    return coreMappersParseList(response.data, (e) => PostEntity.fromJson(e));
+    return coreMappersParseList(
+      response.data,
+      (e) => PostEntity.fromJson(e),
+    );
   }
 
   @override
   Future<List<CommentEntity>> getPostComments(
-      String postId, int page, int size) async {
+    String postId,
+    int page,
+    int size,
+  ) async {
     var response = await coreHttp.get(
-      route: '/comment',
+      route: '/comments',
       queryParameters: {
         'postId': postId,
         'page': page,
@@ -60,7 +66,11 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<List<LikeEntity>> getPostLikes(String id, int page, int size) async {
+  Future<List<LikeEntity>> getPostLikes(
+    String id,
+    int page,
+    int size,
+  ) async {
     var response = await coreHttp.get(
       route: '/likes',
       queryParameters: {
@@ -76,23 +86,32 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<CommentEntity> createComment(
-      String postId, CommentEntity comment) async {
-    var response = await coreHttp.post(
-        route: '/comment',
-        body: {"postId": postId, "comment": comment.comment});
-    return CommentEntity.fromJson(response.data);
+  Future<void> createComment(
+    String postId,
+    String comment,
+  ) async {
+    var response = await coreHttp.post(route: '/comment', body: {
+      "postId": postId,
+      "comment": comment,
+    });
   }
 
   @override
-  void createLike(id, LikeEntity like) async {
-    await coreHttp.post(route: '/likes', body: {"postId": id});
+  Future<void> createLike(String postId) async {
+    await coreHttp.post(
+      route: '/like',
+      body: {"postId": postId},
+    );
   }
 
   @override
-  void removeLike(String id, LikeEntity like) {
-    coreHttp.delete(
-        route: '/likes', queryParameters: {"postId": id, "likeId": like.id});
+  Future<void> removeLike(String postId) async {
+    await coreHttp.delete(
+      route: '/like',
+      queryParameters: {
+        "postId": postId,
+      },
+    );
   }
 
   @override

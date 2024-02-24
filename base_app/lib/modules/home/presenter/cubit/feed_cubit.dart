@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:minha_receita/modules/home/data/repository/home_repository.dart';
-
-import '../../domain/model/post_entity.dart';
+import '../../model/post_entity.dart';
 
 class FeedStates {}
 

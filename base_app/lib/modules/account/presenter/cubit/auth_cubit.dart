@@ -4,8 +4,8 @@ import 'package:minha_receita/common/models/credentials.dart';
 import '../../data/repository/account_repository.dart';
 import '../states/auth_states.dart';
 
-class AuthCubit extends Cubit<AuthStates> {
-  AuthCubit(
+class AccountCubit extends Cubit<AuthStates> {
+  AccountCubit(
     this.accountRepository,
   ) : super(AuthInitialState());
 

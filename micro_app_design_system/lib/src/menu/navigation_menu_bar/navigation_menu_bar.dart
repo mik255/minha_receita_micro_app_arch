@@ -29,11 +29,17 @@ class DSNavigationMenuBar extends StatefulWidget {
   State<DSNavigationMenuBar> createState() => _DSNavigationMenuBarState();
 }
 
-class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
+class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> with TickerProviderStateMixin{
   int currentIndex = 0;
-
+  var tabController;
+  @override
+  void initState() {
+    tabController = TabController(length: widget.items.length,vsync: this) ;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,75 +75,88 @@ class _DSNavigationMenuBarState extends State<DSNavigationMenuBar> {
           )
         else
           Column(
-            mainAxisSize: MainAxisSize.min,
+           // mainAxisSize: MainAxisSize.min,
             children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  enableInfiniteScroll: false,
-                    viewportFraction: 1,
-                    pageSnapping: true,
-                    enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                    height: widget.height??275.0,
-                    enlargeCenterPage: true,
-                    autoPlay: false,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    onPageChanged: (index, reason) {
-                      currentIndex = index;
-                      if(mounted){
-                        setState(() {});
-                      }
-                    }),
-                items: () {
-                  if (widget.items.isEmpty) {
-                    return [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24.0, vertical: 16),
-                        child: DSCustomContainer(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.tertiaryContainer,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.add_a_photo_outlined,
-                              size: 50,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ];
-                  }
-                  return widget.items.map((e) {
-                    return Builder(
-                      builder: (BuildContext context) => e,
-                    );
-                  }).toList();
-                }(),
+              Container(
+                height: 275,
+                child: TabBarView(
+                  controller: tabController,
+                    children: [
+                    ...widget.items.map((e) => Column(
+                      children: [
+                        e,
+                      ],
+                    ))
+
+                ]),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: widget.items.map((e) {
-                  final int index = widget.items.indexOf(e);
-                  return Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 2.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: currentIndex == index
-                          ? Theme.of(context).colorScheme.primary
-                          : const Color(0xFFD8D8D8).withOpacity(0.5),
-                    ),
-                  );
-                }).toList(),
-              ),
+              // CarouselSlider(
+              //   options: CarouselOptions(
+              //     enableInfiniteScroll: false,
+              //       viewportFraction: 1,
+              //      // pageSnapping: true,
+              //       enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+              //       //height: widget.height??275.0,
+              //       //enlargeCenterPage: true,
+              //       autoPlay: false,
+              //       autoPlayInterval: const Duration(seconds: 3),
+              //       autoPlayAnimationDuration:
+              //           const Duration(milliseconds: 800),
+              //       autoPlayCurve: Curves.fastOutSlowIn,
+              //       onPageChanged: (index, reason) {
+              //         currentIndex = index;
+              //         if(mounted){
+              //           setState(() {});
+              //         }
+              //       }),
+              //   items: () {
+              //     if (widget.items.isEmpty) {
+              //       return [
+              //         Padding(
+              //           padding: const EdgeInsets.symmetric(
+              //               horizontal: 24.0, vertical: 16),
+              //           child: DSCustomContainer(
+              //             backgroundColor:
+              //                 Theme.of(context).colorScheme.tertiaryContainer,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(10),
+              //             ),
+              //             child: Center(
+              //               child: Icon(
+              //                 Icons.add_a_photo_outlined,
+              //                 size: 50,
+              //                 color: Theme.of(context).colorScheme.secondary,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ];
+              //     }
+              //     return widget.items.map((e) {
+              //       return Builder(
+              //         builder: (BuildContext context) => e,
+              //       );
+              //     }).toList();
+              //   }(),
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: widget.items.map((e) {
+              //     final int index = widget.items.indexOf(e);
+              //     return Container(
+              //       width: 8.0,
+              //       height: 8.0,
+              //       margin: const EdgeInsets.symmetric(
+              //           vertical: 10.0, horizontal: 2.0),
+              //       decoration: BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         color: currentIndex == index
+              //             ? Theme.of(context).colorScheme.primary
+              //             : const Color(0xFFD8D8D8).withOpacity(0.5),
+              //       ),
+              //     );
+              //   }).toList(),
+              // ),
             ],
           )
       ],
