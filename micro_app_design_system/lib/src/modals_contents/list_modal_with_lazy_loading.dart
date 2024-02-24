@@ -78,14 +78,8 @@ class _DSListModalWithLazyLoadingState
                     }(),
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.linear,
-                    child: Center(
-                      child: Lottie.asset(
-                        height: 50,
-                        width: 50,
-                        'lib/design_system/animations/assets/loading_2.json',
-                        repeat: true,
-                        animate: true,
-                      ),
+                    child: const Center(
+                      child: LinearProgressIndicator(),
                     ),
                   ),
                 ),

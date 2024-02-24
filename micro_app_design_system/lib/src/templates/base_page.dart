@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../appBars/app_bar.dart';
 
-class AppDSBasePage extends StatelessWidget {
+class AppDSBasePage extends StatefulWidget {
   const AppDSBasePage({
     super.key,
     required this.body,
@@ -21,29 +21,41 @@ class AppDSBasePage extends StatelessWidget {
   final Widget? drawer;
 
   @override
+  State<AppDSBasePage> createState() => _AppDSBasePageState();
+}
+
+class _AppDSBasePageState extends State<AppDSBasePage> {
+
+  var scrollController = ScrollController();
+  @override
   Widget build(BuildContext context) {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    }
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: floatingActionButton,
-        appBar: appDSAppBar,
+        floatingActionButton: widget.floatingActionButton,
+        appBar: widget.appDSAppBar,
         body: () {
-          if (withScroll) {
-            return Padding(
-              padding:  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: body,
-                ),
+          if (widget.withScroll) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: widget.body,
               ),
             );
           }
-          return body;
+          return widget.body;
         }(),
-        drawer: drawer,
-        bottomNavigationBar: bottomNavigationBar != null
+        drawer: widget.drawer,
+        bottomNavigationBar: widget.bottomNavigationBar != null
             ? SafeArea(
-                child: bottomNavigationBar!,
+                child: widget.bottomNavigationBar!,
               )
             : null,
       ),

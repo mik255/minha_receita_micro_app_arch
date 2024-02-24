@@ -18,7 +18,14 @@ class DSDrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Theme.of(context).colorScheme.background,
+        clipBehavior: Clip.hardEdge,
+        decoration:  BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(50.0),
+            bottomRight: Radius.circular(50.0),
+          ),
+        ),
         child: ListView(
           children: [
             Padding(
