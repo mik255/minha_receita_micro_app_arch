@@ -2,17 +2,16 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get_it/get_it.dart';
 import 'package:minha_receita/modules/account/presenter/cubit/auth_cubit.dart';
 import 'package:minha_receita/modules/init/module.dart';
+import 'package:minha_receita/modules/register_recipe/services/register_recipe_service.dart';
 import 'common/http/data/common_http.dart';
 import 'common/injections.dart';
 import 'core/http/core_http.dart';
-import 'core/services/event_bus.dart';
 import 'modules/account/data/repository/account_repository.dart';
 import 'modules/account/module.dart';
 import 'modules/home/data/repository/home_repository.dart';
 import 'modules/home/module.dart';
-import 'modules/home/presenter/cubit/feed_cubit.dart';
 import 'modules/post/injections.dart';
-import 'modules/recipe/injections.dart';
+import 'modules/register_recipe/data/repository/recipe_repository.dart';
 
 class AppInjections {
   var getIt = GetIt.instance;
@@ -22,7 +21,6 @@ class AppInjections {
       baseUrl: CommonInjections.baseUrl,
     ));
     CommonInjections().init();
-    RecipeInjections().init();
     PostInjections().init();
     getIt.registerSingleton<IAccountRepository>(AccountRepositoryImp(
       getIt.get(),
@@ -49,6 +47,10 @@ class AppModule extends Module {
                   i.get(),
                 ),
             onDispose: (bloc) => bloc.close()),
+        Bind.singleton<RegisterRecipeService>((i) => RegisterRecipeService()),
+        Bind.singleton<RecipeRepository>((i) => RecipeRepository(
+              i.get(),
+            )),
       ];
 
   @override

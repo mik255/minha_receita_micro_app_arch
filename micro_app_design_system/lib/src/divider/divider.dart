@@ -7,10 +7,12 @@ class DSDivider extends StatelessWidget {
     super.key,
     this.type = DSDividerType.horizontal,
     this.verticalDividerHeight = 15.0,
+    this.thickness = 1,
   });
 
   final DSDividerType type;
   final double verticalDividerHeight;
+  final double thickness;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +21,14 @@ class DSDivider extends StatelessWidget {
         height: verticalDividerHeight,
         child: VerticalDivider(
           color: Theme.of(context).colorScheme.secondary,
-          thickness: 1,
+          thickness: thickness,
         ),
       );
     }
 
     return Divider(
-      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-      thickness: 0.5,
+      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.04),
+      thickness: thickness,
       height: 16,
     );
   }

@@ -29,13 +29,6 @@ class _AppDSBasePageState extends State<AppDSBasePage> {
   var scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.ease,
-      );
-    }
     return SafeArea(
       child: Scaffold(
         floatingActionButton: widget.floatingActionButton,

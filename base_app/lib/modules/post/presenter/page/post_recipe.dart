@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:micro_app_design_system/micro_app_design_system.dart';
 import 'package:minha_receita/modules/post/presenter/states/post_states.dart';
-import 'package:minha_receita/modules/recipe/domain/model/recipe_model.dart';
+import 'package:minha_receita/modules/register_recipe/models/recipe_model.dart';
 import '../../../../common/navigator/navigator.dart';
 import '../store/post_store.dart';
 

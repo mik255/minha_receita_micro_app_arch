@@ -14,7 +14,7 @@ class DSCustomButton extends StatelessWidget {
     this.isLoading = false,
     this.padding = const EdgeInsets.all(16),
     this.type = DSCustomButtonTypes.solid,
-    this.enabled = false,
+    this.enabled = true,
   });
 
   final Widget? child;
@@ -29,81 +29,80 @@ class DSCustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: SizedBox(
-        height: 50,
-        child: ElevatedButton(
-          onPressed: () {
-            if (isLoading) {
-              return null;
-            }
-            if (onTap == null) {
-              return null;
-            }
-            if (enabled) {
-              return onTap;
-            }
-            return null;
-          }(),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: () {
-              if (type == DSCustomButtonTypes.outline) {
-                return Colors.transparent;
-              }
+    return InkWell(
+      onTap: () {
+        if (isLoading) {
+          return null;
+        }
+        if (onTap == null) {
+          return null;
+        }
+        if (enabled) {
+          return onTap;
+        }
+        return null;
+      }(),
+      child: Padding(
+        padding: padding,
+        child: Container(
+          decoration: BoxDecoration(
+            color: () {
               if (backgroundColor != null) {
                 return backgroundColor;
               }
+              if (type == DSCustomButtonTypes.outline) {
+                return Colors.transparent;
+              }
 
               if (type == DSCustomButtonTypes.solid) {
-                return backgroundColor ?? Theme.of(context).colorScheme.primary;
+                return Theme.of(context).colorScheme.primary;
               }
 
               return Theme.of(context).colorScheme.primary;
             }(),
-            // Cor de fundo do botão
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: () {
-                  if (type == DSCustomButtonTypes.outline) {
-                    return BorderSide(
-                      color: Theme.of(context).colorScheme.onSecondary,
-                      width: 1,
-                    );
-                  }
-                  return BorderSide.none;
-                }()),
-            shadowColor: Colors.black.withOpacity(0.12),
-            // Cor e opacidade da sombra
-            elevation: 0, // Altura da sombra
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 1,
+              color: () {
+                if (type == DSCustomButtonTypes.outline) {
+                  return Theme.of(context).colorScheme.onSecondary.withOpacity(0.2);
+                }
+                return Colors.transparent;
+              }(),
+            ),
           ),
-          child: Builder(builder: (context) {
-            if (isLoading != null && isLoading == true) {
-              return const SizedBox(
-                height: 20,
-                width: 20,
-                child: Center(child: CircularProgressIndicator()),
-              );
-            }
-            return Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: text != null
-                  ? Text(
-                      text!,
-                      style: AppTypography.button.copyWith(
-                        color: () {
-                          if (type == DSCustomButtonTypes.outline) {
-                            return Theme.of(context).colorScheme.onSecondary;
-                          }
-                          return Theme.of(context).colorScheme.background;
-                        }(),
-                      ),
-                    )
-                  : child,
-            );
-          }),
+          height: 50,
+          child: Center(
+            child: Builder(builder: (context) {
+              if (isLoading) {
+                return const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              return Ink(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    text!,
+                    style: AppTypography.button.copyWith(
+                      color: () {
+                        if (type == DSCustomButtonTypes.outline) {
+                          return Theme.of(context).colorScheme.onSecondary;
+                        }
+
+                        if (type == DSCustomButtonTypes.solid) {
+                          return Colors.white;
+                        }
+
+                        return Colors.white;
+                      }(),
+                    ),
+                  ));
+            }),
+          ),
         ),
       ),
     );
