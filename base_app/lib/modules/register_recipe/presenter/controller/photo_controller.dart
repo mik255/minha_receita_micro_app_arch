@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:minha_receita/modules/register_recipe/models/recipe_model.dart';
 import '../../../../common/services/camera_service.dart';
 import '../../services/register_recipe_service.dart';
 

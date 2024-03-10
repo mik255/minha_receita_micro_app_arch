@@ -8,6 +8,7 @@ import '../components/add_button.dart';
 import '../components/carousel.dart';
 import '../components/ds_chip.dart';
 import '../components/ds_session.dart';
+import '../components/row_icons_menu.dart';
 import '../controller/method_of_preparation_controller.dart';
 
 class MethodOfPreparationSession extends StatefulWidget {
@@ -58,9 +59,7 @@ class _MethodOfPreparationSessionState
                       return state.methodOfPreparation.length * 300.0;
                     }
                     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                      Future.delayed(const Duration(milliseconds: 300), () {
-                        height.value = globalKey.currentContext!.size!.height;
-                      });
+                      height.value = globalKey.currentContext!.size!.height;
                     });
                     return height.value;
                   }(),
@@ -82,120 +81,126 @@ class _MethodOfPreparationSessionState
                             return state.methodOfPreparation.length;
                           }(),
                               (index) => Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              () {
-                                                if (state == null ||
-                                                    state
-                                                        is MethodOfPreparationInitialState) {
-                                                  return '1.';
-                                                }
-                                                state
-                                                    as MethodOfPreparationSuccessState;
-
-                                                return '${state.methodOfPreparation[index].methodOfPreparation.step}.';
-                                              }(),
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                                height: 0,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 16,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                'Boa Maria, ótima receita! Sempre com excelentes dicas, show!',
-                                                maxLines: 5,
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(
-                                                          0.949999988079071),
-                                                  fontSize: 13,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 0,
-                                                ),
-                                              ).convertToInput(
-                                                hintText:
-                                                    'Adicione um ingrediente',
-                                                focusNode: FocusNode(),
-                                                controller: () {
-                                                  if (state == null ||
+                                children: [
+                                  Row(
+                                        children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 16.0),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    () {
+                                                      if (state == null ||
+                                                          state
+                                                              is MethodOfPreparationInitialState) {
+                                                        return '1.';
+                                                      }
                                                       state
-                                                          is MethodOfPreparationInitialState) {
-                                                    return TextEditingController();
-                                                  }
-                                                  state
-                                                      as MethodOfPreparationSuccessState;
-                                                  return state
-                                                      .methodOfPreparation[
-                                                          index]
-                                                      .controller;
-                                                }(),
-                                                onValidate: (String? a) {
-                                                  return null;
-                                                },
+                                                          as MethodOfPreparationSuccessState;
+
+                                                      return '${state.methodOfPreparation[index].methodOfPreparation.step}.';
+                                                    }(),
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight: FontWeight.w700,
+                                                      height: 0,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'Boa Maria, ótima receita! Sempre com excelentes dicas, show!',
+                                                      maxLines: 5,
+                                                      style: TextStyle(
+                                                        color: Colors.black
+                                                            .withOpacity(
+                                                                0.949999988079071),
+                                                        fontSize: 13,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight: FontWeight.w500,
+                                                        height: 0,
+                                                      ),
+                                                    ).convertToInput(
+                                                      hintText:
+                                                          'Adicione um ingrediente',
+                                                      focusNode: FocusNode(),
+                                                      controller: () {
+                                                        if (state == null ||
+                                                            state
+                                                                is MethodOfPreparationInitialState) {
+                                                          return TextEditingController();
+                                                        }
+                                                        state
+                                                            as MethodOfPreparationSuccessState;
+                                                        return state
+                                                            .methodOfPreparation[
+                                                                index]
+                                                            .controller;
+                                                      }(),
+                                                      onValidate: (String? a) {
+                                                        _methodOfPreparationCubit
+                                                            .setDescMethodOfPreparation(
+                                                                index, a ?? '');
+                                                        return null;
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      ActionsAddRemove(
-                                        addTitle: 'Adicionar imagem',
-                                        removeTitle: 'Remover imagem',
-                                        onAdd: () async {
-                                          _methodOfPreparationCubit
-                                              .setPhotoMethodOfPreparation(index);
-                                        },
-                                        onRemove: () {
-                                          _methodOfPreparationCubit
-                                              .photoremoveMethodOfPreparation(index);
-                                        },
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              selectOptions(index);
+                                            },
+                                            child: const RowIconsMenu(),
+                                          ),
+                                        ],
                                       ),
                                       () {
-
-                                        if (state == null ||
-                                            state
-                                                is MethodOfPreparationInitialState) {
-                                          return const SizedBox();
-                                        }
-                                        state as MethodOfPreparationSuccessState;
-                                        if(state.methodOfPreparation[index].imgBase64.isEmpty) {
-                                          return const SizedBox();
-                                        }
-                                        return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                    horizontal: 8.0, vertical: 16.0),
-                                            child: DSCarousel(
-                                              pageController: PageController(
-                                                initialPage: 0,
-                                              ),
-                                              base64ImgList: () {
-                                                if (state
-                                                        is MethodOfPreparationInitialState) {
-                                                  return <String>[];
-                                                }
-                                                state;
-                                                return state
-                                                    .methodOfPreparation[index]
-                                                    .imgBase64;
-                                              }(), recipeImgUrlList: [],
-                                            ));
-                                      }(),
-                                    ],
-                                  )),
+                                    if (state == null ||
+                                        state
+                                        is MethodOfPreparationInitialState) {
+                                      return const SizedBox();
+                                    }
+                                    state
+                                    as MethodOfPreparationSuccessState;
+                                    if (state.methodOfPreparation[index]
+                                        .imgBase64.isEmpty) {
+                                      return const SizedBox();
+                                    }
+                                    return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                            vertical: 16.0),
+                                        child: DSCarousel(
+                                          pageController: PageController(
+                                            initialPage: 0,
+                                          ),
+                                          base64ImgList: () {
+                                            if (state
+                                            is MethodOfPreparationInitialState) {
+                                              return <String>[];
+                                            }
+                                            state;
+                                            return state
+                                                .methodOfPreparation[index]
+                                                .imgBase64;
+                                          }(),
+                                          recipeImgUrlList: [],
+                                        ));
+                                  }(),
+                                ],
+                              )),
                         ),
                         Row(
                           children: [
@@ -222,5 +227,45 @@ class _MethodOfPreparationSessionState
                 );
               });
         });
+  }
+
+  void selectOptions(int index) {
+    context.commonExtensionsShowDSModal(
+        customContent: DSModal(
+            dsModalVariants: DSModalVariants.optionsModal,
+            title: 'Modo de preparo',
+            subtitle: 'Adicione uma ação',
+            buttons: [
+          DSCustomButton(
+            type: DSCustomButtonTypes.outline,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            text: 'Adicionar foto',
+            onTap: () {
+              _methodOfPreparationCubit.setPhotoMethodOfPreparation(index);
+              Navigator.pop(context);
+              setState(() {});
+            },
+          ),
+          DSCustomButton(
+            type: DSCustomButtonTypes.outline,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            text: 'remover foto',
+            onTap: () {
+              _methodOfPreparationCubit.photoRemoveMethodOfPreparation(index);
+              Navigator.pop(context);
+              setState(() {});
+            },
+          ),
+          DSCustomButton(
+            type: DSCustomButtonTypes.outline,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            text: 'remover passo',
+            onTap: () {
+              _methodOfPreparationCubit.removeMethodOfPreparation(index);
+              Navigator.pop(context);
+              setState(() {});
+            },
+          )
+        ]));
   }
 }

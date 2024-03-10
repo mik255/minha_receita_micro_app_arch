@@ -13,12 +13,10 @@ class MethodOfPreparationDTO {
   );
   TextEditingController controller = TextEditingController();
 
-  int step = 0;
-
   List<String> imgBase64 = [];
 
   MethodOfPreparationDTO({
-    required this.step,
+    required int step,
   }) {
     methodOfPreparation.step = step;
     methodOfPreparation.description = controller.text;
@@ -50,9 +48,19 @@ class MethodOfPreparationCubit extends Cubit<MethodOfPreparationState> {
 
   final List<MethodOfPreparationDTO> _methodOfPreparation = [];
 
+  void setDescMethodOfPreparation(int index, String description) {
+    _methodOfPreparation[index].methodOfPreparation.description = description;
+    _service.updateMethodOfPreparationDescription(
+      _methodOfPreparation[index].methodOfPreparation,
+    );
+    emit(MethodOfPreparationSuccessState(
+      _methodOfPreparation,
+    ));
+  }
+
   void setMethodOfPreparation() {
     final dto = MethodOfPreparationDTO(
-      step: _methodOfPreparation.length+1,
+      step: _methodOfPreparation.length + 1,
     );
     _methodOfPreparation.add(dto);
     _service.setMethodOfPreparation(
@@ -65,19 +73,25 @@ class MethodOfPreparationCubit extends Cubit<MethodOfPreparationState> {
 
   void removeMethodOfPreparation(int index) {
     _methodOfPreparation.removeAt(index);
+    _methodOfPreparation.sort((a, b) =>
+        a.methodOfPreparation.step.compareTo(b.methodOfPreparation.step));
+    _methodOfPreparation.asMap().forEach((index, element) {
+      element.methodOfPreparation.step = index + 1;
+    });
     emit(MethodOfPreparationSuccessState(
       _methodOfPreparation,
     ));
   }
 
-  void setPhotoMethodOfPreparation(int index) async{
+  void setPhotoMethodOfPreparation(int index) async {
     final file = await CameraService().getMultiImages();
     _methodOfPreparation[index].imgBase64.addAll(file);
     emit(MethodOfPreparationSuccessState(
       _methodOfPreparation,
     ));
   }
-  void photoremoveMethodOfPreparation(int index) {
+
+  void photoRemoveMethodOfPreparation(int index) {
     _methodOfPreparation[index].imgBase64.removeAt(index);
     emit(MethodOfPreparationSuccessState(
       _methodOfPreparation,

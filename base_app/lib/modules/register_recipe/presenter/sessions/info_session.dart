@@ -18,7 +18,9 @@ class _InfoSessionState extends State<InfoSession> {
   int timeInMinutes = 0;
 
   final InfoController _infoController = InfoController();
+  TextEditingController timeTextController = TextEditingController();
 
+  RecipeStatus status = RecipeStatus.undefined;
   @override
   Widget build(BuildContext context) {
     return DSSession(
@@ -121,8 +123,6 @@ class _InfoSessionState extends State<InfoSession> {
     ));
   }
 
-  TextEditingController timeTextController = TextEditingController();
-
   _timeDialog() {
     showDialog(
         context: context,
@@ -183,8 +183,6 @@ class _InfoSessionState extends State<InfoSession> {
           );
         });
   }
-
-  RecipeStatus status = RecipeStatus.undefined;
 
   _selectType(BuildContext context) {
     checkTypeButtonSelected(RecipeStatus status) {

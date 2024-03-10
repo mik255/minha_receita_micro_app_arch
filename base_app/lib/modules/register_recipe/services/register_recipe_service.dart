@@ -59,11 +59,11 @@ class RegisterRecipeService {
   }
 
   setIngredients(Ingredient ingredient) {
-    return recipeModel.ingredients..add(ingredient);
+    recipeModel.ingredients.add(ingredient);
   }
 
   removeIngredients(int index) {
-    return recipeModel.ingredients..removeAt(index);
+    recipeModel.ingredients.removeAt(index);
   }
 
   void setTime(int time) {
@@ -93,5 +93,13 @@ class RegisterRecipeService {
       difficulty: RecipeDificulty.undefined,
       status: RecipeStatus.undefined,
     );
+  }
+
+  void updateMethodOfPreparationDescription(
+      MethodOfPreparation methodOfPreparation) {
+    recipeModel.methodOfPreparation
+        .where((element) => element == methodOfPreparation)
+        .first
+        .description = methodOfPreparation.description;
   }
 }

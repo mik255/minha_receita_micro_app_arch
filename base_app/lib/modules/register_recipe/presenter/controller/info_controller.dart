@@ -3,7 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../models/recipe_model.dart';
 import '../../services/register_recipe_service.dart';
-import '../../services/set_time_service.dart';
+import '../../services/time_service.dart';
 
 class InfoState {}
 

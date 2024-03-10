@@ -39,14 +39,13 @@ class DSSession extends StatefulWidget {
 class _DSSessionState extends State<DSSession>
     with AutomaticKeepAliveClientMixin {
   late ValueNotifier<bool> isOpen;
-
+  GlobalKey key = GlobalKey();
   @override
   initState() {
     isOpen = widget.isOpen ?? ValueNotifier<bool>(false);
     super.initState();
   }
 
-  GlobalKey key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +77,8 @@ class _DSSessionState extends State<DSSession>
                 curve: Curves.ease,
                 height: isOpen.value ?widget.height: 0,
                 child: SingleChildScrollView(
-                  physics: widget.physics??const BouncingScrollPhysics(),
+                  //physics: widget.physics??const BouncingScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
                       Container(

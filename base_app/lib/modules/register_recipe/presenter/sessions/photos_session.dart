@@ -33,48 +33,46 @@ class _PhotoSessionState extends State<PhotoSession> {
             subtitle: 'Adicione fotos a sua receita já finalizada',
             isOpen: isOpen,
             height: _photoCubit.files.isNotEmpty ? 380 : 80,
-            content: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Builder(builder: (context) {
-                return Column(
-                  children: [
-                    ActionsAddRemove(
-                      onAdd: () async {
-                        await _photoCubit.addPhoto();
-                        isOpen.value = true;
-                        // isOpen.value = false;
-                        // await Future.delayed(const Duration(milliseconds: 500));
-                        // isOpen.value = true;
-                      },
-                      onRemove: () {
-                        if(_photoCubit.files.isEmpty) {
-                          return;
-                        }
-                        if (pageController.page?.toInt() == null) {
-                          return;
-                        }
-                         _photoCubit.removePhoto(pageController.page!.toInt());
-                      },
+            content: Builder(builder: (context) {
+              return Column(
+                children: [
+                  ActionsAddRemove(
+                    removeEnabled: _photoCubit.files.isNotEmpty,
+                    onAdd: () async {
+                      await _photoCubit.addPhoto();
+                      isOpen.value = true;
+                      // isOpen.value = false;
+                      // await Future.delayed(const Duration(milliseconds: 500));
+                      // isOpen.value = true;
+                    },
+                    onRemove: () {
+                      if(_photoCubit.files.isEmpty) {
+                        return;
+                      }
+                      if (pageController.page?.toInt() == null) {
+                        return;
+                      }
+                       _photoCubit.removePhoto(pageController.page!.toInt());
+                    },
+                  ),
+                  if (_photoCubit.files.isNotEmpty)
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        DSCarousel(
+                          pageController: pageController,
+                          base64ImgList: _photoCubit.files,
+                          recipeImgUrlList: const [],
+                          widgets: const [],
+                          onTap: (i) {},
+                        ),
+                      ],
                     ),
-                    if (_photoCubit.files.isNotEmpty)
-                      Column(
-                        children: [
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          DSCarousel(
-                            pageController: pageController,
-                            base64ImgList: _photoCubit.files,
-                            recipeImgUrlList: const [],
-                            widgets: const [],
-                            onTap: (i) {},
-                          ),
-                        ],
-                      ),
-                  ],
-                );
-              }),
-            ),
+                ],
+              );
+            }),
           );
         });
   }

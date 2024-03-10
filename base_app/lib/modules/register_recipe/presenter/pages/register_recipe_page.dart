@@ -62,7 +62,7 @@ class RegisterRecipe extends StatelessWidget {
                         const DSDivider(thickness: 2),
                         IngredientSession(),
                         const DSDivider(thickness: 2),
-                        MethodOfPreparationSession(),
+                        const MethodOfPreparationSession(),
                       ],
                     ),
                   ),
@@ -71,11 +71,11 @@ class RegisterRecipe extends StatelessWidget {
                       color: Colors.black.withOpacity(0.5),
                     ),
                   if (state is RegisterRecipeLoadingState)
-                    Center(
-                        child: Container(
+                    const Center(
+                        child: SizedBox(
                       height: 80,
                       width: 80,
-                      child: const CircularProgressIndicator(
+                      child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         strokeWidth: 3,
                       ),
