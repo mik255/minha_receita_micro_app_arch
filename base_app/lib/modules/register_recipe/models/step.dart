@@ -4,7 +4,7 @@ class MethodOfPreparation {
     required this.description,
   });
 
-  final num step;
+  num step;
   String description;
 
 

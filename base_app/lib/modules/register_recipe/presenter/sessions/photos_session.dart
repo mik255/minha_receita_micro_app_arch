@@ -32,6 +32,7 @@ class _PhotoSessionState extends State<PhotoSession> {
             title: 'Fotos',
             subtitle: 'Adicione fotos a sua receita já finalizada',
             isOpen: isOpen,
+            height: _photoCubit.files.isNotEmpty ? 380 : 80,
             content: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Builder(builder: (context) {
@@ -46,10 +47,13 @@ class _PhotoSessionState extends State<PhotoSession> {
                         // isOpen.value = true;
                       },
                       onRemove: () {
-                        if (pageController.page?.toInt() != null) {
+                        if(_photoCubit.files.isEmpty) {
                           return;
                         }
-                        // _photoCubit.removePhoto(pageController.page!.toInt());
+                        if (pageController.page?.toInt() == null) {
+                          return;
+                        }
+                         _photoCubit.removePhoto(pageController.page!.toInt());
                       },
                     ),
                     if (_photoCubit.files.isNotEmpty)

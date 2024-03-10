@@ -42,10 +42,11 @@ class IngredientsCubitController extends Cubit<IngredientsState> {
     ));
   }
 
-  void removeIngredient(Ingredient ingredient) {
-    final ingredients = _service.removeIngredients(ingredient);
+  void removeIngredient(int index) {
+    _controllers.removeAt(index);
+    _service.removeIngredients(index);
     emit(IngredientsSuccessState(
-      ingredients,
+      _controllers,
     ));
   }
 }

@@ -23,7 +23,7 @@ class CommonHttp implements CoreHttp {
     );
 
     dio.interceptors.add(logInterceptor);
-    dio.options.headers['Authorization'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6Ijg0OTkxMTEwMjY3IiwidXNlcklkIjoxMDIsImV4cCI6MTcwOTkzNzc2N30.p-LiMXrAImmI8G5Q7zKkneWUSBVGifiogmwFPQ_3egI';
+    dio.options.headers['Authorization'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLWFwaSIsInN1YiI6Ijg0OTkxMTEwMjY3IiwidXNlcklkIjoxMDIsImV4cCI6MTc0MTYxNTQyN30.6OHKVvXVDsN7UCSoQCUF_6F6D8qiA0k1Yc7OJ27kKIw';
     //add cors
     //   dio.options.headers['Access-Control-Allow-Origin'] = '*';
     //   dio.options.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';

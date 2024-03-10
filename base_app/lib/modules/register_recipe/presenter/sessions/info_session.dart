@@ -25,6 +25,7 @@ class _InfoSessionState extends State<InfoSession> {
       icon: Icons.info_outline,
       title: 'Informações',
       subtitle: 'Adicione informações sobre a sua receita',
+      height: 116,
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
@@ -32,13 +33,6 @@ class _InfoSessionState extends State<InfoSession> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
-              // direction: Axis.horizontal,
-              // spacing: 16,
-              // runSpacing: 16,
-              // crossAxisAlignment: WrapCrossAlignment.center,
-              // runAlignment: WrapAlignment.start,
-              // verticalDirection: VerticalDirection.down,
-              // alignment: WrapAlignment.start,
               children: [
                 DSChip(
                     icon: Icons.access_time,

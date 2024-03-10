@@ -9,8 +9,11 @@ import '../sessions/name_session.dart';
 import '../sessions/photos_session.dart';
 
 class RegisterRecipe extends StatelessWidget {
-   RegisterRecipe({super.key});
-  final RegisterRecipeController _registerRecipeController = RegisterRecipeController();
+  RegisterRecipe({super.key});
+
+  final RegisterRecipeController _registerRecipeController =
+      RegisterRecipeController();
+
   @override
   Widget build(BuildContext context) {
     return AppDSBasePage(
@@ -42,44 +45,44 @@ class RegisterRecipe extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
         child: BlocBuilder(
-          bloc:_registerRecipeController ,
-          builder: (context,state) {
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const PhotoSession(),
-                      const DSDivider(thickness: 2),
-                      InfoSession(),
-                      const DSDivider(thickness: 2),
-                      NameAndDescriptionSession(),
-                      const DSDivider(thickness: 2),
-                      IngredientSession(),
-                      const DSDivider(thickness: 2),
-                      const MethodOfPreparationSession(),
-                    ],
+            bloc: _registerRecipeController,
+            builder: (context, state) {
+              return Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const PhotoSession(),
+                        const DSDivider(thickness: 2),
+                        InfoSession(),
+                        const DSDivider(thickness: 2),
+                        NameAndDescriptionSession(),
+                        const DSDivider(thickness: 2),
+                        IngredientSession(),
+                        const DSDivider(thickness: 2),
+                        MethodOfPreparationSession(),
+                      ],
+                    ),
                   ),
-                ),
-                if(state is RegisterRecipeLoadingState)
-                Container(
-                  color: Colors.black.withOpacity(0.5),
-                ),
-                if(state is RegisterRecipeLoadingState)
-                 Center(child: Container(
-                  height: 80,
-                  width: 80,
-                  child: const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeWidth: 3,
-                  ),
-                )),
-              ],
-            );
-          }
-        ),
+                  if (state is RegisterRecipeLoadingState)
+                    Container(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  if (state is RegisterRecipeLoadingState)
+                    Center(
+                        child: Container(
+                      height: 80,
+                      width: 80,
+                      child: const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        strokeWidth: 3,
+                      ),
+                    )),
+                ],
+              );
+            }),
       ),
     );
   }

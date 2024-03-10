@@ -45,9 +45,9 @@ class PhotoCubit extends Cubit<PhotoState> {
     }
   }
 
-  Future<void> removePhoto(String file) async {
+  Future<void> removePhoto(int index) async {
     try {
-      files.remove(file);
+      files.removeAt(index);
       emit(PhotoSuccessState(
         files,
       ));

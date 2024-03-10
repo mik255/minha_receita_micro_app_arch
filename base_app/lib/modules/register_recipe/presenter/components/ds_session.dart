@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:minha_receita/core/services/get_widget_size.dart';
-import 'package:minha_receita/modules/register_recipe/presenter/components/ds_chip.dart';
 
 class DSSession extends StatefulWidget {
   final IconData icon;
@@ -13,9 +11,12 @@ class DSSession extends StatefulWidget {
 
   final Widget? action;
 
+  final double height;
+
   final Function(int index)? ontap;
   ValueNotifier<bool>? isOpen;
 
+  ScrollPhysics? physics;
   DSSession({
     super.key,
     required this.icon,
@@ -27,6 +28,8 @@ class DSSession extends StatefulWidget {
     this.ontap,
     this.action,
     this.isOpen,
+    this.physics,
+    required this.height,
   });
 
   @override
@@ -34,7 +37,7 @@ class DSSession extends StatefulWidget {
 }
 
 class _DSSessionState extends State<DSSession>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin {
   late ValueNotifier<bool> isOpen;
 
   @override
@@ -48,7 +51,7 @@ class _DSSessionState extends State<DSSession>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var theme = Theme.of(context);
+
     return Column(
       children: [
         InkWell(
@@ -61,50 +64,7 @@ class _DSSessionState extends State<DSSession>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    iconWidget(widget.icon),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0)
-                            .copyWith(left: 16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: widget.customTitle?? Text(
-                                    widget.title,
-                                    style: theme.textTheme.titleLarge,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: widget.customSubtitle??Text(
-                                    widget.subtitle,
-                                    style: theme.textTheme.bodyMedium,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              headerWidget(),
               widget.action ?? Container(),
               const Icon(Icons.keyboard_arrow_down_outlined)
             ],
@@ -116,20 +76,9 @@ class _DSSessionState extends State<DSSession>
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.ease,
-                height: isOpen.value
-                    ? () {
-                        if (key.currentContext != null) {
-                          final box = key.currentContext?.findRenderObject()
-                              as RenderBox?;
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            key = GlobalKey();
-                          });
-                          return box?.size.height;
-                        }
-                      }()
-                    : 0,
+                height: isOpen.value ?widget.height: 0,
                 child: SingleChildScrollView(
-                 // physics: const NeverScrollableScrollPhysics(),
+                  physics: widget.physics??const BouncingScrollPhysics(),
                   child: Column(
                     children: [
                       Container(
@@ -145,6 +94,53 @@ class _DSSessionState extends State<DSSession>
     );
   }
 
+  Widget headerWidget() {
+    var theme = Theme.of(context);
+    return  Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          iconWidget(widget.icon),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0)
+                  .copyWith(left: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: widget.customTitle?? Text(
+                          widget.title,
+                          style: theme.textTheme.titleLarge,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: widget.customSubtitle??Text(
+                          widget.subtitle,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   Widget iconWidget(IconData icon) {
     return Container(
       width: 48,

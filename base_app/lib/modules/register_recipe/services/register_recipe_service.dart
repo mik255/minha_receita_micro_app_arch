@@ -62,9 +62,8 @@ class RegisterRecipeService {
     return recipeModel.ingredients..add(ingredient);
   }
 
-  removeIngredients(Ingredient ingredient) {
-    return recipeModel.ingredients
-      ..removeWhere((element) => element == ingredient);
+  removeIngredients(int index) {
+    return recipeModel.ingredients..removeAt(index);
   }
 
   void setTime(int time) {

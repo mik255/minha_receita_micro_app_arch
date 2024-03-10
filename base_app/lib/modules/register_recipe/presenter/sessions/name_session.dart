@@ -33,6 +33,7 @@ class _NameAndDescriptionSessionState extends State<NameAndDescriptionSession>
       icon: Icons.mode_edit_outline_outlined,
       title: name.value,
       subtitle: description.value,
+      height: 300,
       customTitle: AnimatedBuilder(
         animation: name,
         builder: (context,state) {

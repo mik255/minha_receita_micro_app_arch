@@ -7,11 +7,15 @@ class ActionsAddRemove extends StatelessWidget {
     super.key,
     required this.onAdd,
     required this.onRemove,
+    this.addTitle = 'Adicionar',
+    this.removeTitle = 'Remover',
   });
 
   final Function() onAdd;
   final Function() onRemove;
 
+  final String addTitle;
+  final String removeTitle;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +24,7 @@ class ActionsAddRemove extends StatelessWidget {
         children: [
           DSChip(
             onTap: onAdd,
-            title: 'Adicionar',
+            title: addTitle,
             backgroundColor: const Color(0xFFFFF1DF),
             titleColor: const Color(0xFFFF9811),
           ),
@@ -29,7 +33,7 @@ class ActionsAddRemove extends StatelessWidget {
           ),
           DSChip(
             onTap: onRemove,
-            title: 'Remover',
+            title: removeTitle,
             backgroundColor: const Color(0xFFFFDFDF),
             titleColor: const Color(0xFFE74C3C),
           )
